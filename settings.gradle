@@ -1,0 +1,2 @@
+rootProject.name='Maps Wrapper'
+include ':app'
