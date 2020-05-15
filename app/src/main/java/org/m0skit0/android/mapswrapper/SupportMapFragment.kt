@@ -18,11 +18,32 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelStore
 import java.io.FileDescriptor
 import java.io.PrintWriter
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class SupportMapFragment : Fragment() {
 
-    private val google: com.google.android.gms.maps.SupportMapFragment by lazy { com.google.android.gms.maps.SupportMapFragment.newInstance() }
-    private val huawei: com.huawei.hms.maps.SupportMapFragment by lazy { com.huawei.hms.maps.SupportMapFragment.newInstance() }
+    private val googleFragment: com.google.android.gms.maps.SupportMapFragment by lazy { com.google.android.gms.maps.SupportMapFragment.newInstance() }
+    private val huaweiFragment: com.huawei.hms.maps.SupportMapFragment by lazy { com.huawei.hms.maps.SupportMapFragment.newInstance() }
+
+    private var callback: OnMapReadyCallback? = null
+
+    fun getMapAsync(callback: OnMapReadyCallback) {
+        this.callback = callback
+        when (MapsConfiguration.type) {
+            MapType.GOOGLE -> googleFragment.getMapAsync { CommonMap(it).let { commonMap ->  callback.onMapReady(commonMap) } }
+            MapType.HUAWEI -> huaweiFragment.getMapAsync { CommonMap(it).let { commonMap ->  callback.onMapReady(commonMap) } }
+        }
+    }
+
+    suspend fun mapAsync(): CommonMap =
+        suspendCoroutine { continuation ->
+            object : OnMapReadyCallback {
+                override fun onMapReady(map: CommonMap) {
+                    continuation.resume(map)
+                }
+            }.let { callback -> getMapAsync(callback) }
+        }
 
     override fun onCreateContextMenu(
         menu: ContextMenu,
@@ -30,36 +51,36 @@ class SupportMapFragment : Fragment() {
         menuInfo: ContextMenu.ContextMenuInfo?
     ) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onCreateContextMenu(menu, v, menuInfo)
-            MapType.HUAWEI -> huawei.onCreateContextMenu(menu, v, menuInfo)
+            MapType.GOOGLE -> googleFragment.onCreateContextMenu(menu, v, menuInfo)
+            MapType.HUAWEI -> huaweiFragment.onCreateContextMenu(menu, v, menuInfo)
         }
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
         return when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onContextItemSelected(item)
-            MapType.HUAWEI -> huawei.onContextItemSelected(item)
+            MapType.GOOGLE -> googleFragment.onContextItemSelected(item)
+            MapType.HUAWEI -> huaweiFragment.onContextItemSelected(item)
         }
     }
 
     override fun getView(): View? {
         return when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.view
-            MapType.HUAWEI -> huawei.view
+            MapType.GOOGLE -> googleFragment.view
+            MapType.HUAWEI -> huaweiFragment.view
         }
     }
 
     override fun setExitSharedElementCallback(callback: SharedElementCallback?) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.setExitSharedElementCallback(callback)
-            MapType.HUAWEI -> huawei.setExitSharedElementCallback(callback)
+            MapType.GOOGLE -> googleFragment.setExitSharedElementCallback(callback)
+            MapType.HUAWEI -> huaweiFragment.setExitSharedElementCallback(callback)
         }
     }
 
     override fun getAllowReturnTransitionOverlap(): Boolean {
         return when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.allowReturnTransitionOverlap
-            MapType.HUAWEI -> huawei.allowReturnTransitionOverlap
+            MapType.GOOGLE -> googleFragment.allowReturnTransitionOverlap
+            MapType.HUAWEI -> huaweiFragment.allowReturnTransitionOverlap
         }
     }
 
@@ -73,67 +94,67 @@ class SupportMapFragment : Fragment() {
         options: Bundle?
     ) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.startIntentSenderForResult(intent, requestCode, fillInIntent, flagsMask, flagsValues, extraFlags, options)
-            MapType.HUAWEI -> huawei.startIntentSenderForResult(intent, requestCode, fillInIntent, flagsMask, flagsValues, extraFlags, options)
+            MapType.GOOGLE -> googleFragment.startIntentSenderForResult(intent, requestCode, fillInIntent, flagsMask, flagsValues, extraFlags, options)
+            MapType.HUAWEI -> huaweiFragment.startIntentSenderForResult(intent, requestCode, fillInIntent, flagsMask, flagsValues, extraFlags, options)
         }
     }
 
     override fun getAllowEnterTransitionOverlap(): Boolean {
         return when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.allowEnterTransitionOverlap
-            MapType.HUAWEI -> huawei.allowEnterTransitionOverlap
+            MapType.GOOGLE -> googleFragment.allowEnterTransitionOverlap
+            MapType.HUAWEI -> huaweiFragment.allowEnterTransitionOverlap
         }
     }
 
     override fun setExitTransition(transition: Any?) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.exitTransition = transition
-            MapType.HUAWEI -> huawei.exitTransition = transition
+            MapType.GOOGLE -> googleFragment.exitTransition = transition
+            MapType.HUAWEI -> huaweiFragment.exitTransition = transition
         }
     }
 
     @SuppressLint("MissingSuperCall")
     override fun onConfigurationChanged(newConfig: Configuration) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onConfigurationChanged(newConfig)
-            MapType.HUAWEI -> huawei.onConfigurationChanged(newConfig)
+            MapType.GOOGLE -> googleFragment.onConfigurationChanged(newConfig)
+            MapType.HUAWEI -> huaweiFragment.onConfigurationChanged(newConfig)
         }
     }
 
     @SuppressLint("MissingSuperCall")
     override fun onAttach(context: Context) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onAttach(context)
-            MapType.HUAWEI -> huawei.onAttach(context)
+            MapType.GOOGLE -> googleFragment.onAttach(context)
+            MapType.HUAWEI -> huaweiFragment.onAttach(context)
         }
     }
 
     @SuppressLint("MissingSuperCall")
     override fun onPause() {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onPause()
-            MapType.HUAWEI -> huawei.onPause()
+            MapType.GOOGLE -> googleFragment.onPause()
+            MapType.HUAWEI -> huaweiFragment.onPause()
         }
     }
 
     override fun setArguments(args: Bundle?) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.arguments = args
-            MapType.HUAWEI -> huawei.arguments = args
+            MapType.GOOGLE -> googleFragment.arguments = args
+            MapType.HUAWEI -> huaweiFragment.arguments = args
         }
     }
 
     override fun setSharedElementEnterTransition(transition: Any?) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.sharedElementEnterTransition = transition
-            MapType.HUAWEI -> huawei.sharedElementEnterTransition = transition
+            MapType.GOOGLE -> googleFragment.sharedElementEnterTransition = transition
+            MapType.HUAWEI -> huaweiFragment.sharedElementEnterTransition = transition
         }
     }
 
     override fun setAllowEnterTransitionOverlap(allow: Boolean) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.allowEnterTransitionOverlap = allow
-            MapType.HUAWEI -> huawei.allowEnterTransitionOverlap = allow
+            MapType.GOOGLE -> googleFragment.allowEnterTransitionOverlap = allow
+            MapType.HUAWEI -> huaweiFragment.allowEnterTransitionOverlap = allow
         }
     }
 
@@ -144,188 +165,188 @@ class SupportMapFragment : Fragment() {
         args: Array<out String>?
     ) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.dump(prefix, fd, writer, args)
-            MapType.HUAWEI -> huawei.dump(prefix, fd, writer, args)
+            MapType.GOOGLE -> googleFragment.dump(prefix, fd, writer, args)
+            MapType.HUAWEI -> huaweiFragment.dump(prefix, fd, writer, args)
         }
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onPrepareOptionsMenu(menu)
-            MapType.HUAWEI -> huawei.onPrepareOptionsMenu(menu)
+            MapType.GOOGLE -> googleFragment.onPrepareOptionsMenu(menu)
+            MapType.HUAWEI -> huaweiFragment.onPrepareOptionsMenu(menu)
         }
     }
 
     override fun setEnterSharedElementCallback(callback: SharedElementCallback?) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.setEnterSharedElementCallback(callback)
-            MapType.HUAWEI -> huawei.setEnterSharedElementCallback(callback)
+            MapType.GOOGLE -> googleFragment.setEnterSharedElementCallback(callback)
+            MapType.HUAWEI -> huaweiFragment.setEnterSharedElementCallback(callback)
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onActivityResult(requestCode, resultCode, data)
-            MapType.HUAWEI -> huawei.onActivityResult(requestCode, resultCode, data)
+            MapType.GOOGLE -> googleFragment.onActivityResult(requestCode, resultCode, data)
+            MapType.HUAWEI -> huaweiFragment.onActivityResult(requestCode, resultCode, data)
         }
     }
 
     override fun getReturnTransition(): Any? {
         return when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.returnTransition
-            MapType.HUAWEI -> huawei.returnTransition
+            MapType.GOOGLE -> googleFragment.returnTransition
+            MapType.HUAWEI -> huaweiFragment.returnTransition
         }
     }
 
     override fun onCreateAnimator(transit: Int, enter: Boolean, nextAnim: Int): Animator? {
         return when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onCreateAnimator(transit, enter, nextAnim)
-            MapType.HUAWEI -> huawei.onCreateAnimator(transit, enter, nextAnim)
+            MapType.GOOGLE -> googleFragment.onCreateAnimator(transit, enter, nextAnim)
+            MapType.HUAWEI -> huaweiFragment.onCreateAnimator(transit, enter, nextAnim)
         }
     }
 
     override fun onMultiWindowModeChanged(isInMultiWindowMode: Boolean) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onMultiWindowModeChanged(isInMultiWindowMode)
-            MapType.HUAWEI -> huawei.onMultiWindowModeChanged(isInMultiWindowMode)
+            MapType.GOOGLE -> googleFragment.onMultiWindowModeChanged(isInMultiWindowMode)
+            MapType.HUAWEI -> huaweiFragment.onMultiWindowModeChanged(isInMultiWindowMode)
         }
     }
 
     override fun setEnterTransition(transition: Any?) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.enterTransition = transition
-            MapType.HUAWEI -> huawei.enterTransition = transition
+            MapType.GOOGLE -> googleFragment.enterTransition = transition
+            MapType.HUAWEI -> huaweiFragment.enterTransition = transition
         }
     }
 
     @SuppressLint("MissingSuperCall")
     override fun onInflate(context: Context, attrs: AttributeSet, savedInstanceState: Bundle?) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onInflate(context, attrs, savedInstanceState)
-            MapType.HUAWEI -> huawei.onInflate(context, attrs, savedInstanceState)
+            MapType.GOOGLE -> googleFragment.onInflate(context, attrs, savedInstanceState)
+            MapType.HUAWEI -> huaweiFragment.onInflate(context, attrs, savedInstanceState)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onViewCreated(view, savedInstanceState)
-            MapType.HUAWEI -> huawei.onViewCreated(view, savedInstanceState)
+            MapType.GOOGLE -> googleFragment.onViewCreated(view, savedInstanceState)
+            MapType.HUAWEI -> huaweiFragment.onViewCreated(view, savedInstanceState)
         }
     }
 
     @SuppressLint("MissingSuperCall")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onActivityCreated(savedInstanceState)
-            MapType.HUAWEI -> huawei.onActivityCreated(savedInstanceState)
+            MapType.GOOGLE -> googleFragment.onActivityCreated(savedInstanceState)
+            MapType.HUAWEI -> huaweiFragment.onActivityCreated(savedInstanceState)
         }
     }
 
     @SuppressLint("MissingSuperCall")
     override fun onCreate(savedInstanceState: Bundle?) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onCreate(savedInstanceState)
-            MapType.HUAWEI -> huawei.onCreate(savedInstanceState)
+            MapType.GOOGLE -> googleFragment.onCreate(savedInstanceState)
+            MapType.HUAWEI -> huaweiFragment.onCreate(savedInstanceState)
         }
     }
 
     @SuppressLint("MissingSuperCall")
     override fun onLowMemory() {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onLowMemory()
-            MapType.HUAWEI -> huawei.onLowMemory()
+            MapType.GOOGLE -> googleFragment.onLowMemory()
+            MapType.HUAWEI -> huaweiFragment.onLowMemory()
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onCreateOptionsMenu(menu, inflater)
-            MapType.HUAWEI -> huawei.onCreateOptionsMenu(menu, inflater)
+            MapType.GOOGLE -> googleFragment.onCreateOptionsMenu(menu, inflater)
+            MapType.HUAWEI -> huaweiFragment.onCreateOptionsMenu(menu, inflater)
         }
     }
 
     override fun startPostponedEnterTransition() {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.startPostponedEnterTransition()
-            MapType.HUAWEI -> huawei.startPostponedEnterTransition()
+            MapType.GOOGLE -> googleFragment.startPostponedEnterTransition()
+            MapType.HUAWEI -> huaweiFragment.startPostponedEnterTransition()
         }
     }
 
     override fun getEnterTransition(): Any? {
         return when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.enterTransition
-            MapType.HUAWEI -> huawei.enterTransition
+            MapType.GOOGLE -> googleFragment.enterTransition
+            MapType.HUAWEI -> huaweiFragment.enterTransition
         }
     }
 
     @SuppressLint("MissingSuperCall")
     override fun onStart() {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onStart()
-            MapType.HUAWEI -> huawei.onStart()
+            MapType.GOOGLE -> googleFragment.onStart()
+            MapType.HUAWEI -> huaweiFragment.onStart()
         }
     }
 
     override fun setRetainInstance(retain: Boolean) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.retainInstance = retain
-            MapType.HUAWEI -> huawei.retainInstance = retain
+            MapType.GOOGLE -> googleFragment.retainInstance = retain
+            MapType.HUAWEI -> huaweiFragment.retainInstance = retain
         }
     }
 
     override fun unregisterForContextMenu(view: View) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.unregisterForContextMenu(view)
-            MapType.HUAWEI -> huawei.unregisterForContextMenu(view)
+            MapType.GOOGLE -> googleFragment.unregisterForContextMenu(view)
+            MapType.HUAWEI -> huaweiFragment.unregisterForContextMenu(view)
         }
     }
 
     override fun registerForContextMenu(view: View) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.registerForContextMenu(view)
-            MapType.HUAWEI -> huawei.registerForContextMenu(view)
+            MapType.GOOGLE -> googleFragment.registerForContextMenu(view)
+            MapType.HUAWEI -> huaweiFragment.registerForContextMenu(view)
         }
     }
 
     override fun getReenterTransition(): Any? {
         return when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.reenterTransition
-            MapType.HUAWEI -> huawei.reenterTransition
+            MapType.GOOGLE -> googleFragment.reenterTransition
+            MapType.HUAWEI -> huaweiFragment.reenterTransition
         }
     }
 
     override fun onDestroyOptionsMenu() {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onDestroyOptionsMenu()
-            MapType.HUAWEI -> huawei.onDestroyOptionsMenu()
+            MapType.GOOGLE -> googleFragment.onDestroyOptionsMenu()
+            MapType.HUAWEI -> huaweiFragment.onDestroyOptionsMenu()
         }
     }
 
     override fun getLifecycle(): Lifecycle {
         return when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.lifecycle
-            MapType.HUAWEI -> huawei.lifecycle
+            MapType.GOOGLE -> googleFragment.lifecycle
+            MapType.HUAWEI -> huaweiFragment.lifecycle
         }
     }
 
     override fun setTargetFragment(fragment: Fragment?, requestCode: Int) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.setTargetFragment(fragment, requestCode)
-            MapType.HUAWEI -> huawei.setTargetFragment(fragment, requestCode)
+            MapType.GOOGLE -> googleFragment.setTargetFragment(fragment, requestCode)
+            MapType.HUAWEI -> huaweiFragment.setTargetFragment(fragment, requestCode)
         }
     }
 
     override fun onOptionsMenuClosed(menu: Menu) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onOptionsMenuClosed(menu)
-            MapType.HUAWEI -> huawei.onOptionsMenuClosed(menu)
+            MapType.GOOGLE -> googleFragment.onOptionsMenuClosed(menu)
+            MapType.HUAWEI -> huaweiFragment.onOptionsMenuClosed(menu)
         }
     }
 
     override fun getSharedElementEnterTransition(): Any? {
         return when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.sharedElementEnterTransition
-            MapType.HUAWEI -> huawei.sharedElementEnterTransition
+            MapType.GOOGLE -> googleFragment.sharedElementEnterTransition
+            MapType.HUAWEI -> huaweiFragment.sharedElementEnterTransition
         }
     }
 
@@ -335,73 +356,73 @@ class SupportMapFragment : Fragment() {
         grantResults: IntArray
     ) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onRequestPermissionsResult(requestCode, permissions, grantResults)
-            MapType.HUAWEI -> huawei.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            MapType.GOOGLE -> googleFragment.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            MapType.HUAWEI -> huaweiFragment.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
     }
 
     override fun postponeEnterTransition() {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.postponeEnterTransition()
-            MapType.HUAWEI -> huawei.postponeEnterTransition()
+            MapType.GOOGLE -> googleFragment.postponeEnterTransition()
+            MapType.HUAWEI -> huaweiFragment.postponeEnterTransition()
         }
     }
 
     @SuppressLint("MissingSuperCall")
     override fun onResume() {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onResume()
-            MapType.HUAWEI -> huawei.onResume()
+            MapType.GOOGLE -> googleFragment.onResume()
+            MapType.HUAWEI -> huaweiFragment.onResume()
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onSaveInstanceState(outState)
-            MapType.HUAWEI -> huawei.onSaveInstanceState(outState)
+            MapType.GOOGLE -> googleFragment.onSaveInstanceState(outState)
+            MapType.HUAWEI -> huaweiFragment.onSaveInstanceState(outState)
         }
     }
 
     override fun getViewLifecycleOwnerLiveData(): LiveData<LifecycleOwner> {
         return when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.viewLifecycleOwnerLiveData
-            MapType.HUAWEI -> huawei.viewLifecycleOwnerLiveData
+            MapType.GOOGLE -> googleFragment.viewLifecycleOwnerLiveData
+            MapType.HUAWEI -> huaweiFragment.viewLifecycleOwnerLiveData
         }
     }
 
     @SuppressLint("MissingSuperCall")
     override fun onDetach() {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onDetach()
-            MapType.HUAWEI -> huawei.onDetach()
+            MapType.GOOGLE -> googleFragment.onDetach()
+            MapType.HUAWEI -> huaweiFragment.onDetach()
         }
     }
 
     override fun shouldShowRequestPermissionRationale(permission: String): Boolean {
         return when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.shouldShowRequestPermissionRationale(permission)
-            MapType.HUAWEI -> huawei.shouldShowRequestPermissionRationale(permission)
+            MapType.GOOGLE -> googleFragment.shouldShowRequestPermissionRationale(permission)
+            MapType.HUAWEI -> huaweiFragment.shouldShowRequestPermissionRationale(permission)
         }
     }
 
     override fun startActivity(intent: Intent?) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.startActivity(intent)
-            MapType.HUAWEI -> huawei.startActivity(intent)
+            MapType.GOOGLE -> googleFragment.startActivity(intent)
+            MapType.HUAWEI -> huaweiFragment.startActivity(intent)
         }
     }
 
     override fun startActivity(intent: Intent?, options: Bundle?) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.startActivity(intent, options)
-            MapType.HUAWEI -> huawei.startActivity(intent, options)
+            MapType.GOOGLE -> googleFragment.startActivity(intent, options)
+            MapType.HUAWEI -> huaweiFragment.startActivity(intent, options)
         }
     }
 
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
         return when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onCreateAnimation(transit, enter, nextAnim)
-            MapType.HUAWEI -> huawei.onCreateAnimation(transit, enter, nextAnim)
+            MapType.GOOGLE -> googleFragment.onCreateAnimation(transit, enter, nextAnim)
+            MapType.HUAWEI -> huaweiFragment.onCreateAnimation(transit, enter, nextAnim)
         }
     }
 
@@ -411,187 +432,187 @@ class SupportMapFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onCreateView(inflater, container, savedInstanceState)
-            MapType.HUAWEI -> huawei.onCreateView(inflater, container, savedInstanceState)
+            MapType.GOOGLE -> googleFragment.onCreateView(inflater, container, savedInstanceState)
+            MapType.HUAWEI -> huaweiFragment.onCreateView(inflater, container, savedInstanceState)
         }
     }
 
     override fun toString(): String {
         return when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.toString()
-            MapType.HUAWEI -> huawei.toString()
+            MapType.GOOGLE -> googleFragment.toString()
+            MapType.HUAWEI -> huaweiFragment.toString()
         }
     }
 
     override fun onAttachFragment(childFragment: Fragment) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onAttachFragment(childFragment)
-            MapType.HUAWEI -> huawei.onAttachFragment(childFragment)
+            MapType.GOOGLE -> googleFragment.onAttachFragment(childFragment)
+            MapType.HUAWEI -> huaweiFragment.onAttachFragment(childFragment)
         }
     }
 
     override fun onGetLayoutInflater(savedInstanceState: Bundle?): LayoutInflater {
         return when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onGetLayoutInflater(savedInstanceState)
-            MapType.HUAWEI -> huawei.onGetLayoutInflater(savedInstanceState)
+            MapType.GOOGLE -> googleFragment.onGetLayoutInflater(savedInstanceState)
+            MapType.HUAWEI -> huaweiFragment.onGetLayoutInflater(savedInstanceState)
         }
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onHiddenChanged(hidden)
-            MapType.HUAWEI -> huawei.onHiddenChanged(hidden)
+            MapType.GOOGLE -> googleFragment.onHiddenChanged(hidden)
+            MapType.HUAWEI -> huaweiFragment.onHiddenChanged(hidden)
         }
     }
 
     override fun getContext(): Context? {
         return when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.context
-            MapType.HUAWEI -> huawei.context
+            MapType.GOOGLE -> googleFragment.context
+            MapType.HUAWEI -> huaweiFragment.context
         }
     }
 
     override fun setMenuVisibility(menuVisible: Boolean) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.setMenuVisibility(menuVisible)
-            MapType.HUAWEI -> huawei.setMenuVisibility(menuVisible)
+            MapType.GOOGLE -> googleFragment.setMenuVisibility(menuVisible)
+            MapType.HUAWEI -> huaweiFragment.setMenuVisibility(menuVisible)
         }
     }
 
     override fun setInitialSavedState(state: SavedState?) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.setInitialSavedState(state)
-            MapType.HUAWEI -> huawei.setInitialSavedState(state)
+            MapType.GOOGLE -> googleFragment.setInitialSavedState(state)
+            MapType.HUAWEI -> huaweiFragment.setInitialSavedState(state)
         }
     }
 
     override fun setReturnTransition(transition: Any?) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.returnTransition = transition
-            MapType.HUAWEI -> huawei.returnTransition = transition
+            MapType.GOOGLE -> googleFragment.returnTransition = transition
+            MapType.HUAWEI -> huaweiFragment.returnTransition = transition
         }
     }
 
     override fun setReenterTransition(transition: Any?) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.reenterTransition = transition
-            MapType.HUAWEI -> huawei.reenterTransition = transition
+            MapType.GOOGLE -> googleFragment.reenterTransition = transition
+            MapType.HUAWEI -> huaweiFragment.reenterTransition = transition
         }
     }
 
     override fun getSharedElementReturnTransition(): Any? {
         return when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.sharedElementReturnTransition
-            MapType.HUAWEI -> huawei.sharedElementReturnTransition
+            MapType.GOOGLE -> googleFragment.sharedElementReturnTransition
+            MapType.HUAWEI -> huaweiFragment.sharedElementReturnTransition
         }
     }
 
     override fun startActivityForResult(intent: Intent?, requestCode: Int) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.startActivityForResult(intent, requestCode)
-            MapType.HUAWEI -> huawei.startActivityForResult(intent, requestCode)
+            MapType.GOOGLE -> googleFragment.startActivityForResult(intent, requestCode)
+            MapType.HUAWEI -> huaweiFragment.startActivityForResult(intent, requestCode)
         }
     }
 
     override fun startActivityForResult(intent: Intent?, requestCode: Int, options: Bundle?) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.startActivityForResult(intent, requestCode, options)
-            MapType.HUAWEI -> huawei.startActivityForResult(intent, requestCode, options)
+            MapType.GOOGLE -> googleFragment.startActivityForResult(intent, requestCode, options)
+            MapType.HUAWEI -> huaweiFragment.startActivityForResult(intent, requestCode, options)
         }
     }
 
     @SuppressLint("MissingSuperCall")
     override fun onDestroyView() {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onDestroyView()
-            MapType.HUAWEI -> huawei.onDestroyView()
+            MapType.GOOGLE -> googleFragment.onDestroyView()
+            MapType.HUAWEI -> huaweiFragment.onDestroyView()
         }
     }
 
     override fun setHasOptionsMenu(hasMenu: Boolean) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.setHasOptionsMenu(hasMenu)
-            MapType.HUAWEI -> huawei.setHasOptionsMenu(hasMenu)
+            MapType.GOOGLE -> googleFragment.setHasOptionsMenu(hasMenu)
+            MapType.HUAWEI -> huaweiFragment.setHasOptionsMenu(hasMenu)
         }
     }
 
     @SuppressLint("MissingSuperCall")
     override fun onStop() {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onStop()
-            MapType.HUAWEI -> huawei.onStop()
+            MapType.GOOGLE -> googleFragment.onStop()
+            MapType.HUAWEI -> huaweiFragment.onStop()
         }
     }
 
     override fun setSharedElementReturnTransition(transition: Any?) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.sharedElementReturnTransition = transition
-            MapType.HUAWEI -> huawei.sharedElementReturnTransition = transition
+            MapType.GOOGLE -> googleFragment.sharedElementReturnTransition = transition
+            MapType.HUAWEI -> huaweiFragment.sharedElementReturnTransition = transition
         }
     }
 
     override fun getViewLifecycleOwner(): LifecycleOwner {
         return when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.viewLifecycleOwner
-            MapType.HUAWEI -> huawei.viewLifecycleOwner
+            MapType.GOOGLE -> googleFragment.viewLifecycleOwner
+            MapType.HUAWEI -> huaweiFragment.viewLifecycleOwner
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onOptionsItemSelected(item)
-            MapType.HUAWEI -> huawei.onOptionsItemSelected(item)
+            MapType.GOOGLE -> googleFragment.onOptionsItemSelected(item)
+            MapType.HUAWEI -> huaweiFragment.onOptionsItemSelected(item)
         }
     }
 
     override fun getExitTransition(): Any? {
         return when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.exitTransition
-            MapType.HUAWEI -> huawei.exitTransition
+            MapType.GOOGLE -> googleFragment.exitTransition
+            MapType.HUAWEI -> huaweiFragment.exitTransition
         }
     }
 
     override fun setAllowReturnTransitionOverlap(allow: Boolean) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.allowReturnTransitionOverlap = allow
-            MapType.HUAWEI -> huawei.allowReturnTransitionOverlap = allow
+            MapType.GOOGLE -> googleFragment.allowReturnTransitionOverlap = allow
+            MapType.HUAWEI -> huaweiFragment.allowReturnTransitionOverlap = allow
         }
     }
 
     override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onPictureInPictureModeChanged(isInPictureInPictureMode)
-            MapType.HUAWEI -> huawei.onPictureInPictureModeChanged(isInPictureInPictureMode)
+            MapType.GOOGLE -> googleFragment.onPictureInPictureModeChanged(isInPictureInPictureMode)
+            MapType.HUAWEI -> huaweiFragment.onPictureInPictureModeChanged(isInPictureInPictureMode)
         }
     }
 
     override fun getViewModelStore(): ViewModelStore {
         return when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.viewModelStore
-            MapType.HUAWEI -> huawei.viewModelStore
+            MapType.GOOGLE -> googleFragment.viewModelStore
+            MapType.HUAWEI -> huaweiFragment.viewModelStore
         }
     }
 
     @SuppressLint("MissingSuperCall")
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onViewStateRestored(savedInstanceState)
-            MapType.HUAWEI -> huawei.onViewStateRestored(savedInstanceState)
+            MapType.GOOGLE -> googleFragment.onViewStateRestored(savedInstanceState)
+            MapType.HUAWEI -> huaweiFragment.onViewStateRestored(savedInstanceState)
         }
     }
 
     override fun onPrimaryNavigationFragmentChanged(isPrimaryNavigationFragment: Boolean) {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onPrimaryNavigationFragmentChanged(isPrimaryNavigationFragment)
-            MapType.HUAWEI -> huawei.onPrimaryNavigationFragmentChanged(isPrimaryNavigationFragment)
+            MapType.GOOGLE -> googleFragment.onPrimaryNavigationFragmentChanged(isPrimaryNavigationFragment)
+            MapType.HUAWEI -> huaweiFragment.onPrimaryNavigationFragmentChanged(isPrimaryNavigationFragment)
         }
     }
 
     @SuppressLint("MissingSuperCall")
     override fun onDestroy() {
         when (MapsConfiguration.type) {
-            MapType.GOOGLE -> google.onDestroy()
-            MapType.HUAWEI -> huawei.onDestroy()
+            MapType.GOOGLE -> googleFragment.onDestroy()
+            MapType.HUAWEI -> huaweiFragment.onDestroy()
         }
     }
 }
