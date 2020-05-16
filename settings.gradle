@@ -1,2 +1,3 @@
 rootProject.name='Maps Wrapper'
-include ':app'
+include ':maps-wrapper'
+include ':testapplication'
