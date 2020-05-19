@@ -1,7 +1,6 @@
 package org.m0skit0.android.mapswrapper
 
 import android.animation.Animator
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
@@ -113,24 +112,24 @@ class SupportMapFragment : Fragment() {
         }
     }
 
-    @SuppressLint("MissingSuperCall")
     override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
         when (MapsConfiguration.type) {
             MapType.GOOGLE -> googleFragment.onConfigurationChanged(newConfig)
             MapType.HUAWEI -> huaweiFragment.onConfigurationChanged(newConfig)
         }
     }
 
-    @SuppressLint("MissingSuperCall")
     override fun onAttach(context: Context) {
+        super.onAttach(context)
         when (MapsConfiguration.type) {
             MapType.GOOGLE -> googleFragment.onAttach(context)
             MapType.HUAWEI -> huaweiFragment.onAttach(context)
         }
     }
 
-    @SuppressLint("MissingSuperCall")
     override fun onPause() {
+        super.onPause()
         when (MapsConfiguration.type) {
             MapType.GOOGLE -> googleFragment.onPause()
             MapType.HUAWEI -> huaweiFragment.onPause()
@@ -219,8 +218,8 @@ class SupportMapFragment : Fragment() {
         }
     }
 
-    @SuppressLint("MissingSuperCall")
     override fun onInflate(context: Context, attrs: AttributeSet, savedInstanceState: Bundle?) {
+        super.onInflate(context, attrs, savedInstanceState)
         when (MapsConfiguration.type) {
             MapType.GOOGLE -> googleFragment.onInflate(context, attrs, savedInstanceState)
             MapType.HUAWEI -> huaweiFragment.onInflate(context, attrs, savedInstanceState)
@@ -234,24 +233,24 @@ class SupportMapFragment : Fragment() {
         }
     }
 
-    @SuppressLint("MissingSuperCall")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         when (MapsConfiguration.type) {
             MapType.GOOGLE -> googleFragment.onActivityCreated(savedInstanceState)
             MapType.HUAWEI -> huaweiFragment.onActivityCreated(savedInstanceState)
         }
     }
 
-    @SuppressLint("MissingSuperCall")
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         when (MapsConfiguration.type) {
             MapType.GOOGLE -> googleFragment.onCreate(savedInstanceState)
             MapType.HUAWEI -> huaweiFragment.onCreate(savedInstanceState)
         }
     }
 
-    @SuppressLint("MissingSuperCall")
     override fun onLowMemory() {
+        super.onLowMemory()
         when (MapsConfiguration.type) {
             MapType.GOOGLE -> googleFragment.onLowMemory()
             MapType.HUAWEI -> huaweiFragment.onLowMemory()
@@ -279,8 +278,8 @@ class SupportMapFragment : Fragment() {
         }
     }
 
-    @SuppressLint("MissingSuperCall")
     override fun onStart() {
+        super.onStart()
         when (MapsConfiguration.type) {
             MapType.GOOGLE -> googleFragment.onStart()
             MapType.HUAWEI -> huaweiFragment.onStart()
@@ -368,8 +367,8 @@ class SupportMapFragment : Fragment() {
         }
     }
 
-    @SuppressLint("MissingSuperCall")
     override fun onResume() {
+        super.onResume()
         when (MapsConfiguration.type) {
             MapType.GOOGLE -> googleFragment.onResume()
             MapType.HUAWEI -> huaweiFragment.onResume()
@@ -390,8 +389,8 @@ class SupportMapFragment : Fragment() {
         }
     }
 
-    @SuppressLint("MissingSuperCall")
     override fun onDetach() {
+        super.onDetach()
         when (MapsConfiguration.type) {
             MapType.GOOGLE -> googleFragment.onDetach()
             MapType.HUAWEI -> huaweiFragment.onDetach()
@@ -521,8 +520,8 @@ class SupportMapFragment : Fragment() {
         }
     }
 
-    @SuppressLint("MissingSuperCall")
     override fun onDestroyView() {
+        super.onDestroyView()
         when (MapsConfiguration.type) {
             MapType.GOOGLE -> googleFragment.onDestroyView()
             MapType.HUAWEI -> huaweiFragment.onDestroyView()
@@ -536,8 +535,8 @@ class SupportMapFragment : Fragment() {
         }
     }
 
-    @SuppressLint("MissingSuperCall")
     override fun onStop() {
+        super.onStop()
         when (MapsConfiguration.type) {
             MapType.GOOGLE -> googleFragment.onStop()
             MapType.HUAWEI -> huaweiFragment.onStop()
@@ -593,23 +592,16 @@ class SupportMapFragment : Fragment() {
         }
     }
 
-    @SuppressLint("MissingSuperCall")
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
         when (MapsConfiguration.type) {
             MapType.GOOGLE -> googleFragment.onViewStateRestored(savedInstanceState)
             MapType.HUAWEI -> huaweiFragment.onViewStateRestored(savedInstanceState)
         }
     }
 
-    override fun onPrimaryNavigationFragmentChanged(isPrimaryNavigationFragment: Boolean) {
-        when (MapsConfiguration.type) {
-            MapType.GOOGLE -> googleFragment.onPrimaryNavigationFragmentChanged(isPrimaryNavigationFragment)
-            MapType.HUAWEI -> huaweiFragment.onPrimaryNavigationFragmentChanged(isPrimaryNavigationFragment)
-        }
-    }
-
-    @SuppressLint("MissingSuperCall")
     override fun onDestroy() {
+        super.onDestroy()
         when (MapsConfiguration.type) {
             MapType.GOOGLE -> googleFragment.onDestroy()
             MapType.HUAWEI -> huaweiFragment.onDestroy()
