@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.m0skit0.android.mapswrapper.testapp">
+    package="com.demos.maps">
 
     <application
         android:name="org.m0skit0.android.mapswrapper.testapp.TestApplication"
