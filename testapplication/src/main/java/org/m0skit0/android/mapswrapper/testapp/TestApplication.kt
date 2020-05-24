@@ -8,6 +8,6 @@ class TestApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        MapsConfiguration.type = MapType.HUAWEI
+        MapsConfiguration.type = MapType.GOOGLE
     }
 }
