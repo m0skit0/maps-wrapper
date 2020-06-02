@@ -1,6 +1,9 @@
 package org.m0skit0.android.mapswrapper
 
+import android.content.Context
 import android.os.Bundle
+import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +12,8 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 class SupportMapFragment : Fragment() {
+
+    private val TAG = javaClass.simpleName
 
     private val containedSupportMapFragment: Fragment by lazy { instantiateSupportMapFragment() }
 
@@ -56,5 +61,14 @@ class SupportMapFragment : Fragment() {
 
     private fun huaweiGetMapAsync(callback: OnMapReadyCallback) {
         castToHuaweiMap().getMapAsync { CommonMap(it).let { commonMap ->  callback.onMapReady(commonMap) } }
+    }
+
+    override fun onInflate(context: Context?, attrs: AttributeSet?, savedInstanceState: Bundle?) {
+        super.onInflate(context, attrs, savedInstanceState)
+        context?.obtainStyledAttributes(attrs, R.styleable.org_m0skit0_android_mapswrapper_SupportMapFragment)?.also {
+            val att = it.getText(R.styleable.org_m0skit0_android_mapswrapper_SupportMapFragment_type)
+            Log.d(TAG, "onInflate $att")
+        }?.recycle()
+
     }
 }
