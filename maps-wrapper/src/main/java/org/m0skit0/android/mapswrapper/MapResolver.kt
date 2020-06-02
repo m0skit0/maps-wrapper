@@ -6,8 +6,8 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.huawei.hms.api.HuaweiApiAvailability
 
-internal fun mapFragmentFromResolverType(context: Context, value: String): Fragment =
-    when (MapResolverStrategy.fromValue(value)) {
+internal fun mapFragmentFromResolverType(context: Context?, strategy: MapResolverStrategy): Fragment =
+    when (strategy) {
         MapResolverStrategy.FORCE_GOOGLE -> googleSupportMapFragment()
         MapResolverStrategy.FORCE_HUAWEI -> huaweiSupportMapFragment()
         MapResolverStrategy.GOOGLE_THEN_HUAWEI -> googleThenHuawei(context)
@@ -17,10 +17,12 @@ internal fun mapFragmentFromResolverType(context: Context, value: String): Fragm
 private fun googleSupportMapFragment(): com.google.android.gms.maps.SupportMapFragment =
     com.google.android.gms.maps.SupportMapFragment.newInstance()
 
-private fun isGoogleAvailable(context: Context) =
-    GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS
+private fun isGoogleAvailable(context: Context?): Boolean {
+    context ?: return false
+    return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS
+}
 
-private fun googleThenHuawei(context: Context): Fragment =
+private fun googleThenHuawei(context: Context?): Fragment =
     when {
         isGoogleAvailable(context) -> googleSupportMapFragment()
         isHuaweiAvailable(context) -> huaweiSupportMapFragment()
@@ -30,10 +32,12 @@ private fun googleThenHuawei(context: Context): Fragment =
 private fun huaweiSupportMapFragment(): com.huawei.hms.maps.SupportMapFragment =
     com.huawei.hms.maps.SupportMapFragment.newInstance()
 
-private fun isHuaweiAvailable(context: Context) =
-    HuaweiApiAvailability.getInstance().isHuaweiMobileServicesAvailable(context) == com.huawei.hms.api.ConnectionResult.SUCCESS
+private fun isHuaweiAvailable(context: Context?): Boolean {
+    context ?: return false
+    return HuaweiApiAvailability.getInstance().isHuaweiMobileServicesAvailable(context) == com.huawei.hms.api.ConnectionResult.SUCCESS
+}
 
-private fun huaweiThenGoogle(context: Context): Fragment =
+private fun huaweiThenGoogle(context: Context?): Fragment =
     when {
         isHuaweiAvailable(context) -> huaweiSupportMapFragment()
         isGoogleAvailable(context) -> googleSupportMapFragment()
