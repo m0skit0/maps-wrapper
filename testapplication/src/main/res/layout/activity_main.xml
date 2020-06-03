@@ -6,6 +6,6 @@
     android:name="org.m0skit0.android.mapswrapper.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:type="google">
+    app:type="auto">
 
 </fragment>
