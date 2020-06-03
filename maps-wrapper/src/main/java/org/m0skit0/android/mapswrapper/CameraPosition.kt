@@ -19,9 +19,9 @@ class CameraPosition private constructor(
         private var google = com.google.android.gms.maps.model.CameraPosition.Builder()
         private var huawei = com.huawei.hms.maps.model.CameraPosition.Builder()
 
-        fun target(target: LatLng): Builder = apply {
-            google = google.target(target.google)
-            huawei = huawei.target(target.huawei)
+        fun target(location: LatLng): Builder = apply {
+            google = google.target(location.google)
+            huawei = huawei.target(location.huawei)
         }
 
         fun zoom(zoom: Float): Builder = apply {
