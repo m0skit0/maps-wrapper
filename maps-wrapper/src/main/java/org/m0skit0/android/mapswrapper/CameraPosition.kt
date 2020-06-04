@@ -1,8 +1,8 @@
 package org.m0skit0.android.mapswrapper
 
-class CameraPosition private constructor(
-    internal val google: com.google.android.gms.maps.model.CameraPosition,
-    internal val huawei: com.huawei.hms.maps.model.CameraPosition
+class CameraPosition internal constructor(
+    internal val google: com.google.android.gms.maps.model.CameraPosition?,
+    internal val huawei: com.huawei.hms.maps.model.CameraPosition?
 ) {
 
     companion object {
@@ -42,6 +42,4 @@ class CameraPosition private constructor(
         fun build(): CameraPosition =
             CameraPosition(google.build(), huawei.build())
     }
-
-
 }

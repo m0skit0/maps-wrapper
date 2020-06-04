@@ -2,8 +2,8 @@ package org.m0skit0.android.mapswrapper
 
 class PolylineOptions {
 
-    private var google = com.google.android.gms.maps.model.PolylineOptions()
-    private var huawei = com.huawei.hms.maps.model.PolylineOptions()
+    internal var google = com.google.android.gms.maps.model.PolylineOptions()
+    internal var huawei = com.huawei.hms.maps.model.PolylineOptions()
 
     fun add(position: LatLng): PolylineOptions = apply {
         google = google.add(position.google)

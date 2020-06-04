@@ -2,8 +2,8 @@ package org.m0skit0.android.mapswrapper
 
 class CircleOptions {
 
-    private var google = com.google.android.gms.maps.model.CircleOptions()
-    private var huawei = com.huawei.hms.maps.model.CircleOptions()
+    internal var google = com.google.android.gms.maps.model.CircleOptions()
+    internal var huawei = com.huawei.hms.maps.model.CircleOptions()
 
     fun center(center: LatLng): CircleOptions = apply {
         google = google.center(center.google)

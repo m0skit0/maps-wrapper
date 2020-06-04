@@ -2,8 +2,8 @@ package org.m0skit0.android.mapswrapper
 
 class MarkerOptions {
 
-    private var google = com.google.android.gms.maps.model.MarkerOptions()
-    private var huawei = com.huawei.hms.maps.model.MarkerOptions()
+    internal var google = com.google.android.gms.maps.model.MarkerOptions()
+    internal var huawei = com.huawei.hms.maps.model.MarkerOptions()
 
     fun position(position: LatLng): MarkerOptions = apply {
         google = google.position(position.google)
