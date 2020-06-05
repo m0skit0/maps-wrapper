@@ -2,9 +2,6 @@ package org.m0skit0.android.mapswrapper
 
 import android.content.Context
 import androidx.fragment.app.Fragment
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.GoogleApiAvailability
-import com.huawei.hms.api.HuaweiApiAvailability
 
 internal fun mapFragmentFromResolverType(context: Context, strategy: MapResolverStrategy): Fragment =
     when (strategy) {
@@ -17,9 +14,7 @@ internal fun mapFragmentFromResolverType(context: Context, strategy: MapResolver
 private fun googleSupportMapFragment(): com.google.android.gms.maps.SupportMapFragment =
     com.google.android.gms.maps.SupportMapFragment.newInstance()
 
-private fun Context.isGoogleAvailable(): Boolean {
-    return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this) == ConnectionResult.SUCCESS
-}
+private fun Context.isGoogleAvailable(): Boolean = ApiAvailability.isGoogleAvailable(this)
 
 private fun Context.googleThenHuawei(): Fragment =
     when {
@@ -31,9 +26,7 @@ private fun Context.googleThenHuawei(): Fragment =
 private fun huaweiSupportMapFragment(): com.huawei.hms.maps.SupportMapFragment =
     com.huawei.hms.maps.SupportMapFragment.newInstance()
 
-private fun Context.isHuaweiAvailable(): Boolean {
-    return HuaweiApiAvailability.getInstance().isHuaweiMobileServicesAvailable(this) == com.huawei.hms.api.ConnectionResult.SUCCESS
-}
+private fun Context.isHuaweiAvailable(): Boolean = ApiAvailability.isHuaweiAvailable(this)
 
 private fun Context.huaweiThenGoogle(): Fragment =
     when {
