@@ -12,9 +12,10 @@ import kotlin.coroutines.suspendCoroutine
 
 class SupportMapFragment : Fragment() {
 
-    private val TAG = javaClass.simpleName
-
-    private val containedSupportMapFragment: Fragment by lazy { mapFragmentFromResolverType(context, mapType) }
+    private val containedSupportMapFragment: Fragment by lazy {
+        context?.run { mapFragmentFromResolverType(this, mapType) }
+            ?: throw IllegalStateException("Context is null")
+    }
 
     private var callback: OnMapReadyCallback? = null
 
