@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.demos.maps.gms
+package com.demos.maps.demos
 
 import android.graphics.Color
 import android.graphics.Point

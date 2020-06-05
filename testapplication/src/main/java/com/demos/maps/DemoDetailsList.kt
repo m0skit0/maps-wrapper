@@ -16,7 +16,7 @@
 
 package com.demos.maps
 
-import com.demos.maps.gms.*
+import com.demos.maps.demos.*
 
 /**
  * A list of all the demos we have available.

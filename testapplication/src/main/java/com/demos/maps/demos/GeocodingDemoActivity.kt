@@ -1,4 +1,4 @@
-package com.demos.maps.gms
+package com.demos.maps.demos
 
 import android.location.Address
 import android.location.Geocoder

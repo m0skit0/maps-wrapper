@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.demos.maps.gms
+package com.demos.maps.demos
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.demos.maps.R
-import com.demos.maps.gms.OnMapAndViewReadyListener.OnGlobalLayoutAndMapReadyListener
+import com.demos.maps.demos.OnMapAndViewReadyListener.OnGlobalLayoutAndMapReadyListener
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment

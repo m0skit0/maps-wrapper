@@ -34,25 +34,24 @@
         <activity android:name=".DemoListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".gms.BasicMapDemoActivity" />
-        <activity android:name=".gms.CameraDemoActivity"/>
-        <activity android:name=".gms.CircleDemoActivity" />
-        <activity android:name=".gms.CloseInfoWindowDemoActivity" />
-        <activity android:name=".gms.LayersDemoActivity"/>
-        <activity android:name=".gms.LiteListDemoActivity" />
-        <activity android:name=".gms.MarkerDemoActivity"/>
-        <activity android:name=".gms.PolygonDemoActivity"/>
-        <activity android:name=".gms.PolylineDemoActivity"/>
-        <activity android:name=".gms.TagsDemoActivity"/>
-        <activity android:name=".gms.UiSettingsDemoActivity" />
-        <activity android:name=".gms.VisibleRegionDemoActivity"/>
-        <activity android:name=".gms.GeocodingDemoActivity"/>
-        <activity android:name=".gms.RouteDemoActivity"/>
+        <activity android:name=".demos.BasicMapDemoActivity" />
+        <activity android:name=".demos.CameraDemoActivity"/>
+        <activity android:name=".demos.CircleDemoActivity" />
+        <activity android:name=".demos.CloseInfoWindowDemoActivity" />
+        <activity android:name=".demos.LayersDemoActivity"/>
+        <activity android:name=".demos.LiteListDemoActivity" />
+        <activity android:name=".demos.MarkerDemoActivity"/>
+        <activity android:name=".demos.PolygonDemoActivity"/>
+        <activity android:name=".demos.PolylineDemoActivity"/>
+        <activity android:name=".demos.TagsDemoActivity"/>
+        <activity android:name=".demos.UiSettingsDemoActivity" />
+        <activity android:name=".demos.VisibleRegionDemoActivity"/>
+        <activity android:name=".demos.GeocodingDemoActivity"/>
+        <activity android:name=".demos.RouteDemoActivity"/>
     </application>
 
 </manifest>
