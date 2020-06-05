@@ -39,4 +39,12 @@ object CameraUpdateFactory {
         val huawei = com.huawei.hms.maps.CameraUpdateFactory.newLatLngZoom(position.huawei, zoom)
         return CameraUpdate(google, huawei)
     }
+
+    fun newCameraPosition(position: CameraPosition): CameraUpdate {
+        val google = executeOrNull {
+            com.google.android.gms.maps.CameraUpdateFactory.newCameraPosition(position.google)
+        }
+        val huawei = com.huawei.hms.maps.CameraUpdateFactory.newCameraPosition(position.huawei)
+        return CameraUpdate(google, huawei)
+    }
 }

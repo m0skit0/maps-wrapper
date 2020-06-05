@@ -18,6 +18,46 @@ class CommonMap(private val map: Any) {
 
     private fun isHuawei(): Boolean = map is HuaweiMap
 
+    var mapType: Int
+        get() = when {
+            isGoogle() -> googleMap.mapType
+            isHuawei() -> huaweiMap.mapType
+            else -> -1
+        }
+        set(value) {
+            when {
+                isGoogle() -> googleMap.mapType = value
+                isHuawei() -> huaweiMap.mapType = value
+            }
+        }
+
+    var isMyLocationEnabled: Boolean
+        get() = when {
+            isGoogle() -> googleMap.isMyLocationEnabled
+            isHuawei() -> huaweiMap.isMyLocationEnabled
+            else -> false
+        }
+        set(value) {
+            when {
+                isGoogle() -> googleMap.isMyLocationEnabled = value
+                isHuawei() -> huaweiMap.isMyLocationEnabled = value
+            }
+        }
+
+    val cameraPosition: CameraPosition
+        get() = when {
+            isGoogle() -> googleMap.cameraPosition.let { CameraPosition(it, null) }
+            isHuawei() -> huaweiMap.cameraPosition.let { CameraPosition(null, it) }
+            else -> throw notGoogleNotHuaweiMap
+        }
+
+    val uiSettings: UiSettings
+        get() = when {
+            isGoogle() -> googleMap.uiSettings.let { UiSettings(it, null) }
+            isHuawei() -> huaweiMap.uiSettings.let { UiSettings(null, it) }
+            else -> throw notGoogleNotHuaweiMap
+        }
+
     fun clear() {
         when {
             isGoogle() -> googleMap.clear()
@@ -39,42 +79,61 @@ class CommonMap(private val map: Any) {
         }
     }
 
-    fun getMapType(): Int {
-        return when {
-            isGoogle() -> googleMap.mapType
-            isHuawei() -> huaweiMap.mapType
-            else -> -1
-        }
-    }
-
-    fun setMapType(type: Int) {
+    fun animateCamera(cameraUpdate: CameraUpdate, callback: CancelableCallback?) {
         when {
-            isGoogle() -> googleMap.mapType = type
-            isHuawei() -> huaweiMap.mapType = type
+            isGoogle() -> googleMap.animateCamera(
+                cameraUpdate.googleCameraUpdate,
+                object : GoogleMap.CancelableCallback {
+                    override fun onFinish() {
+                        callback?.onFinish()
+                    }
+                    override fun onCancel() {
+                        callback?.onCancel()
+                    }
+                }
+            )
+            isHuawei() -> huaweiMap.animateCamera(
+                cameraUpdate.huaweiCameraUpdate,
+                object : HuaweiMap.CancelableCallback {
+                    override fun onFinish() {
+                        callback?.onFinish()
+                    }
+                    override fun onCancel() {
+                        callback?.onCancel()
+                    }
+                }
+            )
         }
     }
 
-    fun isMyLocationEnabled(): Boolean {
-        return when {
-            isGoogle() -> googleMap.isMyLocationEnabled
-            isHuawei() -> huaweiMap.isMyLocationEnabled
-            else -> false
-        }
-    }
-
-    fun setMyLocationEnabled(enabled: Boolean) {
+    fun animateCamera(cameraUpdate: CameraUpdate, value: Int, callback: CancelableCallback?) {
         when {
-            isGoogle() -> googleMap.isMyLocationEnabled = enabled
-            isHuawei() -> huaweiMap.isMyLocationEnabled = enabled
+            isGoogle() -> googleMap.animateCamera(
+                cameraUpdate.googleCameraUpdate,
+                value,
+                object : GoogleMap.CancelableCallback {
+                    override fun onFinish() {
+                        callback?.onFinish()
+                    }
+                    override fun onCancel() {
+                        callback?.onCancel()
+                    }
+                }
+            )
+            isHuawei() -> huaweiMap.animateCamera(
+                cameraUpdate.huaweiCameraUpdate,
+                value,
+                object : HuaweiMap.CancelableCallback {
+                    override fun onFinish() {
+                        callback?.onFinish()
+                    }
+                    override fun onCancel() {
+                        callback?.onCancel()
+                    }
+                }
+            )
         }
     }
-
-    fun getCameraPosition(): CameraPosition =
-        when {
-            isGoogle() -> googleMap.cameraPosition.let { CameraPosition(it, null) }
-            isHuawei() -> huaweiMap.cameraPosition.let { CameraPosition(null, it) }
-            else -> throw notGoogleNotHuaweiMap
-        }
 
     fun addCircle(circleOptions: CircleOptions): Circle =
         when {
@@ -96,6 +155,13 @@ class CommonMap(private val map: Any) {
             isHuawei() -> huaweiMap.addPolyline(polylineOptions.huawei).let { Polyline(null, it) }
             else -> throw notGoogleNotHuaweiMap
         }
+
+    fun stopAnimation() {
+        when {
+            isGoogle() -> googleMap.stopAnimation()
+            isHuawei() -> huaweiMap.stopAnimation()
+        }
+    }
 
     fun setOnMapClickListener(listener: OnMapClickListener) {
         when {
@@ -119,11 +185,83 @@ class CommonMap(private val map: Any) {
         }
     }
 
+    fun setOnCameraMoveStartedListener(listener: OnCameraMoveStartedListener) {
+        when {
+            isGoogle() -> googleMap.setOnCameraMoveStartedListener {
+                listener.onCameraMoveStarted(it)
+            }
+            isHuawei() -> huaweiMap.setOnCameraMoveStartedListener {
+                listener.onCameraMoveStarted(it)
+            }
+        }
+    }
+
+    fun setOnCameraMoveListener(listener: OnCameraMoveListener) {
+        when {
+            isGoogle() -> googleMap.setOnCameraMoveListener {
+                listener.onCameraMove()
+            }
+            isHuawei() -> huaweiMap.setOnCameraMoveListener {
+                listener.onCameraMove()
+            }
+        }
+    }
+
+    fun setOnCameraMoveCanceledListener(listener: OnCameraMoveCanceledListener) {
+        when {
+            isGoogle() -> googleMap.setOnCameraMoveCanceledListener {
+                listener.onCameraMoveCanceled()
+            }
+            isHuawei() -> huaweiMap.setOnCameraMoveCanceledListener {
+                listener.onCameraMoveCanceled()
+            }
+        }
+    }
+
+    fun setOnCameraIdleListener(listener: OnCameraIdleListener) {
+        when {
+            isGoogle() -> googleMap.setOnCameraIdleListener {
+                listener.onCameraIdle()
+            }
+            isHuawei() -> huaweiMap.setOnCameraIdleListener {
+                listener.onCameraIdle()
+            }
+        }
+    }
+
     interface OnMapClickListener {
         fun onMapClick(position: LatLng?)
     }
 
     interface OnMapLongClickListener {
         fun onMapLongClick(position: LatLng?)
+    }
+
+    interface OnCameraMoveStartedListener {
+
+        fun onCameraMoveStarted(reason: Int)
+
+        companion object {
+            const val REASON_GESTURE = GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE
+            const val REASON_API_ANIMATION = GoogleMap.OnCameraMoveStartedListener.REASON_API_ANIMATION
+            const val REASON_DEVELOPER_ANIMATION = GoogleMap.OnCameraMoveStartedListener.REASON_DEVELOPER_ANIMATION
+        }
+    }
+
+    interface OnCameraMoveListener {
+        fun onCameraMove()
+    }
+
+    interface OnCameraMoveCanceledListener {
+        fun onCameraMoveCanceled()
+    }
+
+    interface OnCameraIdleListener {
+        fun onCameraIdle()
+    }
+
+    interface CancelableCallback {
+        fun onFinish()
+        fun onCancel()
     }
 }

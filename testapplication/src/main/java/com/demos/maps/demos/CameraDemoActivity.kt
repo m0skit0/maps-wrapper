@@ -25,22 +25,19 @@ import android.widget.SeekBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.demos.maps.R
-import com.google.android.gms.maps.*
-import com.google.android.gms.maps.GoogleMap.*
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.PolylineOptions
+import org.m0skit0.android.mapswrapper.*
 
 /**
  * This shows how to change the camera position for the map.
  */
 class CameraDemoActivity :
         AppCompatActivity(),
-        OnCameraMoveStartedListener,
-        OnCameraMoveListener,
-        OnCameraMoveCanceledListener,
-        OnCameraIdleListener,
-        OnMapReadyCallback {
+        CommonMap.OnCameraMoveStartedListener,
+        CommonMap.OnCameraMoveListener,
+        CommonMap.OnCameraMoveCanceledListener,
+        CommonMap.OnCameraIdleListener,
+        OnMapReadyCallback
+{
 
     /**
      * The amount by which to scroll the camera. Note that this amount is in raw pixels, not dp
@@ -64,7 +61,7 @@ class CameraDemoActivity :
             .build()
 
 
-    private lateinit var map: GoogleMap
+    private lateinit var map: CommonMap
 
     private lateinit var animateToggle: CompoundButton
     private lateinit var customDurationToggle: CompoundButton
@@ -92,12 +89,12 @@ class CameraDemoActivity :
         updateEnabledState()
     }
 
-    override fun onMapReady(googleMap: GoogleMap?) {
+    override fun onMapReady(map: CommonMap) {
 
         // return early if the map was not initialised properly
-        map = googleMap ?: return
+        this.map = map ?: return
 
-        with(googleMap) {
+        with(map) {
             setOnCameraIdleListener(this@CameraDemoActivity)
             setOnCameraMoveStartedListener(this@CameraDemoActivity)
             setOnCameraMoveListener(this@CameraDemoActivity)
@@ -143,7 +140,7 @@ class CameraDemoActivity :
     fun onGoToSydney(view: View) {
         checkReadyThen {
             changeCamera(CameraUpdateFactory.newCameraPosition(sydneyLocation),
-                    object : CancelableCallback {
+                    object : CommonMap.CancelableCallback {
                         override fun onFinish() {
                             Toast.makeText(baseContext, "Animation to Sydney complete",
                                     Toast.LENGTH_SHORT).show()
@@ -267,7 +264,7 @@ class CameraDemoActivity :
      * Change the camera position by moving or animating the camera depending on the state of the
      * animate toggle button.
      */
-    private fun changeCamera(update: CameraUpdate, callback: CancelableCallback? = null) {
+    private fun changeCamera(update: CameraUpdate, callback: CommonMap.CancelableCallback? = null) {
         if (animateToggle.isChecked) {
             if (customDurationToggle.isChecked) {
                 // The duration must be strictly positive so we make it at least 1.
@@ -287,15 +284,15 @@ class CameraDemoActivity :
         var reasonText = "UNKNOWN_REASON"
         currPolylineOptions = PolylineOptions().width(5f)
         when (reason) {
-            OnCameraMoveStartedListener.REASON_GESTURE -> {
+            CommonMap.OnCameraMoveStartedListener.REASON_GESTURE -> {
                 currPolylineOptions?.color(Color.BLUE)
                 reasonText = "GESTURE"
             }
-            OnCameraMoveStartedListener.REASON_API_ANIMATION -> {
+            CommonMap.OnCameraMoveStartedListener.REASON_API_ANIMATION -> {
                 currPolylineOptions?.color(Color.RED)
                 reasonText = "API_ANIMATION"
             }
-            OnCameraMoveStartedListener.REASON_DEVELOPER_ANIMATION -> {
+            CommonMap.OnCameraMoveStartedListener.REASON_DEVELOPER_ANIMATION -> {
                 currPolylineOptions?.color(Color.GREEN)
                 reasonText = "DEVELOPER_ANIMATION"
             }
@@ -304,27 +301,18 @@ class CameraDemoActivity :
         addCameraTargetToPath()
     }
 
-    /**
-     * Ensures that currPolyLine options is not null before accessing it
-     *
-     * @param stuffToDo the code to be executed if currPolylineOptions is not null
-     */
-    private fun checkPolylineThen(stuffToDo: () -> Unit) {
-        if (currPolylineOptions != null) stuffToDo()
-    }
-
 
     override fun onCameraMove() {
         Log.i(TAG, "onCameraMove")
         // When the camera is moving, add its target to the current path we'll draw on the map.
-        checkPolylineThen { addCameraTargetToPath() }
+        addCameraTargetToPath()
     }
 
     override fun onCameraMoveCanceled() {
         // When the camera stops moving, add its target to the current path, and draw it on the map.
-        checkPolylineThen {
+        currPolylineOptions?.run {
             addCameraTargetToPath()
-            map.addPolyline(currPolylineOptions)
+            map.addPolyline(this)
         }
 
         isCanceled = true  // Set to clear the map when dragging starts again.
@@ -333,9 +321,9 @@ class CameraDemoActivity :
     }
 
     override fun onCameraIdle() {
-        checkPolylineThen {
+        currPolylineOptions?.run {
             addCameraTargetToPath()
-            map.addPolyline(currPolylineOptions)
+            map.addPolyline(this)
         }
 
         currPolylineOptions = null
