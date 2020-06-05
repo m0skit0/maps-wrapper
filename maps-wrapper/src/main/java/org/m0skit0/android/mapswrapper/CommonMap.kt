@@ -47,6 +47,13 @@ class CommonMap(private val map: Any) {
         }
     }
 
+    fun setMapType(type: Int) {
+        when {
+            isGoogle() -> googleMap.mapType = type
+            isHuawei() -> huaweiMap.mapType = type
+        }
+    }
+
     fun isMyLocationEnabled(): Boolean {
         return when {
             isGoogle() -> googleMap.isMyLocationEnabled
@@ -89,4 +96,34 @@ class CommonMap(private val map: Any) {
             isHuawei() -> huaweiMap.addPolyline(polylineOptions.huawei).let { Polyline(null, it) }
             else -> throw notGoogleNotHuaweiMap
         }
+
+    fun setOnMapClickListener(listener: OnMapClickListener) {
+        when {
+            isGoogle() -> googleMap.setOnMapClickListener {
+                listener.onMapClick(LatLng(it.latitude, it.longitude))
+            }
+            isHuawei() -> huaweiMap.setOnMapClickListener {
+                listener.onMapClick(LatLng(it.latitude, it.longitude))
+            }
+        }
+    }
+
+    fun setOnMapLongClickListener(listener: OnMapLongClickListener) {
+        when {
+            isGoogle() -> googleMap.setOnMapLongClickListener {
+                listener.onMapLongClick(LatLng(it.latitude, it.longitude))
+            }
+            isHuawei() -> huaweiMap.setOnMapLongClickListener {
+                listener.onMapLongClick(LatLng(it.latitude, it.longitude))
+            }
+        }
+    }
+
+    interface OnMapClickListener {
+        fun onMapClick(position: LatLng?)
+    }
+
+    interface OnMapLongClickListener {
+        fun onMapLongClick(position: LatLng?)
+    }
 }
