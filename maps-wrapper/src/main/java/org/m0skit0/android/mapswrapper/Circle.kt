@@ -12,37 +12,38 @@ class Circle internal constructor(
             huawei?.setTag(value)
         }
 
-    var center: LatLng?
+    var center: LatLng
         get() = google?.center?.let { LatLng(it.latitude, it.longitude) }
             ?: huawei?.center?.let { LatLng(it.latitude, it.longitude) }
+            ?: throwUnableToResolveGoogleOrHuawei()
         set(value) {
-            google?.center = value?.google
-            huawei?.center = value?.huawei
+            google?.center = value.google
+            huawei?.center = value.huawei
         }
 
     var radius: Double
-        get() = google?.radius ?: huawei?.radius ?: 0.0
+        get() = google?.radius ?: huawei?.radius ?: throwUnableToResolveGoogleOrHuawei()
         set(value) {
             google?.radius = value
             huawei?.radius = value
         }
 
     var strokeWidth: Float
-        get() = google?.strokeWidth ?: huawei?.strokeWidth ?: 0f
+        get() = google?.strokeWidth ?: huawei?.strokeWidth ?: throwUnableToResolveGoogleOrHuawei()
         set(value) {
             google?.strokeWidth = value
             huawei?.strokeWidth = value
         }
 
     var strokeColor: Int
-        get() = google?.strokeColor ?: huawei?.strokeColor ?: 0
+        get() = google?.strokeColor ?: huawei?.strokeColor ?: throwUnableToResolveGoogleOrHuawei()
         set(value) {
             google?.strokeColor = value
             huawei?.strokeColor = value
         }
 
     var fillColor: Int
-        get() = google?.fillColor ?: huawei?.fillColor ?: 0
+        get() = google?.fillColor ?: huawei?.fillColor ?: throwUnableToResolveGoogleOrHuawei()
         set(value) {
             google?.fillColor = value
             huawei?.fillColor = value
@@ -57,7 +58,7 @@ class Circle internal constructor(
         }
 
     var isClickable: Boolean
-        get() = google?.isClickable ?: huawei?.isClickable ?: false
+        get() = google?.isClickable ?: huawei?.isClickable ?: throwUnableToResolveGoogleOrHuawei()
         set(value) {
             google?.isClickable = value
             huawei?.isClickable = value

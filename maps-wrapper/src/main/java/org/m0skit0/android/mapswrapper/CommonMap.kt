@@ -11,9 +11,6 @@ class CommonMap(private val map: Any) {
     private val huaweiMap: HuaweiMap
         get() = map as HuaweiMap
 
-    private val notGoogleNotHuaweiMap: IllegalStateException
-        get() = IllegalStateException("Map is neither Google nor Huawei")
-
     private fun isGoogle(): Boolean = map is GoogleMap
 
     private fun isHuawei(): Boolean = map is HuaweiMap
@@ -48,21 +45,63 @@ class CommonMap(private val map: Any) {
         get() = when {
             isGoogle() -> googleMap.cameraPosition.let { CameraPosition(it, null) }
             isHuawei() -> huaweiMap.cameraPosition.let { CameraPosition(null, it) }
-            else -> throw notGoogleNotHuaweiMap
+            else -> throwUnableToResolveGoogleOrHuawei()
         }
 
     val uiSettings: UiSettings
         get() = when {
             isGoogle() -> googleMap.uiSettings.let { UiSettings(it, null) }
             isHuawei() -> huaweiMap.uiSettings.let { UiSettings(null, it) }
-            else -> throw notGoogleNotHuaweiMap
+            else -> throwUnableToResolveGoogleOrHuawei()
         }
 
     val projection: Projection
         get() = when {
             isGoogle() -> googleMap.projection.let { Projection(it, null) }
             isHuawei() -> huaweiMap.projection.let { Projection(null, it) }
-            else -> throw notGoogleNotHuaweiMap
+            else -> throwUnableToResolveGoogleOrHuawei()
+        }
+
+    var isTrafficEnabled: Boolean
+        get() = when {
+            isGoogle() -> googleMap.isTrafficEnabled
+            isHuawei() -> huaweiMap.isTrafficEnabled
+            else -> throwUnableToResolveGoogleOrHuawei()
+        }
+        set(value) {
+            when {
+                isGoogle() -> googleMap.isTrafficEnabled = value
+                isHuawei() -> huaweiMap.isTrafficEnabled = value
+                else -> throwUnableToResolveGoogleOrHuawei()
+            }
+        }
+
+    var isIndoorEnabled: Boolean
+        get() = when {
+            isGoogle() -> googleMap.isIndoorEnabled
+            isHuawei() -> huaweiMap.isIndoorEnabled
+            else -> throwUnableToResolveGoogleOrHuawei()
+        }
+        set(value) {
+            when {
+                isGoogle() -> googleMap.isIndoorEnabled = value
+                isHuawei() -> huaweiMap.isIndoorEnabled = value
+                else -> throwUnableToResolveGoogleOrHuawei()
+            }
+        }
+
+    var isBuildingsEnabled: Boolean
+        get() = when {
+            isGoogle() -> googleMap.isBuildingsEnabled
+            isHuawei() -> huaweiMap.isBuildingsEnabled
+            else -> throwUnableToResolveGoogleOrHuawei()
+        }
+        set(value) {
+            when {
+                isGoogle() -> googleMap.isBuildingsEnabled = value
+                isHuawei() -> huaweiMap.isBuildingsEnabled = value
+                else -> throwUnableToResolveGoogleOrHuawei()
+            }
         }
 
     fun clear() {
@@ -146,21 +185,21 @@ class CommonMap(private val map: Any) {
         when {
             isGoogle() -> googleMap.addCircle(circleOptions.google).let { Circle(it, null) }
             isHuawei() -> huaweiMap.addCircle(circleOptions.huawei).let { Circle(null, it) }
-            else -> throw notGoogleNotHuaweiMap
+            else -> throwUnableToResolveGoogleOrHuawei()
         }
 
     fun addMarker(markerOptions: MarkerOptions): Marker =
         when {
             isGoogle() -> googleMap.addMarker(markerOptions.google).let { Marker(it, null) }
             isHuawei() -> huaweiMap.addMarker(markerOptions.huawei).let { Marker(null, it) }
-            else -> throw notGoogleNotHuaweiMap
+            else -> throwUnableToResolveGoogleOrHuawei()
         }
 
     fun addPolyline(polylineOptions: PolylineOptions): Polyline =
         when {
             isGoogle() -> googleMap.addPolyline(polylineOptions.google).let { Polyline(it, null) }
             isHuawei() -> huaweiMap.addPolyline(polylineOptions.huawei).let { Polyline(null, it) }
-            else -> throw notGoogleNotHuaweiMap
+            else -> throwUnableToResolveGoogleOrHuawei()
         }
 
     fun stopAnimation() {
@@ -320,6 +359,14 @@ class CommonMap(private val map: Any) {
         setOnMarkerClickListener(object : OnMarkerClickListener {
             override fun onMarkerClick(marker: Marker): Boolean = listener(marker)
         })
+    }
+
+    companion object {
+        const val MAP_TYPE_NONE = GoogleMap.MAP_TYPE_NONE
+        const val MAP_TYPE_NORMAL = GoogleMap.MAP_TYPE_NORMAL
+        const val MAP_TYPE_SATELLITE = GoogleMap.MAP_TYPE_SATELLITE
+        const val MAP_TYPE_TERRAIN = GoogleMap.MAP_TYPE_TERRAIN
+        const val MAP_TYPE_HYBRID = GoogleMap.MAP_TYPE_HYBRID
     }
 
     interface OnMapClickListener {

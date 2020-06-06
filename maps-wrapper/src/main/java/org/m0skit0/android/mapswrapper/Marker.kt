@@ -7,7 +7,8 @@ class Marker internal constructor(
 
     var position: LatLng
         get() = google?.position?.let { LatLng(it.latitude, it.longitude) }
-            ?: huawei?.position?.let { LatLng(it.latitude, it.longitude) } ?: LatLng(0.0, 0.0)
+            ?: huawei?.position?.let { LatLng(it.latitude, it.longitude) }
+            ?: throwUnableToResolveGoogleOrHuawei()
         set(value) {
             google?.position = value.google
             huawei?.position = value.huawei

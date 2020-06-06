@@ -5,18 +5,19 @@ class CameraPosition internal constructor(
     internal val huawei: com.huawei.hms.maps.model.CameraPosition?
 ) {
 
-    val target: LatLng?
+    val target: LatLng
         get() = google?.target?.let { LatLng(it.latitude, it.longitude) }
             ?: huawei?.target?.let { LatLng(it.latitude, it.longitude) }
+            ?: throwUnableToResolveGoogleOrHuawei()
 
     val zoom: Float
-        get() = google?.zoom ?: huawei?.zoom ?: 0f
+        get() = google?.zoom ?: huawei?.zoom ?: throwUnableToResolveGoogleOrHuawei()
 
     val tilt: Float
-        get() = google?.tilt ?: huawei?.tilt ?: 0f
+        get() = google?.tilt ?: huawei?.tilt ?: throwUnableToResolveGoogleOrHuawei()
 
     val bearing: Float
-        get() = google?.bearing ?: huawei?.bearing ?: 0f
+        get() = google?.bearing ?: huawei?.bearing ?: throwUnableToResolveGoogleOrHuawei()
 
     companion object {
         fun builder(): Builder = Builder()
