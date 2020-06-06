@@ -28,14 +28,16 @@ import android.widget.CheckBox
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import com.demos.maps.R
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.GoogleMap.*
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
+import org.m0skit0.android.mapswrapper.CommonMap
+import org.m0skit0.android.mapswrapper.CommonMap.Companion.MAP_TYPE_HYBRID
+import org.m0skit0.android.mapswrapper.CommonMap.Companion.MAP_TYPE_NONE
+import org.m0skit0.android.mapswrapper.CommonMap.Companion.MAP_TYPE_NORMAL
+import org.m0skit0.android.mapswrapper.CommonMap.Companion.MAP_TYPE_SATELLITE
+import org.m0skit0.android.mapswrapper.CommonMap.Companion.MAP_TYPE_TERRAIN
+import org.m0skit0.android.mapswrapper.OnMapReadyCallback
+import org.m0skit0.android.mapswrapper.SupportMapFragment
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
-
-// TODO Implement
 
 private const val LOCATION_PERMISSION_REQUEST_CODE = 1
 
@@ -50,7 +52,7 @@ class LayersDemoActivity :
 
     private val TAG = MarkerDemoActivity::class.java.name
 
-    private lateinit var map: GoogleMap
+    private lateinit var map: CommonMap
 
     private lateinit var trafficCheckbox: CheckBox
     private lateinit var myLocationCheckbox: CheckBox
@@ -103,15 +105,12 @@ class LayersDemoActivity :
     }
 
     @SuppressLint("MissingPermission")
-    override fun onMapReady(googleMap: GoogleMap?) {
-
-        // exit early if the map was not initialised properly
-        map = googleMap ?: return
+    override fun onMapReady(map: CommonMap) {
 
         updateMapType()
 
         // check the state of all checkboxes and update the map accordingly
-        with(map) {
+        with(this.map) {
             isTrafficEnabled = trafficCheckbox.isChecked
             isBuildingsEnabled = buildingsCheckbox.isChecked
             isIndoorEnabled = indoorCheckbox.isChecked
@@ -124,21 +123,21 @@ class LayersDemoActivity :
 
         // attach a listener to each checkbox
         trafficCheckbox.setOnClickListener {
-            map.isTrafficEnabled = trafficCheckbox.isChecked
+            this.map.isTrafficEnabled = trafficCheckbox.isChecked
         }
 
         buildingsCheckbox.setOnClickListener {
-            map.isBuildingsEnabled = buildingsCheckbox.isChecked
+            this.map.isBuildingsEnabled = buildingsCheckbox.isChecked
         }
 
         indoorCheckbox.setOnClickListener {
-            map.isIndoorEnabled = indoorCheckbox.isChecked
+            this.map.isIndoorEnabled = indoorCheckbox.isChecked
         }
 
         // if this box is checked, must check for permission before enabling the My Location layer
         myLocationCheckbox.setOnClickListener {
             if (!myLocationCheckbox.isChecked) {
-                map.isMyLocationEnabled = false
+                this.map.isMyLocationEnabled = false
             } else {
                 enableMyLocation()
             }
