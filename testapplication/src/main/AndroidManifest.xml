@@ -1,24 +1,57 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--
+    Copyright 2018 Google LLC
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        https://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.demos.maps">
 
+    <!-- This app requires location permissions for the layers demo.
+    The user's current location is displayed using the 'My Location' layer. -->
+    <!-- Access to location is needed for the UI Settings Demo -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
-        android:name="org.m0skit0.android.mapswrapper.testapp.TestApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@drawable/demo_icon"
+        android:label="@string/demo_title"
+        android:roundIcon="@drawable/demo_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-        <activity android:name="org.m0skit0.android.mapswrapper.testapp.MainActivity">
+        <activity android:name=".DemoListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".demos.BasicMapDemoActivity" />
+        <activity android:name=".demos.CameraDemoActivity"/>
+        <activity android:name=".demos.CircleDemoActivity" />
+        <activity android:name=".demos.CloseInfoWindowDemoActivity" />
+        <activity android:name=".demos.LayersDemoActivity"/>
+        <activity android:name=".demos.LiteListDemoActivity" />
+        <activity android:name=".demos.MarkerDemoActivity"/>
+        <activity android:name=".demos.PolygonDemoActivity"/>
+        <activity android:name=".demos.PolylineDemoActivity"/>
+        <activity android:name=".demos.TagsDemoActivity"/>
+        <activity android:name=".demos.UiSettingsDemoActivity" />
+        <activity android:name=".demos.VisibleRegionDemoActivity"/>
+        <activity android:name=".demos.GeocodingDemoActivity"/>
+        <activity android:name=".demos.RouteDemoActivity"/>
     </application>
 
 </manifest>
