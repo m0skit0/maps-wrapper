@@ -28,6 +28,7 @@ import android.widget.ListAdapter
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 
+// TODO Allow choosing map resolution strategy for demos
 class DemoListActivity : AppCompatActivity(), AdapterView.OnItemClickListener {
 
     private val demosList: List<DemoDetails> = DemoDetailsList.DEMOS

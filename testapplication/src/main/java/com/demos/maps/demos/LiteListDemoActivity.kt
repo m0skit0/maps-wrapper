@@ -29,6 +29,7 @@ import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
+// TODO Implement
 /**
  * This shows to include a map in lite mode in a RecyclerView.
  * Note the use of the view holder pattern with the

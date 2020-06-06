@@ -35,6 +35,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 
+// TODO Implement
+
 private const val LOCATION_PERMISSION_REQUEST_CODE = 1
 
 /**

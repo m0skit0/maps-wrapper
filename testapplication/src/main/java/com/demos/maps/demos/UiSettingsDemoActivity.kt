@@ -29,6 +29,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 
+// TODO Implement
 const val REQUEST_CODE_LOCATION = 123
 
 class UiSettingsDemoActivity :
