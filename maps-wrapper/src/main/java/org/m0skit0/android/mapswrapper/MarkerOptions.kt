@@ -59,4 +59,9 @@ class MarkerOptions {
         google = google.alpha(alpha)
         huawei = huawei.alpha(alpha)
     }
+
+    fun icon(bitmapDescriptor: BitmapDescriptor): MarkerOptions = apply {
+        google = google.icon(bitmapDescriptor.google)
+        huawei = huawei.icon(bitmapDescriptor.huawei)
+    }
 }

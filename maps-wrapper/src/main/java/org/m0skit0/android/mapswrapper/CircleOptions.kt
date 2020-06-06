@@ -44,4 +44,9 @@ class CircleOptions {
         google = google.clickable(clickable)
         huawei = huawei.clickable(clickable)
     }
+
+    fun strokePattern(patternItems: List<PatternItem>?): CircleOptions = apply {
+        google = google.strokePattern(patternItems?.map { it.google })
+        huawei = huawei.strokePattern(patternItems?.map { it.huawei })
+    }
 }

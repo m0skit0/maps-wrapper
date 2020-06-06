@@ -24,11 +24,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.demos.maps.R
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import org.m0skit0.android.mapswrapper.*
 import java.util.*
 
     /**
@@ -54,9 +50,9 @@ class CircleDemoActivity :
     private val dot = Dot()
     private val dash = Dash(PATTERN_DASH_LENGTH.toFloat())
     private val gap = Gap(PATTERN_GAP_LENGTH.toFloat())
-    private val patternDotted = Arrays.asList(dot, gap)
-    private val patternDashed = Arrays.asList(dash, gap)
-    private val patternMixed = Arrays.asList(dot, gap, dot, dash, gap)
+    private val patternDotted = listOf(dot, gap)
+    private val patternDashed = listOf(dash, gap)
+    private val patternMixed = listOf(dot, gap, dot, dash, gap)
 
     // These are the options for stroke patterns
     private val patterns: List<Pair<Int, List<PatternItem>?>> = listOf(
@@ -66,7 +62,7 @@ class CircleDemoActivity :
             Pair(R.string.pattern_mixed, patternMixed)
     )
 
-    private lateinit var map: GoogleMap
+    private lateinit var map: CommonMap
 
     private val circles = ArrayList<DraggableCircle>(1)
 
@@ -186,24 +182,24 @@ class CircleDemoActivity :
      * When the map is ready, move the camera to put the Circle in the middle of the screen,
      * create a circle in Sydney, and set the listeners for the map, circles, and SeekBars.
      */
-    override fun onMapReady(googleMap: GoogleMap?) {
-        map = googleMap ?: return
+    override fun onMapReady(map: CommonMap) {
+        this.map = map
         // we need to initialise map before creating a circle
-        with(map) {
+        with(this.map) {
             moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 4.0f))
             setContentDescription(getString(R.string.circle_demo_details))
             setOnMapLongClickListener { point ->
                 // We know the center, let's place the outline at a point 3/4 along the view.
                 val view: View = supportFragmentManager.findFragmentById(R.id.map)?.view
                         ?: return@setOnMapLongClickListener
-                val radiusLatLng = map.projection.fromScreenLocation(
+                val radiusLatLng = this@CircleDemoActivity.map.projection.fromScreenLocation(
                         Point(view.height * 3 / 4, view.width * 3 / 4))
                 // Create the circle.
                 val newCircle = DraggableCircle(point, point.distanceFrom(radiusLatLng))
                 circles.add(newCircle)
             }
 
-            setOnMarkerDragListener(object : GoogleMap.OnMarkerDragListener {
+            setOnMarkerDragListener(object : CommonMap.OnMarkerDragListener {
                 override fun onMarkerDragStart(marker: Marker) {
                     onMarkerMoved(marker)
                 }

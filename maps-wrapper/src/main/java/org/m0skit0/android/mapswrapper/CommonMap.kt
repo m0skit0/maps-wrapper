@@ -58,6 +58,13 @@ class CommonMap(private val map: Any) {
             else -> throw notGoogleNotHuaweiMap
         }
 
+    val projection: Projection
+        get() = when {
+            isGoogle() -> googleMap.projection.let { Projection(it, null) }
+            isHuawei() -> huaweiMap.projection.let { Projection(null, it) }
+            else -> throw notGoogleNotHuaweiMap
+        }
+
     fun clear() {
         when {
             isGoogle() -> googleMap.clear()
@@ -163,6 +170,13 @@ class CommonMap(private val map: Any) {
         }
     }
 
+    fun setContentDescription(description: String) {
+        when {
+            isGoogle() -> googleMap.setContentDescription(description)
+            isHuawei() -> huaweiMap.setContentDescription(description)
+        }
+    }
+
     fun setOnMapClickListener(listener: OnMapClickListener) {
         when {
             isGoogle() -> googleMap.setOnMapClickListener {
@@ -174,6 +188,14 @@ class CommonMap(private val map: Any) {
         }
     }
 
+    fun setOnMapClickListener(listener: (LatLng) -> Unit) {
+        setOnMapClickListener(object : OnMapClickListener {
+            override fun onMapClick(position: LatLng) {
+                listener(position)
+            }
+        })
+    }
+
     fun setOnMapLongClickListener(listener: OnMapLongClickListener) {
         when {
             isGoogle() -> googleMap.setOnMapLongClickListener {
@@ -183,6 +205,14 @@ class CommonMap(private val map: Any) {
                 listener.onMapLongClick(LatLng(it.latitude, it.longitude))
             }
         }
+    }
+
+    fun setOnMapLongClickListener(listener: (LatLng) -> Unit) {
+        setOnMapLongClickListener(object : OnMapLongClickListener {
+            override fun onMapLongClick(position: LatLng) {
+                listener(position)
+            }
+        })
     }
 
     fun setOnCameraMoveStartedListener(listener: OnCameraMoveStartedListener) {
@@ -230,11 +260,11 @@ class CommonMap(private val map: Any) {
     }
 
     interface OnMapClickListener {
-        fun onMapClick(position: LatLng?)
+        fun onMapClick(position: LatLng)
     }
 
     interface OnMapLongClickListener {
-        fun onMapLongClick(position: LatLng?)
+        fun onMapLongClick(position: LatLng)
     }
 
     interface OnCameraMoveStartedListener {
