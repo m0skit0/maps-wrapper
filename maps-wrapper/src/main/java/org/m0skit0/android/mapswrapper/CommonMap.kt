@@ -305,6 +305,23 @@ class CommonMap(private val map: Any) {
         })
     }
 
+    fun setOnMarkerClickListener(listener: OnMarkerClickListener) {
+        when {
+            isGoogle() -> googleMap.setOnMarkerClickListener {
+                listener.onMarkerClick(Marker(it, null))
+            }
+            isHuawei() -> huaweiMap.setOnMarkerClickListener {
+                listener.onMarkerClick(Marker(null, it))
+            }
+        }
+    }
+
+    fun setOnMarkerClickListener(listener: (Marker) -> Boolean) {
+        setOnMarkerClickListener(object : OnMarkerClickListener {
+            override fun onMarkerClick(marker: Marker): Boolean = listener(marker)
+        })
+    }
+
     interface OnMapClickListener {
         fun onMapClick(position: LatLng)
     }
@@ -349,5 +366,9 @@ class CommonMap(private val map: Any) {
 
     interface OnCircleClickListener {
         fun onCircleClick(circle: Circle)
+    }
+
+    interface OnMarkerClickListener {
+        fun onMarkerClick(marker: Marker): Boolean
     }
 }

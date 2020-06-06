@@ -17,12 +17,11 @@
 package com.demos.maps.demos
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
+import org.m0skit0.android.mapswrapper.CommonMap
+import org.m0skit0.android.mapswrapper.OnMapReadyCallback
+import org.m0skit0.android.mapswrapper.SupportMapFragment
 
 /**
  * Helper class that will delay triggering the OnMapReady callback until both the GoogleMap and the
@@ -31,20 +30,20 @@ import com.google.android.gms.maps.SupportMapFragment
  * (ie. anything that needs to know the View's true size like snapshotting).
  */
 class OnMapAndViewReadyListener(
-        private val mapFragment: SupportMapFragment,
-        private val toBeNotified: OnGlobalLayoutAndMapReadyListener
+    private val mapFragment: SupportMapFragment,
+    private val toBeNotified: OnGlobalLayoutAndMapReadyListener
 ) : OnGlobalLayoutListener,
-        OnMapReadyCallback {
+    OnMapReadyCallback {
 
     private val mapView: View? = mapFragment.view
 
     private var isViewReady = false
     private var isMapReady = false
-    private var map: GoogleMap? = null
+    private var map: CommonMap? = null
 
     /** A listener that needs to wait for both the GoogleMap and the View to be initialized.  */
     interface OnGlobalLayoutAndMapReadyListener {
-        fun onMapReady(googleMap: GoogleMap?)
+        fun onMapReady(googleMap: CommonMap?)
     }
 
     init {
@@ -65,9 +64,9 @@ class OnMapAndViewReadyListener(
         mapFragment.getMapAsync(this)
     }
 
-    override fun onMapReady(googleMap: GoogleMap?) {
+    override fun onMapReady(map: CommonMap) {
         // NOTE: The GoogleMap API specifies the listener is removed just prior to invocation.
-        map = googleMap ?: return
+        this.map = map ?: return
         isMapReady = true
         fireCallbackIfReady()
     }
@@ -77,11 +76,7 @@ class OnMapAndViewReadyListener(
     @SuppressLint("NewApi")  // We check which build version we are using.
     override fun onGlobalLayout() {
         // Remove our listener.
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-            mapView?.viewTreeObserver?.removeGlobalOnLayoutListener(this)
-        } else {
-            mapView?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
-        }
+        mapView?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
         isViewReady = true
         fireCallbackIfReady()
     }

@@ -20,14 +20,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.demos.maps.R
 import com.demos.maps.demos.OnMapAndViewReadyListener.OnGlobalLayoutAndMapReadyListener
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.LatLngBounds
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
-
+import org.m0skit0.android.mapswrapper.*
 
 /**
  * This shows how to close the info window when the currently selected marker is re-tapped.
@@ -36,7 +29,7 @@ class CloseInfoWindowDemoActivity :
         AppCompatActivity(),
         OnGlobalLayoutAndMapReadyListener {
 
-    private lateinit var map: GoogleMap
+    private lateinit var map: CommonMap
 
     /** Keeps track of the selected marker. It will be set to null if no marker is selected. */
     private var selectedMarker: Marker? = null
@@ -45,8 +38,8 @@ class CloseInfoWindowDemoActivity :
      * If user tapped on the the marker which was already showing info window,
      * the showing info window will be closed. Otherwise will show a different window.
      */
-    private val markerClickListener = object : GoogleMap.OnMarkerClickListener {
-        override fun onMarkerClick(marker: Marker?): Boolean {
+    private val markerClickListener = object : CommonMap.OnMarkerClickListener {
+        override fun onMarkerClick(marker: Marker): Boolean {
             if (marker == selectedMarker) {
                 selectedMarker = null
                 // Return true to indicate we have consumed the event and that we do not
@@ -71,7 +64,7 @@ class CloseInfoWindowDemoActivity :
         OnMapAndViewReadyListener(mapFragment, this)
     }
 
-    override fun onMapReady(googleMap: GoogleMap?) {
+    override fun onMapReady(googleMap: CommonMap?) {
         // Return if googleMap was null
         map = googleMap ?: return
 
