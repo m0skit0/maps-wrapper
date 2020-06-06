@@ -259,6 +259,52 @@ class CommonMap(private val map: Any) {
         }
     }
 
+    fun setOnMarkerDragListener(listener: OnMarkerDragListener) {
+        when {
+            isGoogle() -> googleMap.setOnMarkerDragListener(object : GoogleMap.OnMarkerDragListener {
+                override fun onMarkerDragEnd(marker: com.google.android.gms.maps.model.Marker?) {
+                    listener.onMarkerDragEnd(Marker(marker, null))
+                }
+                override fun onMarkerDragStart(marker: com.google.android.gms.maps.model.Marker?) {
+                    listener.onMarkerDragStart(Marker(marker, null))
+                }
+                override fun onMarkerDrag(marker: com.google.android.gms.maps.model.Marker?) {
+                    listener.onMarkerDragStart(Marker(marker, null))
+                }
+            })
+            isHuawei() -> huaweiMap.setOnMarkerDragListener(object : HuaweiMap.OnMarkerDragListener {
+                override fun onMarkerDragEnd(marker: com.huawei.hms.maps.model.Marker?) {
+                    listener.onMarkerDragEnd(Marker(null, marker))
+                }
+                override fun onMarkerDragStart(marker: com.huawei.hms.maps.model.Marker?) {
+                    listener.onMarkerDragStart(Marker(null, marker))
+                }
+                override fun onMarkerDrag(marker: com.huawei.hms.maps.model.Marker?) {
+                    listener.onMarkerDragStart(Marker(null, marker))
+                }
+            })
+        }
+    }
+
+    fun setOnCircleClickListener(listener: OnCircleClickListener) {
+        when {
+            isGoogle() -> googleMap.setOnCircleClickListener {
+                listener.onCircleClick(Circle(it, null))
+            }
+            isHuawei() -> huaweiMap.setOnCircleClickListener {
+                listener.onCircleClick(Circle(null, it))
+            }
+        }
+    }
+
+    fun setOnCircleClickListener(listener: (Circle) -> Unit) {
+        setOnCircleClickListener(object : OnCircleClickListener {
+            override fun onCircleClick(circle: Circle) {
+                listener(circle)
+            }
+        })
+    }
+
     interface OnMapClickListener {
         fun onMapClick(position: LatLng)
     }
@@ -293,5 +339,15 @@ class CommonMap(private val map: Any) {
     interface CancelableCallback {
         fun onFinish()
         fun onCancel()
+    }
+
+    interface OnMarkerDragListener {
+        fun onMarkerDragStart(marker: Marker)
+        fun onMarkerDrag(marker: Marker)
+        fun onMarkerDragEnd(marker: Marker)
+    }
+
+    interface OnCircleClickListener {
+        fun onCircleClick(circle: Circle)
     }
 }
