@@ -418,6 +418,21 @@ class CommonMap(private val map: Any) {
         )
     }
 
+    fun setOnPolylineClickListener(listener: OnPolylineClickListener) {
+        googleOrHuawei(
+            { setOnPolylineClickListener { listener.onPolylineClick(Polyline(it, null)) } },
+            { setOnPolylineClickListener { listener.onPolylineClick(Polyline(null, it)) } }
+        )
+    }
+
+    fun setOnPolylineClickListener(listener: (Polyline) -> Unit) {
+        setOnPolylineClickListener(object : OnPolylineClickListener {
+            override fun onPolylineClick(polyline: Polyline) {
+                listener(polyline)
+            }
+        })
+    }
+
     companion object {
         const val MAP_TYPE_NONE = GoogleMap.MAP_TYPE_NONE
         const val MAP_TYPE_NORMAL = GoogleMap.MAP_TYPE_NORMAL
@@ -495,5 +510,9 @@ class CommonMap(private val map: Any) {
 
     interface OnPolygonClickListener {
         fun onPolygonClick(polygon: Polygon)
+    }
+
+    interface OnPolylineClickListener {
+        fun onPolylineClick(polyline: Polyline)
     }
 }

@@ -22,11 +22,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.demos.maps.R
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import org.m0skit0.android.mapswrapper.*
 import java.util.*
 
 // TODO Implement
@@ -140,12 +136,9 @@ class PolylineDemoActivity :
         return resourceIds.map { getString(it) }
     }
 
-    override fun onMapReady(googleMap: GoogleMap?) {
+    override fun onMapReady(map: CommonMap) {
 
-        // exit early if the map was not initialised properly
-        googleMap ?: return
-
-        with(googleMap) {
+        with(map) {
             // Override the default content description on the view, for accessibility mode.
             setContentDescription(getString(R.string.polyline_demo_description))
 
@@ -169,7 +162,7 @@ class PolylineDemoActivity :
         }
 
         // A simple polyline across Australia. This polyline will be mutable.
-        mutablePolyline = googleMap.addPolyline(PolylineOptions().apply{
+        mutablePolyline = map.addPolyline(PolylineOptions().apply{
             color(Color.HSVToColor(
                     alphaBar.progress, floatArrayOf(hueBar.progress.toFloat(), 1f, 1f)))
             width(widthBar.progress.toFloat())
