@@ -23,14 +23,9 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.demos.maps.R
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import org.m0skit0.android.mapswrapper.*
 import java.util.*
 
-// TODO Implement
 /**
  * This shows how to draw polygons on a map.
  */
@@ -49,9 +44,9 @@ class PolygonDemoActivity :
     private val dot = Dot()
     private val dash = Dash(PATTERN_DASH_LENGTH_PX.toFloat())
     private val gap = Gap(PATTERN_GAP_LENGTH_PX.toFloat())
-    private val patternDotted = Arrays.asList(dot, gap)
-    private val patternDashed = Arrays.asList(dash, gap)
-    private val patternMixed = Arrays.asList(dot, gap, dot, dash, gap)
+    private val patternDotted = listOf(dot, gap)
+    private val patternDashed = listOf(dash, gap)
+    private val patternMixed = listOf(dot, gap, dot, dash, gap)
 
     private lateinit var mutablePolygon: Polygon
     private lateinit var fillHueBar: SeekBar
@@ -123,17 +118,14 @@ class PolygonDemoActivity :
         return resourceIds.map { getString(it) }
     }
 
-    override fun onMapReady(googleMap: GoogleMap?) {
-
-        // return early if the map was not initialised properly
-        googleMap ?: return
+    override fun onMapReady(map: CommonMap) {
 
         val fillColorArgb = Color.HSVToColor(
                 fillAlphaBar.progress, floatArrayOf(fillHueBar.progress.toFloat(), 1f, 1f))
         val strokeColorArgb = Color.HSVToColor(
                 strokeAlphaBar.progress, floatArrayOf(strokeHueBar.progress.toFloat(), 1f, 1f))
 
-        with(googleMap) {
+        with(map) {
             // Override the default content description on the view, for accessibility mode.
             setContentDescription(getString(R.string.polygon_demo_description))
             // Move the googleMap so that it is centered on the mutable polygon.

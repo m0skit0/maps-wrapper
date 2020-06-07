@@ -2,8 +2,8 @@ package org.m0skit0.android.mapswrapper
 
 class PolygonOptions {
 
-    private var google = com.google.android.gms.maps.model.PolygonOptions()
-    private var huawei = com.huawei.hms.maps.model.PolygonOptions()
+    internal var google = com.google.android.gms.maps.model.PolygonOptions()
+    internal var huawei = com.huawei.hms.maps.model.PolygonOptions()
 
     fun add(position: LatLng): PolygonOptions = apply {
         google = google.add(position.google)

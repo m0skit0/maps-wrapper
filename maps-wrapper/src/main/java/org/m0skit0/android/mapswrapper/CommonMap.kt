@@ -12,10 +12,6 @@ class CommonMap(private val map: Any) {
     private val huaweiMap: HuaweiMap
         get() = map as HuaweiMap
 
-    private fun isGoogle(): Boolean = map is GoogleMap
-
-    private fun isHuawei(): Boolean = map is HuaweiMap
-
     var mapType: Int
         get() = when {
             isGoogle() -> googleMap.mapType
@@ -92,24 +88,34 @@ class CommonMap(private val map: Any) {
         }
 
     var isBuildingsEnabled: Boolean
-        get() = when {
-            isGoogle() -> googleMap.isBuildingsEnabled
-            isHuawei() -> huaweiMap.isBuildingsEnabled
-            else -> throwUnableToResolveGoogleOrHuawei()
-        }
+        get() = googleOrHuawei(
+            { isBuildingsEnabled },
+            { isBuildingsEnabled }
+        )
         set(value) {
-            when {
-                isGoogle() -> googleMap.isBuildingsEnabled = value
-                isHuawei() -> huaweiMap.isBuildingsEnabled = value
-                else -> throwUnableToResolveGoogleOrHuawei()
-            }
+            googleOrHuawei(
+                { isBuildingsEnabled = value },
+                { isBuildingsEnabled = value }
+            )
+        }
+
+    private fun isGoogle(): Boolean = map is GoogleMap
+
+    private fun isHuawei(): Boolean = map is HuaweiMap
+
+    // TODO Migrate all functions to call this function
+    private inline fun <T> googleOrHuawei(google: GoogleMap.() -> T, huawei: HuaweiMap.() -> T): T =
+        when {
+            isGoogle() -> googleMap.google()
+            isHuawei() -> huaweiMap.huawei()
+            else -> throwUnableToResolveGoogleOrHuawei()
         }
 
     fun clear() {
-        when {
-            isGoogle() -> googleMap.clear()
-            isHuawei() -> huaweiMap.clear()
-        }
+        googleOrHuawei(
+            { clear() },
+            { clear() }
+        )
     }
 
     fun moveCamera(cameraUpdate: CameraUpdate) {
@@ -204,11 +210,17 @@ class CommonMap(private val map: Any) {
         }
 
     fun stopAnimation() {
-        when {
-            isGoogle() -> googleMap.stopAnimation()
-            isHuawei() -> huaweiMap.stopAnimation()
-        }
+        googleOrHuawei(
+            { googleMap.stopAnimation() },
+            { huaweiMap.stopAnimation() }
+        )
     }
+
+    fun addPolygon(polygonOptions: PolygonOptions): Polygon =
+        googleOrHuawei(
+            { googleMap.addPolygon(polygonOptions.google).let { Polygon(it, null) } },
+            { huaweiMap.addPolygon(polygonOptions.huawei).let { Polygon(null, it) } }
+        )
 
     fun setInfoWindowAdapter(adapter: InfoWindowAdapter) {
         when {
@@ -412,6 +424,21 @@ class CommonMap(private val map: Any) {
         }
     }
 
+    fun setOnPolygonClickListener(listener: (Polygon) -> Unit) {
+        setOnPolygonClickListener(object : OnPolygonClickListener {
+            override fun onPolygonClick(polygon: Polygon) {
+                listener(polygon)
+            }
+        })
+    }
+
+    fun setOnPolygonClickListener(listener: OnPolygonClickListener) {
+        googleOrHuawei(
+            { setOnPolygonClickListener { listener.onPolygonClick(Polygon(it, null)) } },
+            { setOnPolygonClickListener { listener.onPolygonClick(Polygon(null, it)) } }
+        )
+    }
+
     companion object {
         const val MAP_TYPE_NONE = GoogleMap.MAP_TYPE_NONE
         const val MAP_TYPE_NORMAL = GoogleMap.MAP_TYPE_NORMAL
@@ -485,5 +512,9 @@ class CommonMap(private val map: Any) {
     interface InfoWindowAdapter {
         fun getInfoWindow(marker: Marker): View?
         fun getInfoContents(marker: Marker): View?
+    }
+
+    interface OnPolygonClickListener {
+        fun onPolygonClick(polygon: Polygon)
     }
 }
