@@ -53,4 +53,18 @@ class UiSettings(
             google?.isRotateGesturesEnabled = value
             huawei?.isRotateGesturesEnabled = value
         }
+
+    var isCompassEnabled: Boolean
+        get() = google?.isCompassEnabled ?: huawei?.isCompassEnabled ?: throwUnableToResolveGoogleOrHuawei()
+        set(value) {
+            google?.isCompassEnabled = value
+            huawei?.isCompassEnabled = value
+        }
+
+    var isIndoorLevelPickerEnabled: Boolean
+        get() = google?.isIndoorLevelPickerEnabled ?: huawei?.isIndoorLevelPickerEnabled ?: throwUnableToResolveGoogleOrHuawei()
+        set(value) {
+            google?.isIndoorLevelPickerEnabled = value
+            huawei?.isIndoorLevelPickerEnabled = value
+        }
 }

@@ -23,9 +23,9 @@ import android.view.View
 import android.widget.CheckBox
 import androidx.appcompat.app.AppCompatActivity
 import com.demos.maps.R
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
+import org.m0skit0.android.mapswrapper.CommonMap
+import org.m0skit0.android.mapswrapper.OnMapReadyCallback
+import org.m0skit0.android.mapswrapper.SupportMapFragment
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 
@@ -36,7 +36,7 @@ class UiSettingsDemoActivity :
         AppCompatActivity(),
         OnMapReadyCallback {
 
-    private lateinit var map: GoogleMap
+    private lateinit var map: CommonMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,12 +46,10 @@ class UiSettingsDemoActivity :
         mapFragment.getMapAsync(this)
     }
 
-    override fun onMapReady(googleMap: GoogleMap?) {
-        // Return early if map is not initialised properly
-        map = googleMap ?: return
+    override fun onMapReady(map: CommonMap) {
         enableMyLocation()
         // Set all the settings of the map to match the current state of the checkboxes
-        with(map.uiSettings) {
+        with(this.map.uiSettings) {
             isZoomControlsEnabled = isChecked(R.id.zoom_button)
             isCompassEnabled = isChecked(R.id.compass_button)
             isMyLocationButtonEnabled = isChecked(R.id.myloc_button)
