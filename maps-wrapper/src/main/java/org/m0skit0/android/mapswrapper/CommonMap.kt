@@ -1,5 +1,6 @@
 package org.m0skit0.android.mapswrapper
 
+import android.view.View
 import com.google.android.gms.maps.GoogleMap
 import com.huawei.hms.maps.HuaweiMap
 
@@ -209,6 +210,23 @@ class CommonMap(private val map: Any) {
         }
     }
 
+    fun setInfoWindowAdapter(adapter: InfoWindowAdapter) {
+        when {
+            isGoogle() -> googleMap.setInfoWindowAdapter(object : GoogleMap.InfoWindowAdapter {
+                override fun getInfoContents(marker: com.google.android.gms.maps.model.Marker?): View? =
+                    adapter.getInfoContents(Marker(marker, null))
+                override fun getInfoWindow(marker: com.google.android.gms.maps.model.Marker?): View? =
+                    adapter.getInfoWindow(Marker(marker, null))
+            })
+            isHuawei() -> huaweiMap.setInfoWindowAdapter(object : HuaweiMap.InfoWindowAdapter {
+                override fun getInfoContents(marker: com.huawei.hms.maps.model.Marker?): View? =
+                    adapter.getInfoContents(Marker(null, marker))
+                override fun getInfoWindow(marker: com.huawei.hms.maps.model.Marker?): View? =
+                    adapter.getInfoWindow(Marker(null, marker))
+            })
+        }
+    }
+
     fun setContentDescription(description: String) {
         when {
             isGoogle() -> googleMap.setContentDescription(description)
@@ -361,6 +379,39 @@ class CommonMap(private val map: Any) {
         })
     }
 
+    fun setOnInfoWindowCloseListener(listener: OnInfoWindowCloseListener) {
+        when {
+            isGoogle() -> googleMap.setOnInfoWindowCloseListener {
+                listener.onInfoWindowClose(Marker(it, null))
+            }
+            isHuawei() -> huaweiMap.setOnInfoWindowCloseListener {
+                listener.onInfoWindowClose(Marker(null, it))
+            }
+        }
+    }
+
+    fun setOnInfoWindowLongClickListener(listener: OnInfoWindowLongClickListener) {
+        when {
+            isGoogle() -> googleMap.setOnInfoWindowLongClickListener {
+                listener.onInfoWindowLongClick(Marker(it, null))
+            }
+            isHuawei() -> huaweiMap.setOnInfoWindowLongClickListener {
+                listener.onInfoWindowLongClick(Marker(null, it))
+            }
+        }
+    }
+
+    fun setOnInfoWindowClickListener(listener: OnInfoWindowClickListener) {
+        when {
+            isGoogle() -> googleMap.setOnInfoWindowClickListener {
+                listener.onInfoWindowClick(Marker(it, null))
+            }
+            isHuawei() -> huaweiMap.setOnInfoWindowClickListener {
+                listener.onInfoWindowClick(Marker(null, it))
+            }
+        }
+    }
+
     companion object {
         const val MAP_TYPE_NONE = GoogleMap.MAP_TYPE_NONE
         const val MAP_TYPE_NORMAL = GoogleMap.MAP_TYPE_NORMAL
@@ -417,5 +468,22 @@ class CommonMap(private val map: Any) {
 
     interface OnMarkerClickListener {
         fun onMarkerClick(marker: Marker): Boolean
+    }
+
+    interface OnInfoWindowCloseListener {
+        fun onInfoWindowClose(marker: Marker)
+    }
+
+    interface OnInfoWindowLongClickListener {
+        fun onInfoWindowLongClick(marker: Marker)
+    }
+
+    interface OnInfoWindowClickListener {
+        fun onInfoWindowClick(marker: Marker)
+    }
+
+    interface InfoWindowAdapter {
+        fun getInfoWindow(marker: Marker): View?
+        fun getInfoContents(marker: Marker): View?
     }
 }

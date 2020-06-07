@@ -1,6 +1,6 @@
 package org.m0skit0.android.mapswrapper
 
-import androidx.annotation.IdRes
+import android.graphics.Bitmap
 
 object BitmapDescriptorFactory {
 
@@ -15,7 +15,7 @@ object BitmapDescriptorFactory {
     const val HUE_MAGENTA = com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_MAGENTA
     const val HUE_ROSE = com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_ROSE
 
-    fun fromResource(@IdRes id: Int): BitmapDescriptor {
+    fun fromResource(id: Int): BitmapDescriptor {
         val google = executeOrNull { com.google.android.gms.maps.model.BitmapDescriptorFactory.fromResource(id) }
         val huawei = com.huawei.hms.maps.model.BitmapDescriptorFactory.fromResource(id)
         return BitmapDescriptor(google, huawei)
@@ -30,6 +30,12 @@ object BitmapDescriptorFactory {
     fun defaultMarker(hue: Float): BitmapDescriptor {
         val google = executeOrNull { com.google.android.gms.maps.model.BitmapDescriptorFactory.defaultMarker(hue) }
         val huawei = com.huawei.hms.maps.model.BitmapDescriptorFactory.defaultMarker(hue)
+        return BitmapDescriptor(google, huawei)
+    }
+
+    fun fromBitmap(bitmap: Bitmap): BitmapDescriptor {
+        val google = executeOrNull { com.google.android.gms.maps.model.BitmapDescriptorFactory.fromBitmap(bitmap) }
+        val huawei = com.huawei.hms.maps.model.BitmapDescriptorFactory.fromBitmap(bitmap)
         return BitmapDescriptor(google, huawei)
     }
 }

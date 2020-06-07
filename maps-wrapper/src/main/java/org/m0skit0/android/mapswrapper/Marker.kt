@@ -13,4 +13,63 @@ class Marker internal constructor(
             google?.position = value.google
             huawei?.position = value.huawei
         }
+
+    var title: String
+        get() = google?.title ?: huawei?.title ?: throwUnableToResolveGoogleOrHuawei()
+        set(value) {
+            google?.title = value
+            huawei?.title = value
+        }
+
+    var snippet: String?
+        get() = google?.snippet ?: huawei?.snippet
+        set(value) {
+            google?.snippet = value
+            huawei?.snippet = value
+        }
+
+    var rotation: Float
+        get() = google?.rotation ?: huawei?.rotation ?: throwUnableToResolveGoogleOrHuawei()
+        set(value) {
+            google?.rotation = value
+            huawei?.rotation = value
+        }
+
+    val isInfoWindowShown: Boolean
+        get() = google?.isInfoWindowShown ?: huawei?.isInfoWindowShown ?: throwUnableToResolveGoogleOrHuawei()
+
+    var isFlat: Boolean
+        get() = google?.isFlat ?: huawei?.isFlat ?: throwUnableToResolveGoogleOrHuawei()
+        set(value) {
+            google?.isFlat = value
+            huawei?.isFlat = value
+        }
+
+    var zIndex: Float
+        get() = google?.zIndex ?: huawei?.zIndex ?: throwUnableToResolveGoogleOrHuawei()
+        set(value) {
+            google?.zIndex = value
+            huawei?.zIndex = value
+        }
+
+    var alpha: Float
+        get() = google?.alpha ?: huawei?.alpha ?: throwUnableToResolveGoogleOrHuawei()
+        set(value) {
+            google?.alpha = value
+            huawei?.alpha = value
+        }
+
+    fun setAnchor(x: Float, y: Float) {
+        google?.setAnchor(x, y)
+        huawei?.setMarkerAnchor(x, y)
+    }
+
+    fun setIcon(bitmapDescriptor: BitmapDescriptor) {
+        google?.setIcon(bitmapDescriptor.google)
+        huawei?.setIcon(bitmapDescriptor.huawei)
+    }
+
+    fun showInfoWindow() {
+        google?.showInfoWindow() ?: huawei?.showInfoWindow()
+    }
 }

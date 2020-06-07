@@ -36,11 +36,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import com.demos.maps.R
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.GoogleMap.*
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import org.m0skit0.android.mapswrapper.*
 import java.util.*
 import kotlin.math.cos
 import kotlin.math.sin
@@ -51,17 +47,17 @@ import kotlin.math.sin
  */
 class MarkerDemoActivity :
         AppCompatActivity(),
-        OnMarkerClickListener,
-        OnInfoWindowClickListener,
-        OnMarkerDragListener,
-        OnInfoWindowLongClickListener,
-        OnInfoWindowCloseListener,
+        CommonMap.OnMarkerClickListener,
+        CommonMap.OnInfoWindowClickListener,
+        CommonMap.OnMarkerDragListener,
+        CommonMap.OnInfoWindowLongClickListener,
+        CommonMap.OnInfoWindowCloseListener,
         OnMapAndViewReadyListener.OnGlobalLayoutAndMapReadyListener {
 
     private val TAG = MarkerDemoActivity::class.java.name
 
     /** This is ok to be lateinit as it is initialised in onMapReady */
-    private lateinit var map: GoogleMap
+    private lateinit var map: CommonMap
 
     /**
      * Keeps track of the last selected marker (though it may no longer be selected).  This is
@@ -93,7 +89,7 @@ class MarkerDemoActivity :
     private val random = Random()
 
     /** Demonstrates customizing the info window and/or its contents.  */
-    internal inner class CustomInfoWindowAdapter : InfoWindowAdapter {
+    internal inner class CustomInfoWindowAdapter : CommonMap.InfoWindowAdapter {
 
         // These are both view groups containing an ImageView with id "badge" and two
         // TextViews with id "title" and "snippet".
@@ -204,7 +200,7 @@ class MarkerDemoActivity :
     /**
      * This is the callback that is triggered when the GoogleMap has loaded and is ready for use
      */
-    override fun onMapReady(googleMap: GoogleMap?) {
+    override fun onMapReady(googleMap: CommonMap?) {
 
         // return early if the map was not initialised properly
         map = googleMap ?: return

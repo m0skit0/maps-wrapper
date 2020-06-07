@@ -30,7 +30,7 @@ class MarkerOptions {
         huawei = huawei.title(title)
     }
 
-    fun snippet(snippet: String): MarkerOptions = apply {
+    fun snippet(snippet: String?): MarkerOptions = apply {
         google = google.snippet(snippet)
         huawei = huawei.snippet(snippet)
     }
