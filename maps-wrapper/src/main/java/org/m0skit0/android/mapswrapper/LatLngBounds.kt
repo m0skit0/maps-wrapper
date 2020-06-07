@@ -1,9 +1,22 @@
 package org.m0skit0.android.mapswrapper
 
-class LatLngBounds internal constructor(
-    internal val google: com.google.android.gms.maps.model.LatLngBounds?,
+class LatLngBounds {
+
+    internal val google: com.google.android.gms.maps.model.LatLngBounds?
     internal val huawei: com.huawei.hms.maps.model.LatLngBounds?
-) {
+
+    internal constructor(
+        google: com.google.android.gms.maps.model.LatLngBounds?,
+        huawei: com.huawei.hms.maps.model.LatLngBounds?
+    ) {
+        this.google = google
+        this.huawei = huawei
+    }
+
+    constructor(latLng1: LatLng, latLng2: LatLng) {
+        this.google = com.google.android.gms.maps.model.LatLngBounds(latLng1.google, latLng2.google)
+        this.huawei = com.huawei.hms.maps.model.LatLngBounds(latLng1.huawei, latLng2.huawei)
+    }
 
     class Builder {
 

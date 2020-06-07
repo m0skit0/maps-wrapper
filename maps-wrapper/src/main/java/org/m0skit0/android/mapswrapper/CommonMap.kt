@@ -207,6 +207,13 @@ class CommonMap(private val map: Any) {
             { addGroundOverlay(groundOverlayOptions.huawei).let { GroundOverlay(null, it) } }
         )
 
+    fun setPadding(left: Int, right: Int, top: Int, bottom: Int) {
+        googleOrHuawei(
+            { setPadding(left, right, top, bottom) },
+            { setPadding(left, right, top, bottom) }
+        )
+    }
+
     fun setInfoWindowAdapter(adapter: InfoWindowAdapter) {
         googleOrHuawei(
             {
@@ -288,6 +295,14 @@ class CommonMap(private val map: Any) {
             { setOnCameraIdleListener { listener.onCameraIdle() } },
             { setOnCameraIdleListener { listener.onCameraIdle() } }
         )
+    }
+
+    fun setOnCameraIdleListener(listener: () -> Unit) {
+        setOnCameraIdleListener(object : OnCameraIdleListener {
+            override fun onCameraIdle() {
+                listener()
+            }
+        })
     }
 
     fun setOnMarkerDragListener(listener: OnMarkerDragListener) {

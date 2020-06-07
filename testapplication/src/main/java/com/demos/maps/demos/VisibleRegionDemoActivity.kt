@@ -25,13 +25,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.demos.maps.R
-
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.LatLngBounds
-import com.google.android.gms.maps.model.MarkerOptions
+import org.m0skit0.android.mapswrapper.*
 
 // TODO Implement
 /**
@@ -47,7 +41,7 @@ class VisibleRegionDemoActivity :
     private val australiaBounds = LatLngBounds(LatLng(-44.0, 113.0),
             LatLng(-10.0, 154.0))
 
-    private lateinit var map: GoogleMap
+    private lateinit var map: CommonMap
 
     private lateinit var messageView: TextView
     private lateinit var normalButton: Button
@@ -78,12 +72,12 @@ class VisibleRegionDemoActivity :
 
     }
 
-    override fun onMapReady(googleMap: GoogleMap?) {
+    override fun onMapReady(map: CommonMap?) {
 
         // exit early if the map was not initialised properly
-        map = googleMap ?: return
+        this.map = map ?: return
 
-        map.apply{
+        this.map.apply {
             // Set padding for the current camera view
             setPadding(currentLeft, currentTop, currentRight, currentBottom)
             // Move to a place with indoor (sfoLatLng airport).
@@ -111,15 +105,15 @@ class VisibleRegionDemoActivity :
         }
 
         operaHouseButton.setOnClickListener {
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(operaHouseLatLng, 16f))
+            this.map.moveCamera(CameraUpdateFactory.newLatLngZoom(operaHouseLatLng, 16f))
         }
 
         sfoButton.setOnClickListener {
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(sfoLatLng, 18f))
+            this.map.moveCamera(CameraUpdateFactory.newLatLngZoom(sfoLatLng, 18f))
         }
 
         australiaButton.setOnClickListener {
-            map.moveCamera(CameraUpdateFactory.newLatLngBounds(australiaBounds, 0))
+            this.map.moveCamera(CameraUpdateFactory.newLatLngBounds(australiaBounds, 0))
         }
     }
 
