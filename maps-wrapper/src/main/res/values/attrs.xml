@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="org.m0skit0.android.mapswrapper.SupportMapFragment">
+        <!-- TODO Consider using enum here -->
+        <attr name="type" format="string"/>
+    </declare-styleable>
+    <declare-styleable name="org.m0skit0.android.mapswrapper.MapView">
+        <!-- TODO Consider using enum here -->
+        <attr name="type" format="string"/>
+    </declare-styleable>
+</resources>
