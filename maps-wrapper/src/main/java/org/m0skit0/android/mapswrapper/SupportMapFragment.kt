@@ -17,12 +17,9 @@ class SupportMapFragment : Fragment() {
             ?: throw IllegalStateException("Context is null")
     }
 
-    private var callback: OnMapReadyCallback? = null
-
     private var mapType: MapResolverStrategy = MapResolverStrategy.GOOGLE_THEN_HUAWEI
 
     fun getMapAsync(callback: OnMapReadyCallback) {
-        this.callback = callback
         when {
             isGoogleMap() -> googleGetMapAsync(callback)
             isHuaweiMap() -> huaweiGetMapAsync(callback)
@@ -30,12 +27,12 @@ class SupportMapFragment : Fragment() {
     }
 
     fun getMapAsync(callback: (CommonMap) -> Unit) {
-        val callback = object : OnMapReadyCallback {
+        val onMapReadyCallback = object : OnMapReadyCallback {
             override fun onMapReady(map: CommonMap) {
                 callback(map)
             }
         }
-        getMapAsync(callback)
+        getMapAsync(onMapReadyCallback)
     }
 
     suspend fun mapAsync(): CommonMap =
@@ -53,8 +50,8 @@ class SupportMapFragment : Fragment() {
     override fun onInflate(context: Context?, attrs: AttributeSet?, savedInstanceState: Bundle?) {
         super.onInflate(context, attrs, savedInstanceState)
         context?.obtainStyledAttributes(attrs, R.styleable.org_m0skit0_android_mapswrapper_SupportMapFragment)
-            ?.also { typedArray ->
-                typedArray.getText(R.styleable.org_m0skit0_android_mapswrapper_SupportMapFragment_type)
+            ?.apply {
+                getText(R.styleable.org_m0skit0_android_mapswrapper_SupportMapFragment_type)
                     ?.let { mapType = MapResolverStrategy.fromValue(it.toString())  }
             }
             ?.recycle()
@@ -74,19 +71,19 @@ class SupportMapFragment : Fragment() {
 
     private fun isGoogleMap(): Boolean = containedSupportMapFragment is com.google.android.gms.maps.SupportMapFragment
 
-    private fun castToGoogleMap(): com.google.android.gms.maps.SupportMapFragment =
+    private fun googleMap(): com.google.android.gms.maps.SupportMapFragment =
         containedSupportMapFragment as com.google.android.gms.maps.SupportMapFragment
 
     private fun googleGetMapAsync(callback: OnMapReadyCallback) {
-        castToGoogleMap().getMapAsync { CommonMap(it).let { commonMap ->  callback.onMapReady(commonMap) } }
+        googleMap().getMapAsync { CommonMap(it).let { commonMap ->  callback.onMapReady(commonMap) } }
     }
 
     private fun isHuaweiMap(): Boolean = containedSupportMapFragment is com.huawei.hms.maps.SupportMapFragment
 
-    private fun castToHuaweiMap(): com.huawei.hms.maps.SupportMapFragment =
+    private fun huaweiMap(): com.huawei.hms.maps.SupportMapFragment =
         containedSupportMapFragment as com.huawei.hms.maps.SupportMapFragment
 
     private fun huaweiGetMapAsync(callback: OnMapReadyCallback) {
-        castToHuaweiMap().getMapAsync { CommonMap(it).let { commonMap ->  callback.onMapReady(commonMap) } }
+        huaweiMap().getMapAsync { CommonMap(it).let { commonMap ->  callback.onMapReady(commonMap) } }
     }
 }
