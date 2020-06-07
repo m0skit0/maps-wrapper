@@ -13,85 +13,64 @@ class CommonMap(private val map: Any) {
         get() = map as HuaweiMap
 
     var mapType: Int
-        get() = when {
-            isGoogle() -> googleMap.mapType
-            isHuawei() -> huaweiMap.mapType
-            else -> -1
-        }
+        get() = googleOrHuawei({ mapType }, { mapType })
         set(value) {
-            when {
-                isGoogle() -> googleMap.mapType = value
-                isHuawei() -> huaweiMap.mapType = value
-            }
+            googleOrHuawei(
+                { mapType = value },
+                { mapType = value }
+            )
         }
 
     var isMyLocationEnabled: Boolean
-        get() = when {
-            isGoogle() -> googleMap.isMyLocationEnabled
-            isHuawei() -> huaweiMap.isMyLocationEnabled
-            else -> false
-        }
+        get() = googleOrHuawei({ isMyLocationEnabled }, { isMyLocationEnabled })
         set(value) {
-            when {
-                isGoogle() -> googleMap.isMyLocationEnabled = value
-                isHuawei() -> huaweiMap.isMyLocationEnabled = value
-            }
+            googleOrHuawei(
+                { isMyLocationEnabled = value },
+                { isMyLocationEnabled = value }
+            )
         }
 
     val cameraPosition: CameraPosition
-        get() = when {
-            isGoogle() -> googleMap.cameraPosition.let { CameraPosition(it, null) }
-            isHuawei() -> huaweiMap.cameraPosition.let { CameraPosition(null, it) }
-            else -> throwUnableToResolveGoogleOrHuawei()
-        }
+        get() =
+            googleOrHuawei(
+                { cameraPosition.let { CameraPosition(it, null) } },
+                { cameraPosition.let { CameraPosition(null, it) } }
+            )
 
     val uiSettings: UiSettings
-        get() = when {
-            isGoogle() -> googleMap.uiSettings.let { UiSettings(it, null) }
-            isHuawei() -> huaweiMap.uiSettings.let { UiSettings(null, it) }
-            else -> throwUnableToResolveGoogleOrHuawei()
-        }
+        get() =
+            googleOrHuawei(
+                { uiSettings.let { UiSettings(it, null) } },
+                { uiSettings.let { UiSettings(null, it) } }
+            )
 
     val projection: Projection
-        get() = when {
-            isGoogle() -> googleMap.projection.let { Projection(it, null) }
-            isHuawei() -> huaweiMap.projection.let { Projection(null, it) }
-            else -> throwUnableToResolveGoogleOrHuawei()
-        }
+        get() =
+            googleOrHuawei(
+                { projection.let { Projection(it, null) } },
+                { projection.let { Projection(null, it) } }
+            )
 
     var isTrafficEnabled: Boolean
-        get() = when {
-            isGoogle() -> googleMap.isTrafficEnabled
-            isHuawei() -> huaweiMap.isTrafficEnabled
-            else -> throwUnableToResolveGoogleOrHuawei()
-        }
+        get() = googleOrHuawei({ isTrafficEnabled }, { isTrafficEnabled })
         set(value) {
-            when {
-                isGoogle() -> googleMap.isTrafficEnabled = value
-                isHuawei() -> huaweiMap.isTrafficEnabled = value
-                else -> throwUnableToResolveGoogleOrHuawei()
-            }
+            googleOrHuawei(
+                { isTrafficEnabled = value },
+                { isTrafficEnabled = value }
+            )
         }
 
     var isIndoorEnabled: Boolean
-        get() = when {
-            isGoogle() -> googleMap.isIndoorEnabled
-            isHuawei() -> huaweiMap.isIndoorEnabled
-            else -> throwUnableToResolveGoogleOrHuawei()
-        }
+        get() = googleOrHuawei({ isIndoorEnabled }, { isIndoorEnabled })
         set(value) {
-            when {
-                isGoogle() -> googleMap.isIndoorEnabled = value
-                isHuawei() -> huaweiMap.isIndoorEnabled = value
-                else -> throwUnableToResolveGoogleOrHuawei()
-            }
+            googleOrHuawei(
+                { isIndoorEnabled = value },
+                { isIndoorEnabled = value }
+            )
         }
 
     var isBuildingsEnabled: Boolean
-        get() = googleOrHuawei(
-            { isBuildingsEnabled },
-            { isBuildingsEnabled }
-        )
+        get() = googleOrHuawei({ isBuildingsEnabled }, { isBuildingsEnabled })
         set(value) {
             googleOrHuawei(
                 { isBuildingsEnabled = value },
@@ -112,57 +91,57 @@ class CommonMap(private val map: Any) {
         }
 
     fun clear() {
-        googleOrHuawei(
-            { clear() },
-            { clear() }
-        )
+        googleOrHuawei({ clear() }, { clear() })
     }
 
     fun moveCamera(cameraUpdate: CameraUpdate) {
-        when {
-            isGoogle() -> googleMap.moveCamera(cameraUpdate.googleCameraUpdate)
-            isHuawei() -> huaweiMap.moveCamera(cameraUpdate.huaweiCameraUpdate)
-        }
+        googleOrHuawei(
+            { moveCamera(cameraUpdate.google) },
+            { moveCamera(cameraUpdate.huawei) }
+        )
     }
 
     fun animateCamera(cameraUpdate: CameraUpdate) {
-        when {
-            isGoogle() -> googleMap.animateCamera(cameraUpdate.googleCameraUpdate)
-            isHuawei() -> huaweiMap.animateCamera(cameraUpdate.huaweiCameraUpdate)
-        }
+        googleOrHuawei(
+            { animateCamera(cameraUpdate.google) },
+            { animateCamera(cameraUpdate.huawei) }
+        )
     }
 
     fun animateCamera(cameraUpdate: CameraUpdate, callback: CancelableCallback?) {
-        when {
-            isGoogle() -> googleMap.animateCamera(
-                cameraUpdate.googleCameraUpdate,
-                object : GoogleMap.CancelableCallback {
-                    override fun onFinish() {
-                        callback?.onFinish()
+        googleOrHuawei(
+            {
+                animateCamera(
+                    cameraUpdate.google,
+                    object : GoogleMap.CancelableCallback {
+                        override fun onFinish() {
+                            callback?.onFinish()
+                        }
+                        override fun onCancel() {
+                            callback?.onCancel()
+                        }
                     }
-                    override fun onCancel() {
-                        callback?.onCancel()
+                )
+            }, {
+                animateCamera(
+                    cameraUpdate.huawei,
+                    object : HuaweiMap.CancelableCallback {
+                        override fun onFinish() {
+                            callback?.onFinish()
+                        }
+                        override fun onCancel() {
+                            callback?.onCancel()
+                        }
                     }
-                }
-            )
-            isHuawei() -> huaweiMap.animateCamera(
-                cameraUpdate.huaweiCameraUpdate,
-                object : HuaweiMap.CancelableCallback {
-                    override fun onFinish() {
-                        callback?.onFinish()
-                    }
-                    override fun onCancel() {
-                        callback?.onCancel()
-                    }
-                }
-            )
-        }
+                )
+            }
+        )
     }
 
     fun animateCamera(cameraUpdate: CameraUpdate, value: Int, callback: CancelableCallback?) {
         when {
             isGoogle() -> googleMap.animateCamera(
-                cameraUpdate.googleCameraUpdate,
+                cameraUpdate.google,
                 value,
                 object : GoogleMap.CancelableCallback {
                     override fun onFinish() {
@@ -174,7 +153,7 @@ class CommonMap(private val map: Any) {
                 }
             )
             isHuawei() -> huaweiMap.animateCamera(
-                cameraUpdate.huaweiCameraUpdate,
+                cameraUpdate.huawei,
                 value,
                 object : HuaweiMap.CancelableCallback {
                     override fun onFinish() {
