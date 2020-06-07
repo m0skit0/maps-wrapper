@@ -6,10 +6,10 @@ import com.huawei.hms.maps.HuaweiMap
 
 class CommonMap(private val map: Any) {
 
-    private val googleMap: GoogleMap
+    private val google: GoogleMap
         get() = map as GoogleMap
 
-    private val huaweiMap: HuaweiMap
+    private val huawei: HuaweiMap
         get() = map as HuaweiMap
 
     var mapType: Int
@@ -85,8 +85,8 @@ class CommonMap(private val map: Any) {
     // TODO Migrate all functions to call this function
     private inline fun <T> googleOrHuawei(google: GoogleMap.() -> T, huawei: HuaweiMap.() -> T): T =
         when {
-            isGoogle() -> googleMap.google()
-            isHuawei() -> huaweiMap.huawei()
+            isGoogle() -> this.google.google()
+            isHuawei() -> this.huawei.huawei()
             else -> throwUnableToResolveGoogleOrHuawei()
         }
 
@@ -140,7 +140,7 @@ class CommonMap(private val map: Any) {
 
     fun animateCamera(cameraUpdate: CameraUpdate, value: Int, callback: CancelableCallback?) {
         when {
-            isGoogle() -> googleMap.animateCamera(
+            isGoogle() -> google.animateCamera(
                 cameraUpdate.google,
                 value,
                 object : GoogleMap.CancelableCallback {
@@ -152,7 +152,7 @@ class CommonMap(private val map: Any) {
                     }
                 }
             )
-            isHuawei() -> huaweiMap.animateCamera(
+            isHuawei() -> huawei.animateCamera(
                 cameraUpdate.huawei,
                 value,
                 object : HuaweiMap.CancelableCallback {
@@ -167,73 +167,76 @@ class CommonMap(private val map: Any) {
         }
     }
 
+    fun stopAnimation() {
+        googleOrHuawei(
+            { google.stopAnimation() },
+            { huawei.stopAnimation() }
+        )
+    }
+
     fun addCircle(circleOptions: CircleOptions): Circle =
         when {
-            isGoogle() -> googleMap.addCircle(circleOptions.google).let { Circle(it, null) }
-            isHuawei() -> huaweiMap.addCircle(circleOptions.huawei).let { Circle(null, it) }
+            isGoogle() -> google.addCircle(circleOptions.google).let { Circle(it, null) }
+            isHuawei() -> huawei.addCircle(circleOptions.huawei).let { Circle(null, it) }
             else -> throwUnableToResolveGoogleOrHuawei()
         }
 
     fun addMarker(markerOptions: MarkerOptions): Marker =
         when {
-            isGoogle() -> googleMap.addMarker(markerOptions.google).let { Marker(it, null) }
-            isHuawei() -> huaweiMap.addMarker(markerOptions.huawei).let { Marker(null, it) }
+            isGoogle() -> google.addMarker(markerOptions.google).let { Marker(it, null) }
+            isHuawei() -> huawei.addMarker(markerOptions.huawei).let { Marker(null, it) }
             else -> throwUnableToResolveGoogleOrHuawei()
         }
 
     fun addPolyline(polylineOptions: PolylineOptions): Polyline =
         when {
-            isGoogle() -> googleMap.addPolyline(polylineOptions.google).let { Polyline(it, null) }
-            isHuawei() -> huaweiMap.addPolyline(polylineOptions.huawei).let { Polyline(null, it) }
+            isGoogle() -> google.addPolyline(polylineOptions.google).let { Polyline(it, null) }
+            isHuawei() -> huawei.addPolyline(polylineOptions.huawei).let { Polyline(null, it) }
             else -> throwUnableToResolveGoogleOrHuawei()
         }
 
-    fun stopAnimation() {
-        googleOrHuawei(
-            { googleMap.stopAnimation() },
-            { huaweiMap.stopAnimation() }
-        )
-    }
-
     fun addPolygon(polygonOptions: PolygonOptions): Polygon =
         googleOrHuawei(
-            { googleMap.addPolygon(polygonOptions.google).let { Polygon(it, null) } },
-            { huaweiMap.addPolygon(polygonOptions.huawei).let { Polygon(null, it) } }
+            { google.addPolygon(polygonOptions.google).let { Polygon(it, null) } },
+            { huawei.addPolygon(polygonOptions.huawei).let { Polygon(null, it) } }
+        )
+
+    fun addGroundOverlay(groundOverlayOptions: GroundOverlayOptions): GroundOverlay =
+        googleOrHuawei(
+            { addGroundOverlay(groundOverlayOptions.google).let { GroundOverlay(it, null) } },
+            { addGroundOverlay(groundOverlayOptions.huawei).let { GroundOverlay(null, it) } }
         )
 
     fun setInfoWindowAdapter(adapter: InfoWindowAdapter) {
-        when {
-            isGoogle() -> googleMap.setInfoWindowAdapter(object : GoogleMap.InfoWindowAdapter {
-                override fun getInfoContents(marker: com.google.android.gms.maps.model.Marker?): View? =
-                    adapter.getInfoContents(Marker(marker, null))
-                override fun getInfoWindow(marker: com.google.android.gms.maps.model.Marker?): View? =
-                    adapter.getInfoWindow(Marker(marker, null))
-            })
-            isHuawei() -> huaweiMap.setInfoWindowAdapter(object : HuaweiMap.InfoWindowAdapter {
-                override fun getInfoContents(marker: com.huawei.hms.maps.model.Marker?): View? =
-                    adapter.getInfoContents(Marker(null, marker))
-                override fun getInfoWindow(marker: com.huawei.hms.maps.model.Marker?): View? =
-                    adapter.getInfoWindow(Marker(null, marker))
-            })
-        }
+        googleOrHuawei(
+            {
+                setInfoWindowAdapter(object : GoogleMap.InfoWindowAdapter {
+                    override fun getInfoContents(marker: com.google.android.gms.maps.model.Marker?): View? =
+                        adapter.getInfoContents(Marker(marker, null))
+                    override fun getInfoWindow(marker: com.google.android.gms.maps.model.Marker?): View? =
+                        adapter.getInfoWindow(Marker(marker, null))
+                })
+            },
+            {
+                setInfoWindowAdapter(object : HuaweiMap.InfoWindowAdapter {
+                    override fun getInfoContents(marker: com.huawei.hms.maps.model.Marker?): View? =
+                        adapter.getInfoContents(Marker(null, marker))
+                    override fun getInfoWindow(marker: com.huawei.hms.maps.model.Marker?): View? =
+                        adapter.getInfoWindow(Marker(null, marker))
+                })
+            }
+        )
     }
 
     fun setContentDescription(description: String) {
-        when {
-            isGoogle() -> googleMap.setContentDescription(description)
-            isHuawei() -> huaweiMap.setContentDescription(description)
-        }
+        googleOrHuawei({ setContentDescription(description) }, { setContentDescription(description) })
     }
 
     fun setOnMapClickListener(listener: OnMapClickListener) {
-        when {
-            isGoogle() -> googleMap.setOnMapClickListener {
-                listener.onMapClick(LatLng(it.latitude, it.longitude))
-            }
-            isHuawei() -> huaweiMap.setOnMapClickListener {
-                listener.onMapClick(LatLng(it.latitude, it.longitude))
-            }
-        }
+        googleOrHuawei(
+            { setOnMapClickListener { listener.onMapClick(LatLng(it.latitude, it.longitude)) } },
+            { setOnMapClickListener { listener.onMapClick(LatLng(it.latitude, it.longitude)) } }
+        )
     }
 
     fun setOnMapClickListener(listener: (LatLng) -> Unit) {
@@ -245,14 +248,10 @@ class CommonMap(private val map: Any) {
     }
 
     fun setOnMapLongClickListener(listener: OnMapLongClickListener) {
-        when {
-            isGoogle() -> googleMap.setOnMapLongClickListener {
-                listener.onMapLongClick(LatLng(it.latitude, it.longitude))
-            }
-            isHuawei() -> huaweiMap.setOnMapLongClickListener {
-                listener.onMapLongClick(LatLng(it.latitude, it.longitude))
-            }
-        }
+        googleOrHuawei(
+            { setOnMapLongClickListener { listener.onMapLongClick(LatLng(it.latitude, it.longitude)) } },
+            { setOnMapLongClickListener { listener.onMapLongClick(LatLng(it.latitude, it.longitude)) } }
+        )
     }
 
     fun setOnMapLongClickListener(listener: (LatLng) -> Unit) {
@@ -264,82 +263,70 @@ class CommonMap(private val map: Any) {
     }
 
     fun setOnCameraMoveStartedListener(listener: OnCameraMoveStartedListener) {
-        when {
-            isGoogle() -> googleMap.setOnCameraMoveStartedListener {
-                listener.onCameraMoveStarted(it)
-            }
-            isHuawei() -> huaweiMap.setOnCameraMoveStartedListener {
-                listener.onCameraMoveStarted(it)
-            }
-        }
+        googleOrHuawei(
+            { setOnCameraMoveStartedListener { listener.onCameraMoveStarted(it) } },
+            { setOnCameraMoveStartedListener { listener.onCameraMoveStarted(it) } }
+        )
     }
 
     fun setOnCameraMoveListener(listener: OnCameraMoveListener) {
-        when {
-            isGoogle() -> googleMap.setOnCameraMoveListener {
-                listener.onCameraMove()
-            }
-            isHuawei() -> huaweiMap.setOnCameraMoveListener {
-                listener.onCameraMove()
-            }
-        }
+        googleOrHuawei(
+            { setOnCameraMoveListener { listener.onCameraMove() } },
+            { setOnCameraMoveListener { listener.onCameraMove() } }
+        )
     }
 
     fun setOnCameraMoveCanceledListener(listener: OnCameraMoveCanceledListener) {
-        when {
-            isGoogle() -> googleMap.setOnCameraMoveCanceledListener {
-                listener.onCameraMoveCanceled()
-            }
-            isHuawei() -> huaweiMap.setOnCameraMoveCanceledListener {
-                listener.onCameraMoveCanceled()
-            }
-        }
+        googleOrHuawei(
+            { setOnCameraMoveCanceledListener { listener.onCameraMoveCanceled() } },
+            { setOnCameraMoveCanceledListener { listener.onCameraMoveCanceled() } }
+        )
     }
 
     fun setOnCameraIdleListener(listener: OnCameraIdleListener) {
-        when {
-            isGoogle() -> googleMap.setOnCameraIdleListener {
-                listener.onCameraIdle()
-            }
-            isHuawei() -> huaweiMap.setOnCameraIdleListener {
-                listener.onCameraIdle()
-            }
-        }
+        googleOrHuawei(
+            { setOnCameraIdleListener { listener.onCameraIdle() } },
+            { setOnCameraIdleListener { listener.onCameraIdle() } }
+        )
     }
 
     fun setOnMarkerDragListener(listener: OnMarkerDragListener) {
-        when {
-            isGoogle() -> googleMap.setOnMarkerDragListener(object : GoogleMap.OnMarkerDragListener {
-                override fun onMarkerDragEnd(marker: com.google.android.gms.maps.model.Marker?) {
-                    listener.onMarkerDragEnd(Marker(marker, null))
-                }
-                override fun onMarkerDragStart(marker: com.google.android.gms.maps.model.Marker?) {
-                    listener.onMarkerDragStart(Marker(marker, null))
-                }
-                override fun onMarkerDrag(marker: com.google.android.gms.maps.model.Marker?) {
-                    listener.onMarkerDragStart(Marker(marker, null))
-                }
-            })
-            isHuawei() -> huaweiMap.setOnMarkerDragListener(object : HuaweiMap.OnMarkerDragListener {
-                override fun onMarkerDragEnd(marker: com.huawei.hms.maps.model.Marker?) {
-                    listener.onMarkerDragEnd(Marker(null, marker))
-                }
-                override fun onMarkerDragStart(marker: com.huawei.hms.maps.model.Marker?) {
-                    listener.onMarkerDragStart(Marker(null, marker))
-                }
-                override fun onMarkerDrag(marker: com.huawei.hms.maps.model.Marker?) {
-                    listener.onMarkerDragStart(Marker(null, marker))
-                }
-            })
-        }
+        googleOrHuawei(
+            {
+                setOnMarkerDragListener(object : GoogleMap.OnMarkerDragListener {
+                    override fun onMarkerDragEnd(marker: com.google.android.gms.maps.model.Marker?) {
+                        listener.onMarkerDragEnd(Marker(marker, null))
+                    }
+                    override fun onMarkerDragStart(marker: com.google.android.gms.maps.model.Marker?) {
+                        listener.onMarkerDragStart(Marker(marker, null))
+                    }
+                    override fun onMarkerDrag(marker: com.google.android.gms.maps.model.Marker?) {
+                        listener.onMarkerDragStart(Marker(marker, null))
+                    }
+                })
+            },
+            {
+                setOnMarkerDragListener(object : HuaweiMap.OnMarkerDragListener {
+                    override fun onMarkerDragEnd(marker: com.huawei.hms.maps.model.Marker?) {
+                        listener.onMarkerDragEnd(Marker(null, marker))
+                    }
+                    override fun onMarkerDragStart(marker: com.huawei.hms.maps.model.Marker?) {
+                        listener.onMarkerDragStart(Marker(null, marker))
+                    }
+                    override fun onMarkerDrag(marker: com.huawei.hms.maps.model.Marker?) {
+                        listener.onMarkerDragStart(Marker(null, marker))
+                    }
+                })
+            }
+        )
     }
 
     fun setOnCircleClickListener(listener: OnCircleClickListener) {
         when {
-            isGoogle() -> googleMap.setOnCircleClickListener {
+            isGoogle() -> google.setOnCircleClickListener {
                 listener.onCircleClick(Circle(it, null))
             }
-            isHuawei() -> huaweiMap.setOnCircleClickListener {
+            isHuawei() -> huawei.setOnCircleClickListener {
                 listener.onCircleClick(Circle(null, it))
             }
         }
@@ -355,10 +342,10 @@ class CommonMap(private val map: Any) {
 
     fun setOnMarkerClickListener(listener: OnMarkerClickListener) {
         when {
-            isGoogle() -> googleMap.setOnMarkerClickListener {
+            isGoogle() -> google.setOnMarkerClickListener {
                 listener.onMarkerClick(Marker(it, null))
             }
-            isHuawei() -> huaweiMap.setOnMarkerClickListener {
+            isHuawei() -> huawei.setOnMarkerClickListener {
                 listener.onMarkerClick(Marker(null, it))
             }
         }
@@ -372,10 +359,10 @@ class CommonMap(private val map: Any) {
 
     fun setOnInfoWindowCloseListener(listener: OnInfoWindowCloseListener) {
         when {
-            isGoogle() -> googleMap.setOnInfoWindowCloseListener {
+            isGoogle() -> google.setOnInfoWindowCloseListener {
                 listener.onInfoWindowClose(Marker(it, null))
             }
-            isHuawei() -> huaweiMap.setOnInfoWindowCloseListener {
+            isHuawei() -> huawei.setOnInfoWindowCloseListener {
                 listener.onInfoWindowClose(Marker(null, it))
             }
         }
@@ -383,10 +370,10 @@ class CommonMap(private val map: Any) {
 
     fun setOnInfoWindowLongClickListener(listener: OnInfoWindowLongClickListener) {
         when {
-            isGoogle() -> googleMap.setOnInfoWindowLongClickListener {
+            isGoogle() -> google.setOnInfoWindowLongClickListener {
                 listener.onInfoWindowLongClick(Marker(it, null))
             }
-            isHuawei() -> huaweiMap.setOnInfoWindowLongClickListener {
+            isHuawei() -> huawei.setOnInfoWindowLongClickListener {
                 listener.onInfoWindowLongClick(Marker(null, it))
             }
         }
@@ -394,10 +381,10 @@ class CommonMap(private val map: Any) {
 
     fun setOnInfoWindowClickListener(listener: OnInfoWindowClickListener) {
         when {
-            isGoogle() -> googleMap.setOnInfoWindowClickListener {
+            isGoogle() -> google.setOnInfoWindowClickListener {
                 listener.onInfoWindowClick(Marker(it, null))
             }
-            isHuawei() -> huaweiMap.setOnInfoWindowClickListener {
+            isHuawei() -> huawei.setOnInfoWindowClickListener {
                 listener.onInfoWindowClick(Marker(null, it))
             }
         }
@@ -431,6 +418,13 @@ class CommonMap(private val map: Any) {
                 listener(polyline)
             }
         })
+    }
+
+    fun setOnGroundOverlayClickListener(listener: OnGroundOverlayClickListener) {
+        googleOrHuawei(
+            { setOnGroundOverlayClickListener { listener.onGroundOverlayClick(GroundOverlay(it, null)) } },
+            { setOnGroundOverlayClickListener { listener.onGroundOverlayClick(GroundOverlay(null, it)) } }
+        )
     }
 
     companion object {
@@ -514,5 +508,9 @@ class CommonMap(private val map: Any) {
 
     interface OnPolylineClickListener {
         fun onPolylineClick(polyline: Polyline)
+    }
+
+    interface OnGroundOverlayClickListener {
+        fun onGroundOverlayClick(groundOverlay: GroundOverlay)
     }
 }

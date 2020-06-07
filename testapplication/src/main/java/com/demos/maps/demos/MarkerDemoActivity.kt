@@ -200,10 +200,10 @@ class MarkerDemoActivity :
     /**
      * This is the callback that is triggered when the GoogleMap has loaded and is ready for use
      */
-    override fun onMapReady(googleMap: CommonMap?) {
+    override fun onMapReady(map: CommonMap?) {
 
         // return early if the map was not initialised properly
-        map = googleMap ?: return
+        this.map = map ?: return
 
         // create bounds that encompass every location we reference
         val boundsBuilder = LatLngBounds.Builder()
@@ -211,7 +211,7 @@ class MarkerDemoActivity :
         places.keys.map { place -> boundsBuilder.include(places.getValue(place)) }
         val bounds = boundsBuilder.build()
 
-        with(map) {
+        with(this.map) {
             // Hide the zoom controls as the button panel will cover it.
             uiSettings.isZoomControlsEnabled = false
 

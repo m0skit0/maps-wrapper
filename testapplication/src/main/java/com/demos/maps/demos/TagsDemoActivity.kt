@@ -21,24 +21,20 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.demos.maps.R
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import org.m0skit0.android.mapswrapper.*
 
-// TODO Implement
 /**
  * This shows how to use setTag/getTag on API objects.
  */
 class TagsDemoActivity : AppCompatActivity(),
-        GoogleMap.OnCircleClickListener,
-        GoogleMap.OnGroundOverlayClickListener,
-        GoogleMap.OnMarkerClickListener,
+        CommonMap.OnCircleClickListener,
+        CommonMap.OnGroundOverlayClickListener,
+        CommonMap.OnMarkerClickListener,
         OnMapAndViewReadyListener.OnGlobalLayoutAndMapReadyListener,
-        GoogleMap.OnPolygonClickListener,
-        GoogleMap.OnPolylineClickListener {
+        CommonMap.OnPolygonClickListener,
+        CommonMap.OnPolylineClickListener {
 
-    private lateinit var map: GoogleMap
+    private lateinit var map: CommonMap
 
     private lateinit var tagText: TextView
 
@@ -78,15 +74,12 @@ class TagsDemoActivity : AppCompatActivity(),
         OnMapAndViewReadyListener(mapFragment, this)
     }
 
-    override fun onMapReady(googleMap: GoogleMap?) {
-
-        // return early if the map was not initialised properly
-        map = googleMap ?: return
+    override fun onMapReady(map: CommonMap?) {
 
         // Add a circle, a ground overlay, a marker, a polygon and a polyline to the googleMap.
         addObjectsToMap()
 
-        with(map.uiSettings) {
+        with(this.map.uiSettings) {
             // Turn off the map toolbar.
             isMapToolbarEnabled = false
 
@@ -98,7 +91,7 @@ class TagsDemoActivity : AppCompatActivity(),
             isRotateGesturesEnabled = false
         }
 
-        with(map) {
+        with(this.map) {
             // Set listeners for click events.  See the bottom of this class for their behavior.
             setOnCircleClickListener(this@TagsDemoActivity)
             setOnGroundOverlayClickListener(this@TagsDemoActivity)
@@ -115,7 +108,6 @@ class TagsDemoActivity : AppCompatActivity(),
             places.keys.map { boundsBuilder.include(places.getValue(it)) }
             // Move the camera to view all listed locations
             moveCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(), 100))
-
         }
     }
 

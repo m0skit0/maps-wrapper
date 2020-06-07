@@ -58,4 +58,11 @@ class Polyline internal constructor(
             google?.width = value
             huawei?.width = value
         }
+
+    var tag: Any?
+        get() = google?.tag ?: huawei?.tag
+        set(value) {
+            google?.tag = value
+            huawei?.tag = value
+        }
 }

@@ -59,6 +59,13 @@ class Marker internal constructor(
             huawei?.alpha = value
         }
 
+    var tag: Any?
+        get() = google?.tag ?: huawei?.tag
+        set(value) {
+            google?.tag = value
+            huawei?.tag = value
+        }
+
     fun setAnchor(x: Float, y: Float) {
         google?.setAnchor(x, y)
         huawei?.setMarkerAnchor(x, y)

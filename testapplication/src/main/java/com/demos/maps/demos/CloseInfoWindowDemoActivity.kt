@@ -64,11 +64,11 @@ class CloseInfoWindowDemoActivity :
         OnMapAndViewReadyListener(mapFragment, this)
     }
 
-    override fun onMapReady(googleMap: CommonMap?) {
+    override fun onMapReady(map: CommonMap?) {
         // Return if googleMap was null
-        map = googleMap ?: return
+        this.map = map ?: return
 
-        with(map) {
+        with(this.map) {
             uiSettings.isZoomControlsEnabled = false
 
             setOnMarkerClickListener(markerClickListener)

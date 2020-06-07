@@ -43,7 +43,7 @@ class OnMapAndViewReadyListener(
 
     /** A listener that needs to wait for both the GoogleMap and the View to be initialized.  */
     interface OnGlobalLayoutAndMapReadyListener {
-        fun onMapReady(googleMap: CommonMap?)
+        fun onMapReady(map: CommonMap?)
     }
 
     init {
