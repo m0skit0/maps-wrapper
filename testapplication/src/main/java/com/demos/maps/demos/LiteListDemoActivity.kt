@@ -25,11 +25,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.demos.maps.R
-import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import org.m0skit0.android.mapswrapper.*
+import org.m0skit0.android.mapswrapper.CommonMap.Companion.MAP_TYPE_NORMAL
 
-// TODO Implement
 /**
  * This shows to include a map in lite mode in a RecyclerView.
  * Note the use of the view holder pattern with the
@@ -116,7 +114,7 @@ class LiteListDemoActivity : AppCompatActivity() {
             private val layout: View = view
             private val mapView: MapView = layout.findViewById(R.id.lite_listrow_map)
             private val title: TextView = layout.findViewById(R.id.lite_listrow_text)
-            private lateinit var map: GoogleMap
+            private lateinit var map: CommonMap
             private lateinit var latLng: LatLng
 
             /** Initialises the MapView by calling its lifecycle methods */
@@ -134,7 +132,7 @@ class LiteListDemoActivity : AppCompatActivity() {
                 with(map) {
                     moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13f))
                     addMarker(MarkerOptions().position(latLng))
-                    mapType = GoogleMap.MAP_TYPE_NORMAL
+                    mapType = MAP_TYPE_NORMAL
                     setOnMapClickListener {
                         Toast.makeText(this@LiteListDemoActivity, "Clicked on ${title.text}",
                                 Toast.LENGTH_SHORT).show()
@@ -142,10 +140,10 @@ class LiteListDemoActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onMapReady(googleMap: GoogleMap?) {
+            override fun onMapReady(map: CommonMap) {
                 MapsInitializer.initialize(applicationContext)
                 // If map is not initialised properly
-                map = googleMap ?: return
+                this.map = map ?: return
                 setMapLocation()
             }
 
@@ -166,7 +164,7 @@ class LiteListDemoActivity : AppCompatActivity() {
                 with(map) {
                     // Clear the map and free up resources by changing the map type to none
                     clear()
-                    mapType = GoogleMap.MAP_TYPE_NONE
+                    mapType = CommonMap.MAP_TYPE_NONE
                 }
             }
         }
