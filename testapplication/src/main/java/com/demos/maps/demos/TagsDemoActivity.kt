@@ -76,6 +76,8 @@ class TagsDemoActivity : AppCompatActivity(),
 
     override fun onMapReady(map: CommonMap?) {
 
+        this.map = map ?: return
+
         // Add a circle, a ground overlay, a marker, a polygon and a polyline to the googleMap.
         addObjectsToMap()
 
