@@ -10,8 +10,10 @@ internal fun mapFragmentFromResolverType(context: Context, strategy: MapResolver
     when (strategy) {
         MapResolverStrategy.FORCE_GOOGLE -> googleSupportMapFragment()
         MapResolverStrategy.FORCE_HUAWEI -> huaweiSupportMapFragment()
-        MapResolverStrategy.GOOGLE_THEN_HUAWEI -> context.googleThenHuawei({ googleSupportMapFragment() }, { huaweiSupportMapFragment() })
-        MapResolverStrategy.HUAWEI_THEN_GOOGLE -> context.huaweiThenGoogle({ huaweiSupportMapFragment() }, { googleSupportMapFragment() })
+        MapResolverStrategy.GOOGLE_THEN_HUAWEI ->
+            context.googleThenHuawei({ googleSupportMapFragment() }, { huaweiSupportMapFragment() })
+        MapResolverStrategy.HUAWEI_THEN_GOOGLE ->
+            context.huaweiThenGoogle({ huaweiSupportMapFragment() }, { googleSupportMapFragment() })
     }
 
 private fun googleSupportMapFragment(): com.google.android.gms.maps.SupportMapFragment =
@@ -28,8 +30,10 @@ internal fun mapViewFromResolverType(context: Context, attr: AttributeSet?, @Att
     when (strategy) {
         MapResolverStrategy.FORCE_GOOGLE -> context.googleMapView(attr, defStyleAttr)
         MapResolverStrategy.FORCE_HUAWEI -> context.huaweiMapView(attr, defStyleAttr)
-        MapResolverStrategy.GOOGLE_THEN_HUAWEI -> context.googleThenHuawei( { googleMapView(attr, defStyleAttr) }, { huaweiMapView(attr, defStyleAttr) })
-        MapResolverStrategy.HUAWEI_THEN_GOOGLE -> context.huaweiThenGoogle({ huaweiMapView(attr, defStyleAttr) }, { googleMapView(attr, defStyleAttr) })
+        MapResolverStrategy.GOOGLE_THEN_HUAWEI ->
+            context.googleThenHuawei( { googleMapView(attr, defStyleAttr) }, { huaweiMapView(attr, defStyleAttr) })
+        MapResolverStrategy.HUAWEI_THEN_GOOGLE ->
+            context.huaweiThenGoogle({ huaweiMapView(attr, defStyleAttr) }, { googleMapView(attr, defStyleAttr) })
     }
 
 private fun Context.googleMapView(attr: AttributeSet?, @AttrRes defStyleAttr: Int): com.google.android.gms.maps.MapView =

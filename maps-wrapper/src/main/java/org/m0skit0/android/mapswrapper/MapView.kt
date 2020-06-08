@@ -42,7 +42,7 @@ class MapView : FrameLayout {
         ).apply {
                 val strategy = getText(R.styleable.mapResolution_type)
                     ?.let { MapResolverStrategy.fromValue(it.toString())  }
-                    ?: MapResolverStrategy.GOOGLE_THEN_HUAWEI
+                    ?: MapResolverStrategy.default
                 mapView = mapViewFromResolverType(context, attr, defStyleAttr, strategy)
         }.recycle()
     }

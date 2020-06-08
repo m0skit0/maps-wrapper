@@ -17,7 +17,7 @@ class SupportMapFragment : Fragment() {
             ?: throw IllegalStateException("Context is null")
     }
 
-    private var mapType: MapResolverStrategy = MapResolverStrategy.GOOGLE_THEN_HUAWEI
+    private var mapType: MapResolverStrategy = MapResolverStrategy.default
 
     fun getMapAsync(callback: OnMapReadyCallback) {
         when {
