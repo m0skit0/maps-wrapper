@@ -17,7 +17,7 @@ object BitmapDescriptorFactory {
 
     fun fromResource(id: Int): BitmapDescriptor {
         val google = executeOrNull { com.google.android.gms.maps.model.BitmapDescriptorFactory.fromResource(id) }
-        val huawei = com.huawei.hms.maps.model.BitmapDescriptorFactory.fromResource(id)
+        val huawei = executeOrNull { com.huawei.hms.maps.model.BitmapDescriptorFactory.fromResource(id) }
         return BitmapDescriptor(google, huawei)
     }
 
