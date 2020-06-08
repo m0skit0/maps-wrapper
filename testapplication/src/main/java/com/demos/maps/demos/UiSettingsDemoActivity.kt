@@ -47,6 +47,7 @@ class UiSettingsDemoActivity :
     }
 
     override fun onMapReady(map: CommonMap) {
+        this.map = map
         enableMyLocation()
         // Set all the settings of the map to match the current state of the checkboxes
         with(this.map.uiSettings) {
