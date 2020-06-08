@@ -53,7 +53,7 @@ class MapView : FrameLayout {
 
     private fun isHuaweiMap(): Boolean = mapView is com.huawei.hms.maps.MapView
 
-    private fun huaweiMap(): com.google.android.gms.maps.MapView = mapView as com.google.android.gms.maps.MapView
+    private fun huaweiMap(): com.huawei.hms.maps.MapView = mapView as com.huawei.hms.maps.MapView
 
     fun getMapAsync(callback: OnMapReadyCallback) {
         when {
