@@ -7,7 +7,7 @@ class GroundOverlayOptions {
 
     fun image(bitmapDescriptor: BitmapDescriptor): GroundOverlayOptions = apply {
         bitmapDescriptor.google?.run { google = google.image(this) }
-        huawei = huawei.image(bitmapDescriptor.huawei)
+        bitmapDescriptor.huawei?.run { huawei = huawei.image(this) }
     }
 
     fun position(position: LatLng, length: Float): GroundOverlayOptions = apply {
