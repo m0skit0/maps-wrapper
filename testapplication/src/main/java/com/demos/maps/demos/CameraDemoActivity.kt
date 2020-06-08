@@ -92,7 +92,7 @@ class CameraDemoActivity :
     override fun onMapReady(map: CommonMap) {
 
         // return early if the map was not initialised properly
-        this.map = map ?: return
+        this.map = map
 
         with(map) {
             setOnCameraIdleListener(this@CameraDemoActivity)

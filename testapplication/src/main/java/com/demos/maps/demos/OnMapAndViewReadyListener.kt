@@ -66,7 +66,7 @@ class OnMapAndViewReadyListener(
 
     override fun onMapReady(map: CommonMap) {
         // NOTE: The GoogleMap API specifies the listener is removed just prior to invocation.
-        this.map = map ?: return
+        this.map = map
         isMapReady = true
         fireCallbackIfReady()
     }
