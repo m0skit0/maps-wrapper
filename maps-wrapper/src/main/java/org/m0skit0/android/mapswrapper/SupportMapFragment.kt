@@ -49,9 +49,9 @@ class SupportMapFragment : Fragment() {
 
     override fun onInflate(context: Context?, attrs: AttributeSet?, savedInstanceState: Bundle?) {
         super.onInflate(context, attrs, savedInstanceState)
-        context?.obtainStyledAttributes(attrs, R.styleable.org_m0skit0_android_mapswrapper_SupportMapFragment)
+        context?.obtainStyledAttributes(attrs, R.styleable.mapResolution)
             ?.apply {
-                getText(R.styleable.org_m0skit0_android_mapswrapper_SupportMapFragment_type)
+                getText(R.styleable.mapResolution_type)
                     ?.let { mapType = MapResolverStrategy.fromValue(it.toString())  }
             }
             ?.recycle()

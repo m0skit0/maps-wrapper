@@ -36,11 +36,11 @@ class MapView : FrameLayout {
     private fun resolveMapView(context: Context, attr: AttributeSet?, @AttrRes defStyleAttr: Int, @StyleRes defStyleRes: Int) {
         context.theme.obtainStyledAttributes(
             attr,
-            R.styleable.org_m0skit0_android_mapswrapper_MapView,
+            R.styleable.mapResolution,
             defStyleAttr,
             defStyleRes
         ).apply {
-                val strategy = getText(R.styleable.org_m0skit0_android_mapswrapper_MapView_type)
+                val strategy = getText(R.styleable.mapResolution_type)
                     ?.let { MapResolverStrategy.fromValue(it.toString())  }
                     ?: MapResolverStrategy.GOOGLE_THEN_HUAWEI
                 mapView = mapViewFromResolverType(context, attr, defStyleAttr, strategy)

@@ -17,7 +17,7 @@ class MarkerOptions {
 
     fun anchor(x: Float, y: Float): MarkerOptions = apply {
         google = google.anchor(x, y)
-        huawei = huawei.anchor(x, y)
+        huawei = huawei.anchorMarker(x, y)
     }
 
     fun infoWindowAnchor(x: Float, y: Float): MarkerOptions = apply {
