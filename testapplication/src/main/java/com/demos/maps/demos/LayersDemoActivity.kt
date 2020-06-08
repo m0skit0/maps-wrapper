@@ -107,6 +107,8 @@ class LayersDemoActivity :
     @SuppressLint("MissingPermission")
     override fun onMapReady(map: CommonMap) {
 
+        this.map = map
+
         updateMapType()
 
         // check the state of all checkboxes and update the map accordingly
