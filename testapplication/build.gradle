@@ -45,13 +45,6 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.7.2'
     implementation 'com.google.code.gson:gson:2.8.6'
 
-    // GMS
-    implementation 'com.google.android.gms:play-services-maps:17.0.0'
-
-    // HMS
-    implementation 'com.huawei.hms:maps:4.0.1.300'
-    implementation 'com.huawei.hms:site:4.0.1.300'
-
     // Maps wrapper
-    implementation project(':maps-wrapper')
+    implementation 'com.github.m0skit0:maps-wrapper:1.0-beta-3'
 }
