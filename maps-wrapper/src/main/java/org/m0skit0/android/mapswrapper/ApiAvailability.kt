@@ -17,6 +17,6 @@ internal object ApiAvailability {
     internal fun isGoogleAvailable(context: Context = ApiAvailability.context): Boolean {
         this.context = context.applicationContext
         return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) ==
-                com.huawei.hms.api.ConnectionResult.SUCCESS
+                com.google.android.gms.common.ConnectionResult.SUCCESS
     }
 }
