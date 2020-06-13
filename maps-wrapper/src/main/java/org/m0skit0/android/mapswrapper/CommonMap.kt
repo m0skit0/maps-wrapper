@@ -82,7 +82,6 @@ class CommonMap(private val map: Any) {
 
     private fun isHuawei(): Boolean = map is HuaweiMap
 
-    // TODO Migrate all functions to call this function
     private inline fun <T> googleOrHuawei(google: GoogleMap.() -> T, huawei: HuaweiMap.() -> T): T =
         when {
             isGoogle() -> this.google.google()
@@ -337,14 +336,18 @@ class CommonMap(private val map: Any) {
     }
 
     fun setOnCircleClickListener(listener: OnCircleClickListener) {
-        when {
-            isGoogle() -> google.setOnCircleClickListener {
-                listener.onCircleClick(Circle(it, null))
+        googleOrHuawei(
+            {
+                setOnCircleClickListener {
+                    listener.onCircleClick(Circle(it, null))
+                }
+            },
+            {
+                setOnCircleClickListener {
+                    listener.onCircleClick(Circle(null, it))
+                }
             }
-            isHuawei() -> huawei.setOnCircleClickListener {
-                listener.onCircleClick(Circle(null, it))
-            }
-        }
+        )
     }
 
     fun setOnCircleClickListener(listener: (Circle) -> Unit) {
@@ -356,14 +359,18 @@ class CommonMap(private val map: Any) {
     }
 
     fun setOnMarkerClickListener(listener: OnMarkerClickListener) {
-        when {
-            isGoogle() -> google.setOnMarkerClickListener {
-                listener.onMarkerClick(Marker(it, null))
+        googleOrHuawei(
+            {
+                setOnMarkerClickListener {
+                    listener.onMarkerClick(Marker(it, null))
+                }
+            },
+            {
+                setOnMarkerClickListener {
+                    listener.onMarkerClick(Marker(null, it))
+                }
             }
-            isHuawei() -> huawei.setOnMarkerClickListener {
-                listener.onMarkerClick(Marker(null, it))
-            }
-        }
+        )
     }
 
     fun setOnMarkerClickListener(listener: (Marker) -> Boolean) {
@@ -373,36 +380,48 @@ class CommonMap(private val map: Any) {
     }
 
     fun setOnInfoWindowCloseListener(listener: OnInfoWindowCloseListener) {
-        when {
-            isGoogle() -> google.setOnInfoWindowCloseListener {
-                listener.onInfoWindowClose(Marker(it, null))
+        googleOrHuawei(
+            {
+                setOnInfoWindowCloseListener {
+                    listener.onInfoWindowClose(Marker(it, null))
+                }
+            },
+            {
+                setOnInfoWindowCloseListener {
+                    listener.onInfoWindowClose(Marker(null, it))
+                }
             }
-            isHuawei() -> huawei.setOnInfoWindowCloseListener {
-                listener.onInfoWindowClose(Marker(null, it))
-            }
-        }
+        )
     }
 
     fun setOnInfoWindowLongClickListener(listener: OnInfoWindowLongClickListener) {
-        when {
-            isGoogle() -> google.setOnInfoWindowLongClickListener {
-                listener.onInfoWindowLongClick(Marker(it, null))
+        googleOrHuawei(
+            {
+                setOnInfoWindowLongClickListener {
+                    listener.onInfoWindowLongClick(Marker(it, null))
+                }
+            },
+            {
+                setOnInfoWindowLongClickListener {
+                    listener.onInfoWindowLongClick(Marker(null, it))
+                }
             }
-            isHuawei() -> huawei.setOnInfoWindowLongClickListener {
-                listener.onInfoWindowLongClick(Marker(null, it))
-            }
-        }
+        )
     }
 
     fun setOnInfoWindowClickListener(listener: OnInfoWindowClickListener) {
-        when {
-            isGoogle() -> google.setOnInfoWindowClickListener {
-                listener.onInfoWindowClick(Marker(it, null))
+        googleOrHuawei(
+            {
+                setOnInfoWindowClickListener {
+                    listener.onInfoWindowClick(Marker(it, null))
+                }
+            },
+            {
+                setOnInfoWindowClickListener {
+                    listener.onInfoWindowClick(Marker(null, it))
+                }
             }
-            isHuawei() -> huawei.setOnInfoWindowClickListener {
-                listener.onInfoWindowClick(Marker(null, it))
-            }
-        }
+        )
     }
 
     fun setOnPolygonClickListener(listener: (Polygon) -> Unit) {

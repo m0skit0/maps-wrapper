@@ -30,6 +30,9 @@ class CameraPosition internal constructor(
 
     class Builder {
 
+        private var google: com.google.android.gms.maps.model.CameraPosition.Builder? = null
+        private var huawei: com.huawei.hms.maps.model.CameraPosition.Builder? = null
+
         constructor() {
             google = com.google.android.gms.maps.model.CameraPosition.Builder()
             huawei = com.huawei.hms.maps.model.CameraPosition.Builder()
@@ -43,9 +46,6 @@ class CameraPosition internal constructor(
                 huawei = com.huawei.hms.maps.model.CameraPosition.Builder(this)
             }
         }
-
-        private var google: com.google.android.gms.maps.model.CameraPosition.Builder? = null
-        private var huawei: com.huawei.hms.maps.model.CameraPosition.Builder? = null
 
         fun target(location: LatLng): Builder = apply {
             google = google?.target(location.google)

@@ -47,18 +47,18 @@ class MapView : FrameLayout {
         }.recycle()
     }
 
-    private fun isGoogleMap(): Boolean = mapView is com.google.android.gms.maps.MapView
+    private fun isGoogle(): Boolean = mapView is com.google.android.gms.maps.MapView
 
     private fun googleMap(): com.google.android.gms.maps.MapView = mapView as com.google.android.gms.maps.MapView
 
-    private fun isHuaweiMap(): Boolean = mapView is com.huawei.hms.maps.MapView
+    private fun isHuawei(): Boolean = mapView is com.huawei.hms.maps.MapView
 
     private fun huaweiMap(): com.huawei.hms.maps.MapView = mapView as com.huawei.hms.maps.MapView
 
     fun getMapAsync(callback: OnMapReadyCallback) {
         when {
-            isGoogleMap() -> googleGetMapAsync(callback)
-            isHuaweiMap() -> huaweiGetMapAsync(callback)
+            isGoogle() -> googleGetMapAsync(callback)
+            isHuawei() -> huaweiGetMapAsync(callback)
         }
     }
 
@@ -89,58 +89,41 @@ class MapView : FrameLayout {
     }
 
     fun onCreate(bundle: Bundle?) {
-        when {
-            isGoogleMap() -> googleMap().onCreate(bundle)
-            isHuaweiMap() -> huaweiMap().onCreate(bundle)
-        }
+        googleOrHuawei({ onCreate(bundle) }, { onCreate(bundle) })
     }
 
     fun onResume() {
-        when {
-            isGoogleMap() -> googleMap().onResume()
-            isHuaweiMap() -> huaweiMap().onResume()
-        }
+        googleOrHuawei({ onResume() }, { onResume() })
     }
 
     fun onPause() {
-        when {
-            isGoogleMap() -> googleMap().onPause()
-            isHuaweiMap() -> huaweiMap().onPause()
-        }
+        googleOrHuawei({ onPause() }, { onPause() })
     }
 
     fun onStart() {
-        when {
-            isGoogleMap() -> googleMap().onStart()
-            isHuaweiMap() -> huaweiMap().onStart()
-        }
+        googleOrHuawei({ onStart() }, { onStart() })
     }
 
     fun onStop() {
-        when {
-            isGoogleMap() -> googleMap().onStop()
-            isHuaweiMap() -> huaweiMap().onStop()
-        }
+        googleOrHuawei({ onStop() }, { onStop() })
     }
 
     fun onDestroy() {
-        when {
-            isGoogleMap() -> googleMap().onDestroy()
-            isHuaweiMap() -> huaweiMap().onDestroy()
-        }
+        googleOrHuawei({ onDestroy() }, { onDestroy() })
     }
 
     fun onLowMemory() {
-        when {
-            isGoogleMap() -> googleMap().onLowMemory()
-            isHuaweiMap() -> huaweiMap().onLowMemory()
-        }
+        googleOrHuawei({ onLowMemory() }, { onLowMemory() })
     }
 
     fun onSaveInstanceState(bundle: Bundle?) {
-        when {
-            isGoogleMap() -> googleMap().onSaveInstanceState(bundle)
-            isHuaweiMap() -> huaweiMap().onSaveInstanceState(bundle)
-        }
+        googleOrHuawei({ onSaveInstanceState(bundle) }, { onSaveInstanceState(bundle) })
     }
+
+    private inline fun <T> googleOrHuawei(google: com.google.android.gms.maps.MapView.() -> T, huawei: com.huawei.hms.maps.MapView.() -> T): T =
+        when {
+            isGoogle() -> this.googleMap().google()
+            isHuawei() -> this.huaweiMap().huawei()
+            else -> throwUnableToResolveGoogleOrHuawei()
+        }
 }

@@ -25,7 +25,6 @@ import com.demos.maps.R
 import org.m0skit0.android.mapswrapper.*
 import java.util.*
 
-// TODO Implement
 /**
  * This shows how to draw polylines on a map.
  */

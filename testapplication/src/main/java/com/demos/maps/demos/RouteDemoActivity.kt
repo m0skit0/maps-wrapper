@@ -16,7 +16,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import java.io.IOException
 
-// TODO Implement
 class RouteDemoActivity : AppCompatActivity() {
 
     data class Directions(

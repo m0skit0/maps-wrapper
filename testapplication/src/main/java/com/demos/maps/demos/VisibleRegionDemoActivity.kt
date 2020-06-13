@@ -27,7 +27,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.demos.maps.R
 import org.m0skit0.android.mapswrapper.*
 
-// TODO Implement
 /**
  * This shows how to use setPadding to allow overlays that obscure part of the map without
  * obscuring the map UI or copyright notices.
