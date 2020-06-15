@@ -1,6 +1,9 @@
 package org.m0skit0.android.mapswrapper
 
+import org.koin.core.parameter.parametersOf
+import org.m0skit0.android.mapswrapper.di.koin
+
 class CustomCap(bitmapDescriptor: BitmapDescriptor, length: Float) : Cap(
-    bitmapDescriptor.google?.run { com.google.android.gms.maps.model.CustomCap(this, length) },
-    com.huawei.hms.maps.model.CustomCap(bitmapDescriptor.huawei, length)
+    bitmapDescriptor.google?.run { koin().get { parametersOf(this, length) } },
+    koin().get { parametersOf(bitmapDescriptor.huawei, length) }
 )
