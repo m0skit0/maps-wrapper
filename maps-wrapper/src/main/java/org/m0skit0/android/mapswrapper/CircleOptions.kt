@@ -1,9 +1,12 @@
 package org.m0skit0.android.mapswrapper
 
-class CircleOptions {
+import org.koin.core.get
+import org.m0skit0.android.mapswrapper.di.KoinInterface
 
-    internal var google = com.google.android.gms.maps.model.CircleOptions()
-    internal var huawei = com.huawei.hms.maps.model.CircleOptions()
+class CircleOptions : KoinInterface {
+
+    internal var google: com.google.android.gms.maps.model.CircleOptions = get()
+    internal var huawei: com.huawei.hms.maps.model.CircleOptions = get()
 
     fun center(center: LatLng): CircleOptions = apply {
         google = google.center(center.google)
