@@ -4,7 +4,6 @@ import com.huawei.hms.maps.model.*
 import org.koin.core.module.Module
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import org.m0skit0.android.mapswrapper.LatLng
 
 object HuaweiModelsModuleProvider : KoinModuleProvider {
 
@@ -18,11 +17,12 @@ object HuaweiModelsModuleProvider : KoinModuleProvider {
         factory { Dot() }
         factory { (length: Float) -> Gap(length) }
         factory { GroundOverlayOptions() }
-        factory { (latitude: Double, longitude: Double) -> com.huawei.hms.maps.model.LatLng(latitude, longitude) }
-        factory { (latLng1: LatLng, latLng2: LatLng) -> LatLngBounds(latLng1.huawei, latLng2.huawei) }
+        factory { (latitude: Double, longitude: Double) -> LatLng(latitude, longitude) }
+        factory { (latLng1: LatLng, latLng2: LatLng) -> LatLngBounds(latLng1, latLng2) }
         factory { LatLngBounds.Builder() }
         factory { MarkerOptions() }
         factory { PolygonOptions() }
+        factory { PolylineOptions() }
         factory { RoundCap() }
         factory { SquareCap() }
         factory { CameraPosition.Builder() }

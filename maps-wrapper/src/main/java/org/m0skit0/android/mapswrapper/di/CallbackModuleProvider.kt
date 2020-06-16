@@ -10,7 +10,7 @@ import org.m0skit0.android.mapswrapper.CommonMap
 
 internal object CallbackModuleProvider : KoinModuleProvider {
     override fun module(): Module = module {
-        factory { (callback: CommonMap.CancelableCallback?) ->
+        factory<GoogleMap.CancelableCallback> { (callback: CommonMap.CancelableCallback?) ->
             object : GoogleMap.CancelableCallback {
                 override fun onFinish() {
                     callback?.onFinish()
@@ -20,7 +20,7 @@ internal object CallbackModuleProvider : KoinModuleProvider {
                 }
             }
         }
-        factory { (callback: CommonMap.CancelableCallback?) ->
+        factory<HuaweiMap.CancelableCallback> { (callback: CommonMap.CancelableCallback?) ->
             object : HuaweiMap.CancelableCallback {
                 override fun onFinish() {
                     callback?.onFinish()
@@ -30,7 +30,7 @@ internal object CallbackModuleProvider : KoinModuleProvider {
                 }
             }
         }
-        factory { (adapter: CommonMap.InfoWindowAdapter) ->
+        factory<GoogleMap.InfoWindowAdapter> { (adapter: CommonMap.InfoWindowAdapter) ->
             object : GoogleMap.InfoWindowAdapter {
                 override fun getInfoContents(marker: com.google.android.gms.maps.model.Marker?): View? =
                     adapter.getInfoContents(get { parametersOf(marker, null) })
@@ -38,7 +38,7 @@ internal object CallbackModuleProvider : KoinModuleProvider {
                     adapter.getInfoWindow(get { parametersOf(marker, null) })
             }
         }
-        factory { (adapter: CommonMap.InfoWindowAdapter) ->
+        factory<HuaweiMap.InfoWindowAdapter> { (adapter: CommonMap.InfoWindowAdapter) ->
             object : HuaweiMap.InfoWindowAdapter {
                 override fun getInfoContents(marker: com.huawei.hms.maps.model.Marker?): View? =
                     adapter.getInfoContents(get { parametersOf(null, marker) })
@@ -46,7 +46,7 @@ internal object CallbackModuleProvider : KoinModuleProvider {
                     adapter.getInfoWindow(get { parametersOf(null, marker) })
             }
         }
-        factory { (listener: CommonMap.OnMarkerDragListener) ->
+        factory<GoogleMap.OnMarkerDragListener> { (listener: CommonMap.OnMarkerDragListener) ->
             object : GoogleMap.OnMarkerDragListener {
                 override fun onMarkerDragEnd(marker: com.google.android.gms.maps.model.Marker?) {
                     listener.onMarkerDragEnd(get { parametersOf(marker, null) })
@@ -59,7 +59,7 @@ internal object CallbackModuleProvider : KoinModuleProvider {
                 }
             }
         }
-        factory { (listener: CommonMap.OnMarkerDragListener) ->
+        factory<HuaweiMap.OnMarkerDragListener> { (listener: CommonMap.OnMarkerDragListener) ->
             object : HuaweiMap.OnMarkerDragListener {
                 override fun onMarkerDragEnd(marker: com.huawei.hms.maps.model.Marker?) {
                     listener.onMarkerDragEnd(get { parametersOf(null, marker) })

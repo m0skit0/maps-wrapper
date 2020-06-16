@@ -1,16 +1,18 @@
 package org.m0skit0.android.mapswrapper.di
 
 import org.koin.core.module.Module
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.m0skit0.android.mapswrapper.*
 
 internal object WrapperModelsModuleProvider : KoinModuleProvider {
+
+    val WITH_CAMERA_POSITION = named("WITH_CAMERA_POSITION")
+
     override fun module(): Module = module {
         factory { (google: com.google.android.gms.maps.model.CameraPosition?, huawei: com.huawei.hms.maps.model.CameraPosition?) ->
             CameraPosition(google, huawei)
         }
-        factory { CameraPosition.Builder() }
-        factory { (cameraPosition: CameraPosition) -> CameraPosition.Builder(cameraPosition) }
         factory { (google: com.google.android.gms.maps.UiSettings?, huawei: com.huawei.hms.maps.UiSettings?) ->
             UiSettings(google, huawei)
         }
@@ -28,9 +30,6 @@ internal object WrapperModelsModuleProvider : KoinModuleProvider {
         }
         factory { (google: com.google.android.gms.maps.model.Polygon?, huawei: com.huawei.hms.maps.model.Polygon?) ->
             Polygon(google, huawei)
-        }
-        factory { (google: com.google.android.gms.maps.model.GroundOverlay?, huawei: com.huawei.hms.maps.model.GroundOverlay?) ->
-            GroundOverlay(google, huawei)
         }
         factory { (google: com.google.android.gms.maps.model.GroundOverlay?, huawei: com.huawei.hms.maps.model.GroundOverlay?) ->
             GroundOverlay(google, huawei)

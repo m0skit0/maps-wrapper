@@ -7,5 +7,5 @@ class CustomCap(bitmapDescriptor: BitmapDescriptor, length: Float) : Cap(
     bitmapDescriptor.google?.run {
         koin().get<com.google.android.gms.maps.model.CustomCap> { parametersOf(this, length) }
     },
-    koin().get { parametersOf(bitmapDescriptor.huawei, length) }
+    koin().get<com.huawei.hms.maps.model.CustomCap> { parametersOf(bitmapDescriptor.huawei, length) }
 )
