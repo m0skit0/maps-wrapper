@@ -35,9 +35,11 @@ internal object ModelsModuleProvider : KoinModuleProvider {
         factory { (latLng1: LatLng, latLng2: LatLng) ->
             com.google.android.gms.maps.model.LatLngBounds(latLng1.google, latLng2.google)
         }
+        factory { com.google.android.gms.maps.model.LatLngBounds.Builder() }
         factory { (latLng1: LatLng, latLng2: LatLng) ->
             com.huawei.hms.maps.model.LatLngBounds(latLng1.huawei, latLng2.huawei)
         }
+        factory { com.huawei.hms.maps.model.LatLngBounds.Builder() }
         factory { com.google.android.gms.maps.model.MarkerOptions() }
         factory { com.huawei.hms.maps.model.MarkerOptions() }
         factory { com.google.android.gms.maps.model.PolygonOptions() }

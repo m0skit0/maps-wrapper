@@ -1,9 +1,9 @@
 package org.m0skit0.android.mapswrapper
 
 import org.koin.core.get
-import org.m0skit0.android.mapswrapper.di.KoinInterface
+import org.m0skit0.android.mapswrapper.di.MapsWrapperKoinComponent
 
-class CircleOptions : KoinInterface {
+class CircleOptions : MapsWrapperKoinComponent {
 
     internal var google: com.google.android.gms.maps.model.CircleOptions = get()
     internal var huawei: com.huawei.hms.maps.model.CircleOptions = get()

@@ -3,9 +3,9 @@ package org.m0skit0.android.mapswrapper
 import android.graphics.Bitmap
 import org.koin.core.get
 import org.koin.core.parameter.parametersOf
-import org.m0skit0.android.mapswrapper.di.KoinInterface
+import org.m0skit0.android.mapswrapper.di.MapsWrapperKoinComponent
 
-object BitmapDescriptorFactory : KoinInterface {
+object BitmapDescriptorFactory : MapsWrapperKoinComponent {
 
     const val HUE_RED = com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_RED
     const val HUE_ORANGE = com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_ORANGE

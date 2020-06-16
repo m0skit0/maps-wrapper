@@ -7,10 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import org.koin.core.get
+import org.koin.core.parameter.parametersOf
+import org.m0skit0.android.mapswrapper.di.MapsWrapperKoinComponent
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class SupportMapFragment : Fragment() {
+class SupportMapFragment : Fragment(), MapsWrapperKoinComponent {
 
     private val containedSupportMapFragment: Fragment by lazy {
         context?.run { mapFragmentFromResolverType(this, mapType) }
@@ -37,11 +40,9 @@ class SupportMapFragment : Fragment() {
 
     suspend fun mapAsync(): CommonMap =
         suspendCoroutine { continuation ->
-            object : OnMapReadyCallback {
-                override fun onMapReady(map: CommonMap) {
-                    continuation.resume(map)
-                }
-            }.let { callback -> getMapAsync(callback) }
+            getMapAsync {
+                continuation.resume(it)
+            }
         }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
@@ -75,7 +76,7 @@ class SupportMapFragment : Fragment() {
         containedSupportMapFragment as com.google.android.gms.maps.SupportMapFragment
 
     private fun googleGetMapAsync(callback: OnMapReadyCallback) {
-        googleMap().getMapAsync { CommonMap(it).let { commonMap ->  callback.onMapReady(commonMap) } }
+        googleMap().getMapAsync { callback.onMapReady(get { parametersOf(it) }) }
     }
 
     private fun isHuaweiMap(): Boolean = containedSupportMapFragment is com.huawei.hms.maps.SupportMapFragment
@@ -84,6 +85,6 @@ class SupportMapFragment : Fragment() {
         containedSupportMapFragment as com.huawei.hms.maps.SupportMapFragment
 
     private fun huaweiGetMapAsync(callback: OnMapReadyCallback) {
-        huaweiMap().getMapAsync { CommonMap(it).let { commonMap ->  callback.onMapReady(commonMap) } }
+        huaweiMap().getMapAsync { callback.onMapReady(get { parametersOf(it) }) }
     }
 }

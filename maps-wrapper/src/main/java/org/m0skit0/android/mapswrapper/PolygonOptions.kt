@@ -1,9 +1,12 @@
 package org.m0skit0.android.mapswrapper
 
-class PolygonOptions {
+import org.koin.core.get
+import org.m0skit0.android.mapswrapper.di.MapsWrapperKoinComponent
 
-    internal var google = com.google.android.gms.maps.model.PolygonOptions()
-    internal var huawei = com.huawei.hms.maps.model.PolygonOptions()
+class PolygonOptions : MapsWrapperKoinComponent {
+
+    internal var google: com.google.android.gms.maps.model.PolygonOptions = get()
+    internal var huawei: com.huawei.hms.maps.model.PolygonOptions = get()
 
     fun add(position: LatLng): PolygonOptions = apply {
         google = google.add(position.google)

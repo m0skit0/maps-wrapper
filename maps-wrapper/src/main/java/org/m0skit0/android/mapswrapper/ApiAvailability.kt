@@ -4,9 +4,9 @@ import android.content.Context
 import com.google.android.gms.common.GoogleApiAvailability
 import com.huawei.hms.api.HuaweiApiAvailability
 import org.koin.core.get
-import org.m0skit0.android.mapswrapper.di.KoinInterface
+import org.m0skit0.android.mapswrapper.di.MapsWrapperKoinComponent
 
-internal object ApiAvailability : KoinInterface {
+internal object ApiAvailability : MapsWrapperKoinComponent {
 
     private lateinit var context: Context
 

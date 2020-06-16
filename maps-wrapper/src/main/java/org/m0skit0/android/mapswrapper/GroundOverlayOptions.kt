@@ -1,9 +1,12 @@
 package org.m0skit0.android.mapswrapper
 
-class GroundOverlayOptions {
+import org.koin.core.get
+import org.m0skit0.android.mapswrapper.di.MapsWrapperKoinComponent
 
-    internal var google = com.google.android.gms.maps.model.GroundOverlayOptions()
-    internal var huawei = com.huawei.hms.maps.model.GroundOverlayOptions()
+class GroundOverlayOptions : MapsWrapperKoinComponent {
+
+    internal var google: com.google.android.gms.maps.model.GroundOverlayOptions = get()
+    internal var huawei: com.huawei.hms.maps.model.GroundOverlayOptions = get()
 
     fun image(bitmapDescriptor: BitmapDescriptor): GroundOverlayOptions = apply {
         bitmapDescriptor.google?.run { google = google.image(this) }

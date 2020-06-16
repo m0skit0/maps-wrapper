@@ -2,12 +2,12 @@ package org.m0skit0.android.mapswrapper
 
 import org.koin.core.get
 import org.koin.core.parameter.parametersOf
-import org.m0skit0.android.mapswrapper.di.KoinInterface
+import org.m0skit0.android.mapswrapper.di.MapsWrapperKoinComponent
 
 class CameraPosition internal constructor(
     internal val google: com.google.android.gms.maps.model.CameraPosition?,
     internal val huawei: com.huawei.hms.maps.model.CameraPosition?
-) : KoinInterface {
+) : MapsWrapperKoinComponent {
 
     val target: LatLng
         get() = google?.target?.let { get { parametersOf(it.latitude, it.longitude) } }
@@ -23,7 +23,7 @@ class CameraPosition internal constructor(
     val bearing: Float
         get() = google?.bearing ?: huawei?.bearing ?: throwUnableToResolveGoogleOrHuawei()
 
-    companion object : KoinInterface {
+    companion object : MapsWrapperKoinComponent {
         fun builder(): Builder = get()
         fun fromLatLngZoom(latLng: LatLng, zoom: Float): CameraPosition =
             get {
@@ -34,7 +34,7 @@ class CameraPosition internal constructor(
             }
     }
 
-    class Builder : KoinInterface {
+    class Builder : MapsWrapperKoinComponent {
 
         private var google: com.google.android.gms.maps.model.CameraPosition.Builder? = null
         private var huawei: com.huawei.hms.maps.model.CameraPosition.Builder? = null

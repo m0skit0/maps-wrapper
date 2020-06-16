@@ -1,9 +1,12 @@
 package org.m0skit0.android.mapswrapper
 
-class MarkerOptions {
+import org.koin.core.get
+import org.m0skit0.android.mapswrapper.di.MapsWrapperKoinComponent
 
-    internal var google = com.google.android.gms.maps.model.MarkerOptions()
-    internal var huawei = com.huawei.hms.maps.model.MarkerOptions()
+class MarkerOptions : MapsWrapperKoinComponent {
+
+    internal var google: com.google.android.gms.maps.model.MarkerOptions = get()
+    internal var huawei: com.huawei.hms.maps.model.MarkerOptions = get()
 
     fun position(position: LatLng): MarkerOptions = apply {
         google = google.position(position.google)

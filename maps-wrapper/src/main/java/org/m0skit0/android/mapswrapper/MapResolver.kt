@@ -5,6 +5,8 @@ import android.util.AttributeSet
 import android.widget.FrameLayout
 import androidx.annotation.AttrRes
 import androidx.fragment.app.Fragment
+import org.koin.core.parameter.parametersOf
+import org.m0skit0.android.mapswrapper.di.koin
 
 internal fun mapFragmentFromResolverType(context: Context, strategy: MapResolverStrategy): Fragment =
     when (strategy) {
@@ -16,13 +18,11 @@ internal fun mapFragmentFromResolverType(context: Context, strategy: MapResolver
             context.huaweiThenGoogle({ huaweiSupportMapFragment() }, { googleSupportMapFragment() })
     }
 
-private fun googleSupportMapFragment(): com.google.android.gms.maps.SupportMapFragment =
-    com.google.android.gms.maps.SupportMapFragment.newInstance()
+private fun googleSupportMapFragment(): com.google.android.gms.maps.SupportMapFragment = koin().get()
 
 private fun Context.isGoogleAvailable(): Boolean = ApiAvailability.isGoogleAvailable(this)
 
-private fun huaweiSupportMapFragment(): com.huawei.hms.maps.SupportMapFragment =
-    com.huawei.hms.maps.SupportMapFragment.newInstance()
+private fun huaweiSupportMapFragment(): com.huawei.hms.maps.SupportMapFragment = koin().get()
 
 private fun Context.isHuaweiAvailable(): Boolean = ApiAvailability.isHuaweiAvailable(this)
 
@@ -37,10 +37,10 @@ internal fun mapViewFromResolverType(context: Context, attr: AttributeSet?, @Att
     }
 
 private fun Context.googleMapView(attr: AttributeSet?, @AttrRes defStyleAttr: Int): com.google.android.gms.maps.MapView =
-    com.google.android.gms.maps.MapView(this, attr, defStyleAttr)
+    koin().get { parametersOf(this, attr, defStyleAttr) }
 
 private fun Context.huaweiMapView(attr: AttributeSet?, @AttrRes defStyleAttr: Int): com.huawei.hms.maps.MapView =
-    com.huawei.hms.maps.MapView(this, attr, defStyleAttr)
+    koin().get { parametersOf(this, attr, defStyleAttr) }
 
 private fun <T> Context.googleThenHuawei(google: Context.() -> T, huawei: Context.() -> T): T =
     when {

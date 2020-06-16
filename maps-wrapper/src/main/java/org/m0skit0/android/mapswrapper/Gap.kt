@@ -1,6 +1,9 @@
 package org.m0skit0.android.mapswrapper
 
+import org.koin.core.parameter.parametersOf
+import org.m0skit0.android.mapswrapper.di.koin
+
 class Gap(length: Float) : PatternItem(
-    com.google.android.gms.maps.model.Gap(length),
-    com.huawei.hms.maps.model.Gap(length)
+    koin().get { parametersOf(length) },
+    koin().get { parametersOf(length) }
 )

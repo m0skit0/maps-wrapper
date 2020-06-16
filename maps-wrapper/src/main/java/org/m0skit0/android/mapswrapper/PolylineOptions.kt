@@ -1,9 +1,12 @@
 package org.m0skit0.android.mapswrapper
 
-class PolylineOptions {
+import org.koin.core.get
+import org.m0skit0.android.mapswrapper.di.MapsWrapperKoinComponent
 
-    internal var google = com.google.android.gms.maps.model.PolylineOptions()
-    internal var huawei = com.huawei.hms.maps.model.PolylineOptions()
+class PolylineOptions : MapsWrapperKoinComponent {
+
+    internal var google: com.google.android.gms.maps.model.PolylineOptions = get()
+    internal var huawei: com.huawei.hms.maps.model.PolylineOptions = get()
 
     fun add(position: LatLng?): PolylineOptions = apply {
         google = google.add(position?.google)

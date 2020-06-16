@@ -6,10 +6,13 @@ import android.util.AttributeSet
 import android.widget.FrameLayout
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
+import org.koin.core.get
+import org.koin.core.parameter.parametersOf
+import org.m0skit0.android.mapswrapper.di.MapsWrapperKoinComponent
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class MapView : FrameLayout {
+class MapView : FrameLayout, MapsWrapperKoinComponent {
 
     private lateinit var mapView: FrameLayout
 
@@ -73,19 +76,17 @@ class MapView : FrameLayout {
 
     suspend fun mapAsync(): CommonMap =
         suspendCoroutine { continuation ->
-            object : OnMapReadyCallback {
-                override fun onMapReady(map: CommonMap) {
-                    continuation.resume(map)
-                }
-            }.let { callback -> getMapAsync(callback) }
+            getMapAsync {
+                continuation.resume(it)
+            }
         }
 
     private fun googleGetMapAsync(callback: OnMapReadyCallback) {
-        googleMap().getMapAsync { CommonMap(it).let { commonMap -> callback.onMapReady(commonMap) } }
+        googleMap().getMapAsync { callback.onMapReady(get { parametersOf(it) }) }
     }
 
     private fun huaweiGetMapAsync(callback: OnMapReadyCallback) {
-        huaweiMap().getMapAsync { CommonMap(it).let { commonMap -> callback.onMapReady(commonMap) } }
+        huaweiMap().getMapAsync { callback.onMapReady(get { parametersOf(it) }) }
     }
 
     fun onCreate(bundle: Bundle?) {

@@ -5,11 +5,11 @@ import com.google.android.gms.maps.GoogleMap
 import com.huawei.hms.maps.HuaweiMap
 import org.koin.core.get
 import org.koin.core.parameter.parametersOf
-import org.m0skit0.android.mapswrapper.di.KoinInterface
+import org.m0skit0.android.mapswrapper.di.MapsWrapperKoinComponent
 import org.m0skit0.android.mapswrapper.di.getGoogle
 import org.m0skit0.android.mapswrapper.di.getHuawei
 
-class CommonMap(private val map: Any) : KoinInterface {
+class CommonMap(private val map: Any) : MapsWrapperKoinComponent {
 
     private val google: GoogleMap
         get() = map as GoogleMap

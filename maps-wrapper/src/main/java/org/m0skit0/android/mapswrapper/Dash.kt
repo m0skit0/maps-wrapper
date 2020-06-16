@@ -1,6 +1,9 @@
 package org.m0skit0.android.mapswrapper
 
+import org.koin.core.parameter.parametersOf
+import org.m0skit0.android.mapswrapper.di.koin
+
 class Dash(length: Float) : PatternItem(
-    com.google.android.gms.maps.model.Dash(length),
-    com.huawei.hms.maps.model.Dash(length)
+    koin().get { parametersOf(length) },
+    koin().get { parametersOf(length) }
 )

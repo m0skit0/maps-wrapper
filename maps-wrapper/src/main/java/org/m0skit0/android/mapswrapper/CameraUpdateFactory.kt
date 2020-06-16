@@ -2,9 +2,9 @@ package org.m0skit0.android.mapswrapper
 
 import org.koin.core.get
 import org.koin.core.parameter.parametersOf
-import org.m0skit0.android.mapswrapper.di.KoinInterface
+import org.m0skit0.android.mapswrapper.di.MapsWrapperKoinComponent
 
-object CameraUpdateFactory : KoinInterface {
+object CameraUpdateFactory : MapsWrapperKoinComponent {
 
     fun zoomIn(): CameraUpdate {
         val google = executeOrNull { com.google.android.gms.maps.CameraUpdateFactory.zoomIn() }

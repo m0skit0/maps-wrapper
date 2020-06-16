@@ -4,7 +4,11 @@ import org.koin.core.Koin
 import org.koin.core.KoinApplication
 
 private val modules = listOf(
-    ApiAvailabilityModuleProvider
+    ApiAvailabilityModuleProvider,
+    CallbackModuleProvider,
+    MapModuleProvider,
+    ModelsModuleProvider,
+    WrapperModelsModuleProvider
 )
 
 private val koinContext: KoinApplication by lazy {
