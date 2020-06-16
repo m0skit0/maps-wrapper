@@ -11,7 +11,7 @@ class Projection(
 ) : MapsWrapperKoinComponent {
 
     fun fromScreenLocation(point: Point): LatLng =
-        google?.fromScreenLocation(point)?.let { get { parametersOf(it.latitude, it.longitude) } }
-            ?: huawei?.fromScreenLocation(point)?.let { get { parametersOf(it.latitude, it.longitude) } }
+        google?.fromScreenLocation(point)?.let { get<LatLng> { parametersOf(it.latitude, it.longitude) } }
+            ?: huawei?.fromScreenLocation(point)?.let { get<LatLng> { parametersOf(it.latitude, it.longitude) } }
             ?: LatLng(0.0, 0.0)
 }

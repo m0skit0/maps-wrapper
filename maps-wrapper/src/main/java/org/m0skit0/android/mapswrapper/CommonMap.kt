@@ -152,22 +152,22 @@ class CommonMap(private val map: Any) : MapsWrapperKoinComponent {
 
     fun addCircle(circleOptions: CircleOptions): Circle =
         when {
-            isGoogle() -> google.addCircle(circleOptions.google).let { getGoogle(it) }
-            isHuawei() -> huawei.addCircle(circleOptions.huawei).let { getHuawei(it) }
+            isGoogle() -> getGoogle(google.addCircle(circleOptions.google))
+            isHuawei() -> getHuawei(huawei.addCircle(circleOptions.huawei))
             else -> throwUnableToResolveGoogleOrHuawei()
         }
 
     fun addMarker(markerOptions: MarkerOptions): Marker =
         when {
-            isGoogle() -> google.addMarker(markerOptions.google).let { getGoogle(it) }
-            isHuawei() -> huawei.addMarker(markerOptions.huawei).let { getHuawei(it) }
+            isGoogle() -> getGoogle(google.addMarker(markerOptions.google))
+            isHuawei() -> getHuawei(huawei.addMarker(markerOptions.huawei))
             else -> throwUnableToResolveGoogleOrHuawei()
         }
 
     fun addPolyline(polylineOptions: PolylineOptions): Polyline =
         when {
-            isGoogle() -> google.addPolyline(polylineOptions.google).let { getGoogle(it) }
-            isHuawei() -> huawei.addPolyline(polylineOptions.huawei).let { getHuawei(it) }
+            isGoogle() -> getGoogle(google.addPolyline(polylineOptions.google))
+            isHuawei() -> getHuawei(huawei.addPolyline(polylineOptions.huawei))
             else -> throwUnableToResolveGoogleOrHuawei()
         }
 

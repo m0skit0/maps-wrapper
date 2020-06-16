@@ -17,10 +17,10 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation 'com.google.android.gms:play-services-maps:17.0.0'
-    implementation 'com.huawei.hms:maps:4.0.1.302'
+    api 'com.google.android.gms:play-services-maps:17.0.0'
+    api 'com.huawei.hms:maps:4.0.1.302'
 
-    implementation 'org.koin:koin-android:2.1.5'
+    api 'org.koin:koin-android:2.1.5'
 
     testImplementation 'junit:junit:4.12'
 }

@@ -10,8 +10,8 @@ class CameraPosition internal constructor(
 ) : MapsWrapperKoinComponent {
 
     val target: LatLng
-        get() = google?.target?.let { get { parametersOf(it.latitude, it.longitude) } }
-            ?: huawei?.target?.let { get { parametersOf(it.latitude, it.longitude) } }
+        get() = google?.target?.let { get<LatLng> { parametersOf(it.latitude, it.longitude) } }
+            ?: huawei?.target?.let { get<LatLng> { parametersOf(it.latitude, it.longitude) } }
             ?: throwUnableToResolveGoogleOrHuawei()
 
     val zoom: Float
