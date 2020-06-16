@@ -7,7 +7,8 @@ private val modules = listOf(
     ApiAvailabilityModuleProvider,
     CallbackModuleProvider,
     MapModuleProvider,
-    ModelsModuleProvider,
+    GoogleModelsModuleProvider,
+    HuaweiModelsModuleProvider,
     WrapperModelsModuleProvider
 )
 
