@@ -21,6 +21,9 @@ dependencies {
     api 'com.huawei.hms:maps:4.0.1.302'
 
     api 'org.koin:koin-android:2.1.5'
+    testImplementation 'org.koin:koin-test:2.1.5'
 
     testImplementation 'junit:junit:4.12'
+    testImplementation 'io.mockk:mockk:1.9.3'
+    testImplementation 'io.kotlintest:kotlintest-runner-junit4:3.4.2'
 }
