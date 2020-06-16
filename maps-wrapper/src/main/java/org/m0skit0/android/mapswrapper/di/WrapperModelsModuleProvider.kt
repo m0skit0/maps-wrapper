@@ -42,5 +42,8 @@ internal object WrapperModelsModuleProvider : KoinModuleProvider {
         factory { (google: com.google.android.gms.maps.model.BitmapDescriptor?, huawei: com.huawei.hms.maps.model.BitmapDescriptor?) ->
             BitmapDescriptor(google, huawei)
         }
+        factory { (google: com.google.android.gms.maps.CameraUpdate?, huawei: com.huawei.hms.maps.CameraUpdate?) ->
+            CameraUpdate(google, huawei)
+        }
     }
 }
