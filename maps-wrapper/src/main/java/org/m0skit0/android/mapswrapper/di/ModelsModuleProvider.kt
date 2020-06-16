@@ -4,6 +4,7 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 import org.m0skit0.android.mapswrapper.LatLng
 
+// TODO Refactor in Huawei/Google smaller modules
 internal object ModelsModuleProvider : KoinModuleProvider {
     override fun module(): Module = module {
         factory { com.google.android.gms.maps.model.ButtCap() }
@@ -45,5 +46,13 @@ internal object ModelsModuleProvider : KoinModuleProvider {
         factory { com.huawei.hms.maps.model.RoundCap() }
         factory { com.google.android.gms.maps.model.SquareCap() }
         factory { com.huawei.hms.maps.model.SquareCap() }
+        factory { com.google.android.gms.maps.model.CameraPosition.Builder() }
+        factory { (cameraPosition: com.google.android.gms.maps.model.CameraPosition) ->
+            com.google.android.gms.maps.model.CameraPosition.Builder(cameraPosition)
+        }
+        factory { com.huawei.hms.maps.model.CameraPosition.Builder() }
+        factory { (cameraPosition: com.huawei.hms.maps.model.CameraPosition) ->
+            com.huawei.hms.maps.model.CameraPosition.Builder(cameraPosition)
+        }
     }
 }
