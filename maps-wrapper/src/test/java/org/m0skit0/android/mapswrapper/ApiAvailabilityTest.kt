@@ -32,8 +32,8 @@ class ApiAvailabilityTest : AutoCloseKoinTest() {
         MockKAnnotations.init(this)
         koin().loadModules(listOf(
             module {
-                factory(override = true) { mockHuaweiApiAvailability }
-                factory(override = true) { mockGoogleApiAvailability }
+                single(override = true) { mockHuaweiApiAvailability }
+                single(override = true) { mockGoogleApiAvailability }
             }
         ))
         every { mockContext.applicationContext } returns mockk()
