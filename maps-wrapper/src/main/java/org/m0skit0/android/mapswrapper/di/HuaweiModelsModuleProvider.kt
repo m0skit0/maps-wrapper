@@ -2,10 +2,14 @@ package org.m0skit0.android.mapswrapper.di
 
 import com.huawei.hms.maps.model.*
 import org.koin.core.module.Module
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.m0skit0.android.mapswrapper.LatLng
 
 object HuaweiModelsModuleProvider : KoinModuleProvider {
+
+    val WITH_CAMERA_POSITION = named("WITH_CAMERA_POSITION")
+
     override fun module(): Module = module {
         factory { ButtCap() }
         factory { CircleOptions() }
@@ -22,6 +26,6 @@ object HuaweiModelsModuleProvider : KoinModuleProvider {
         factory { RoundCap() }
         factory { SquareCap() }
         factory { CameraPosition.Builder() }
-        factory { (cameraPosition: CameraPosition) -> CameraPosition.Builder(cameraPosition) }
+        factory(WITH_CAMERA_POSITION) { (cameraPosition: CameraPosition) -> CameraPosition.Builder(cameraPosition) }
     }
 }

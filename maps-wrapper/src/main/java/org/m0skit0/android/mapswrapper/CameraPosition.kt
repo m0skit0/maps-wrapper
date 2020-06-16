@@ -2,6 +2,8 @@ package org.m0skit0.android.mapswrapper
 
 import org.koin.core.get
 import org.koin.core.parameter.parametersOf
+import org.m0skit0.android.mapswrapper.di.GoogleModelsModuleProvider
+import org.m0skit0.android.mapswrapper.di.HuaweiModelsModuleProvider
 import org.m0skit0.android.mapswrapper.di.MapsWrapperKoinComponent
 
 class CameraPosition internal constructor(
@@ -46,10 +48,10 @@ class CameraPosition internal constructor(
 
         constructor(cameraPosition: CameraPosition) {
             cameraPosition.google?.run {
-                google = get { parametersOf(this) }
+                google = get(GoogleModelsModuleProvider.WITH_CAMERA_POSITION) { parametersOf(this) }
             }
             cameraPosition.huawei?.run {
-                huawei = get { parametersOf(this) }
+                huawei = get(HuaweiModelsModuleProvider.WITH_CAMERA_POSITION) { parametersOf(this) }
             }
         }
 
