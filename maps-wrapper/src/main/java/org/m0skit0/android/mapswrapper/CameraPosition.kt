@@ -26,7 +26,11 @@ class CameraPosition internal constructor(
         get() = google?.bearing ?: huawei?.bearing ?: throwUnableToResolveGoogleOrHuawei()
 
     companion object : MapsWrapperKoinComponent {
+
         fun builder(): Builder = get()
+
+        // NOTE: This will always return Google values.
+        // However it is not relevant because LatLng is instantiated from its components and zoom is Float.
         fun fromLatLngZoom(latLng: LatLng, zoom: Float): CameraPosition =
             get {
                 parametersOf(
