@@ -79,4 +79,9 @@ class Marker internal constructor(
     fun showInfoWindow() {
         google?.showInfoWindow() ?: huawei?.showInfoWindow()
     }
+
+    fun remove() {
+        google?.remove()
+        huawei?.remove()
+    }
 }
