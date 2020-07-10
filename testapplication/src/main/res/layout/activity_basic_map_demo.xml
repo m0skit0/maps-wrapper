@@ -15,7 +15,7 @@
     limitations under the License.
  -->
 <!--
-    app:type defines what map this fragment should show. Possible values are:
+    app:wrappedMapType defines what map this fragment should show. Possible values are:
     auto                Checks Google Maps, if not available falls back to Huawei Maps
     google_then_huawei  Same as auto
     huawei_then_google  Checks Huawei Maps, if not available falls back to Google Maps
@@ -29,7 +29,7 @@
     android:name="org.m0skit0.android.mapswrapper.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:type="auto"
+    app:wrappedMapType="auto"
     tools:context=".demos.BasicMapDemoActivity">
 
 </fragment>

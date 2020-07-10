@@ -51,7 +51,7 @@ class SupportMapFragment : Fragment() {
         super.onInflate(context, attrs, savedInstanceState)
         context?.obtainStyledAttributes(attrs, R.styleable.mapResolution)
             ?.apply {
-                getText(R.styleable.mapResolution_type)
+                getText(R.styleable.mapResolution_wrappedMapType)
                     ?.let { mapType = MapResolverStrategy.fromValue(it.toString())  }
             }
             ?.recycle()

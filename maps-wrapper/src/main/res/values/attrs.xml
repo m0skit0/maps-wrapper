@@ -2,6 +2,6 @@
 <resources>
     <declare-styleable name="mapResolution">
         <!-- TODO Consider using enum here -->
-        <attr name="type" format="string"/>
+        <attr name="wrappedMapType" format="string"/>
     </declare-styleable>
 </resources>

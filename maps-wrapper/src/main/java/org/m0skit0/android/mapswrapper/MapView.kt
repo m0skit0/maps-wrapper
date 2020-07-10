@@ -40,7 +40,7 @@ class MapView : FrameLayout {
             defStyleAttr,
             defStyleRes
         ).apply {
-                val strategy = getText(R.styleable.mapResolution_type)
+                val strategy = getText(R.styleable.mapResolution_wrappedMapType)
                     ?.let { MapResolverStrategy.fromValue(it.toString())  }
                     ?: MapResolverStrategy.default
                 mapView = mapViewFromResolverType(context, attr, defStyleAttr, strategy)

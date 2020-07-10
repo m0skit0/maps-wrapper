@@ -22,7 +22,7 @@ Here's an activity layout with a `SupportMapFragment`:
     android:name="org.m0skit0.android.mapswrapper.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:type="auto"
+    app:wrappedMapType="auto"
     tools:context=".demos.BasicMapDemoActivity">
 </fragment>
 ```
@@ -64,7 +64,7 @@ class BasicMapDemoActivity : AppCompatActivity(), OnMapReadyCallback {
 }
 ```
 
-Note the `app:type="auto"` attribute in the fragment layout.
+Note the `app:wrappedMapType="auto"` attribute in the fragment layout.
 This defines the map resolution strategy. Currently 5 strategies are available:
 
 - `auto`: same as `google_then_huawei`.
