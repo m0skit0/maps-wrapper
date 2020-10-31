@@ -26,19 +26,19 @@ class SupportMapFragment : Fragment() {
         }
     }
 
-    fun getMapAsync(callback: (CommonMap) -> Unit) {
+    fun getMapAsync(callback: (CommonMap?) -> Unit) {
         val onMapReadyCallback = object : OnMapReadyCallback {
-            override fun onMapReady(map: CommonMap) {
+            override fun onMapReady(map: CommonMap?) {
                 callback(map)
             }
         }
         getMapAsync(onMapReadyCallback)
     }
 
-    suspend fun mapAsync(): CommonMap =
+    suspend fun mapAsync(): CommonMap? =
         suspendCoroutine { continuation ->
             object : OnMapReadyCallback {
-                override fun onMapReady(map: CommonMap) {
+                override fun onMapReady(map: CommonMap?) {
                     continuation.resume(map)
                 }
             }.let { callback -> getMapAsync(callback) }

@@ -403,9 +403,9 @@ class CommonMap(private val map: Any) {
         )
     }
 
-    fun setOnMarkerClickListener(listener: (Marker) -> Boolean) {
+    fun setOnMarkerClickListener(listener: (Marker?) -> Boolean) {
         setOnMarkerClickListener(object : OnMarkerClickListener {
-            override fun onMarkerClick(marker: Marker): Boolean = listener(marker)
+            override fun onMarkerClick(marker: Marker?): Boolean = listener(marker)
         })
     }
 
@@ -564,7 +564,7 @@ class CommonMap(private val map: Any) {
     }
 
     interface OnMarkerClickListener {
-        fun onMarkerClick(marker: Marker): Boolean
+        fun onMarkerClick(marker: Marker?): Boolean
     }
 
     interface OnInfoWindowCloseListener {
