@@ -25,7 +25,12 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.demos.maps.R
-import org.m0skit0.android.mapswrapper.*
+import org.m0skit0.android.mapswrapper.CameraUpdateFactory
+import org.m0skit0.android.mapswrapper.CommonMap
+import org.m0skit0.android.mapswrapper.SupportMapFragment
+import org.m0skit0.android.mapswrapper.model.LatLng
+import org.m0skit0.android.mapswrapper.model.LatLngBounds
+import org.m0skit0.android.mapswrapper.model.MarkerOptions
 
 /**
  * This shows how to use setPadding to allow overlays that obscure part of the map without

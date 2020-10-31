@@ -26,6 +26,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.demos.maps.R
 import org.m0skit0.android.mapswrapper.*
+import org.m0skit0.android.mapswrapper.model.CameraPosition
+import org.m0skit0.android.mapswrapper.model.LatLng
+import org.m0skit0.android.mapswrapper.model.PolylineOptions
 
 /**
  * This shows how to change the camera position for the map.

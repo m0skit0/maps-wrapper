@@ -25,6 +25,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.demos.maps.R
 import org.m0skit0.android.mapswrapper.*
+import org.m0skit0.android.mapswrapper.model.*
 import java.util.*
 
     /**

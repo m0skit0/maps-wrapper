@@ -8,7 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.demos.maps.R
 import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.*
-import org.m0skit0.android.mapswrapper.*
+import org.m0skit0.android.mapswrapper.CameraUpdateFactory
+import org.m0skit0.android.mapswrapper.CommonMap
+import org.m0skit0.android.mapswrapper.SupportMapFragment
+import org.m0skit0.android.mapswrapper.model.LatLng
+import org.m0skit0.android.mapswrapper.model.MarkerOptions
+import org.m0skit0.android.mapswrapper.model.PolylineOptions
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

@@ -107,7 +107,7 @@ class UiSettingsDemoActivity :
     @AfterPermissionGranted(REQUEST_CODE_LOCATION)
     private fun enableMyLocation() {
         if (hasLocationPermission()) {
-            map.isMyLocationEnabled = true
+            map.setMyLocationEnabled(true)
         } else {
             EasyPermissions.requestPermissions(this, getString(R.string.location),
                     REQUEST_CODE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION

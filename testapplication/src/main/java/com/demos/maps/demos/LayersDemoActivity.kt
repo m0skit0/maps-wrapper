@@ -139,7 +139,7 @@ class LayersDemoActivity :
         // if this box is checked, must check for permission before enabling the My Location layer
         myLocationCheckbox.setOnClickListener {
             if (!myLocationCheckbox.isChecked) {
-                this.map.isMyLocationEnabled = false
+                this.map.setMyLocationEnabled(false)
             } else {
                 enableMyLocation()
             }
@@ -153,7 +153,7 @@ class LayersDemoActivity :
         val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
 
         if (EasyPermissions.hasPermissions(this, *permissions)) {
-            map.isMyLocationEnabled = true
+            map.setMyLocationEnabled(true)
 
         } else {
             // if permissions are not currently granted, request permissions

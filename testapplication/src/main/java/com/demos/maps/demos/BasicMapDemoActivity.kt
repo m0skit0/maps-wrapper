@@ -19,7 +19,12 @@ package com.demos.maps.demos
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.demos.maps.R
-import org.m0skit0.android.mapswrapper.*
+import org.m0skit0.android.mapswrapper.CameraUpdateFactory
+import org.m0skit0.android.mapswrapper.CommonMap
+import org.m0skit0.android.mapswrapper.OnMapReadyCallback
+import org.m0skit0.android.mapswrapper.SupportMapFragment
+import org.m0skit0.android.mapswrapper.model.LatLng
+import org.m0skit0.android.mapswrapper.model.MarkerOptions
 
 /**
  * This shows how to create a simple activity with a map and a marker on the map.

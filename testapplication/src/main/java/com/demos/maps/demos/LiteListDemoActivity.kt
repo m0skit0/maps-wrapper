@@ -27,6 +27,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.demos.maps.R
 import org.m0skit0.android.mapswrapper.*
 import org.m0skit0.android.mapswrapper.CommonMap.Companion.MAP_TYPE_NORMAL
+import org.m0skit0.android.mapswrapper.model.LatLng
+import org.m0skit0.android.mapswrapper.model.MarkerOptions
 
 /**
  * This shows to include a map in lite mode in a RecyclerView.
@@ -78,8 +80,8 @@ class LiteListDemoActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        recyclerView.layoutManager = when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        recyclerView.layoutManager = when (item.itemId) {
             R.id.layout_linear -> linearLayoutManager
             R.id.layout_grid -> gridLayoutManager
             else -> return false

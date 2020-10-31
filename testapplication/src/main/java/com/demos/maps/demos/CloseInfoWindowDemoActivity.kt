@@ -20,7 +20,13 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.demos.maps.R
 import com.demos.maps.demos.OnMapAndViewReadyListener.OnGlobalLayoutAndMapReadyListener
-import org.m0skit0.android.mapswrapper.*
+import org.m0skit0.android.mapswrapper.CameraUpdateFactory
+import org.m0skit0.android.mapswrapper.CommonMap
+import org.m0skit0.android.mapswrapper.SupportMapFragment
+import org.m0skit0.android.mapswrapper.model.LatLng
+import org.m0skit0.android.mapswrapper.model.LatLngBounds
+import org.m0skit0.android.mapswrapper.model.Marker
+import org.m0skit0.android.mapswrapper.model.MarkerOptions
 
 /**
  * This shows how to close the info window when the currently selected marker is re-tapped.

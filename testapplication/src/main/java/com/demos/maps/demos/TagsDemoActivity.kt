@@ -21,7 +21,11 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.demos.maps.R
-import org.m0skit0.android.mapswrapper.*
+import org.m0skit0.android.mapswrapper.BitmapDescriptorFactory
+import org.m0skit0.android.mapswrapper.CameraUpdateFactory
+import org.m0skit0.android.mapswrapper.CommonMap
+import org.m0skit0.android.mapswrapper.SupportMapFragment
+import org.m0skit0.android.mapswrapper.model.*
 
 /**
  * This shows how to use setTag/getTag on API objects.

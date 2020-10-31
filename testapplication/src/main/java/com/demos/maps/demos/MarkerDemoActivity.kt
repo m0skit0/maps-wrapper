@@ -36,7 +36,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import com.demos.maps.R
-import org.m0skit0.android.mapswrapper.*
+import org.m0skit0.android.mapswrapper.BitmapDescriptorFactory
+import org.m0skit0.android.mapswrapper.CameraUpdateFactory
+import org.m0skit0.android.mapswrapper.CommonMap
+import org.m0skit0.android.mapswrapper.SupportMapFragment
+import org.m0skit0.android.mapswrapper.model.*
 import java.util.*
 import kotlin.math.cos
 import kotlin.math.sin
@@ -308,7 +312,8 @@ class MarkerDemoActivity :
         // place markers for each of the defined locations
         placeDetailsMap.keys.map {
             with(placeDetailsMap.getValue(it)) {
-                map.addMarker(MarkerOptions()
+                map.addMarker(
+                    MarkerOptions()
                         .position(position)
                         .title(title)
                         .snippet(snippet)
