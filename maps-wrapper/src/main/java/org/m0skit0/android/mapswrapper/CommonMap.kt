@@ -1,8 +1,10 @@
 package org.m0skit0.android.mapswrapper
 
 import android.view.View
+import androidx.annotation.RequiresPermission
 import com.google.android.gms.maps.GoogleMap
 import com.huawei.hms.maps.HuaweiMap
+import org.m0skit0.android.mapswrapper.model.*
 
 class CommonMap(private val map: Any) {
 
@@ -18,15 +20,6 @@ class CommonMap(private val map: Any) {
             googleOrHuawei(
                 { mapType = value },
                 { mapType = value }
-            )
-        }
-
-    var isMyLocationEnabled: Boolean
-        get() = googleOrHuawei({ isMyLocationEnabled }, { isMyLocationEnabled })
-        set(value) {
-            googleOrHuawei(
-                { isMyLocationEnabled = value },
-                { isMyLocationEnabled = value }
             )
         }
 
@@ -89,6 +82,16 @@ class CommonMap(private val map: Any) {
             else -> throwUnableToResolveGoogleOrHuawei()
         }
 
+    @RequiresPermission(anyOf = ["android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION"])
+    fun setMyLocationEnabled(isEnabled: Boolean) {
+        googleOrHuawei(
+            { isMyLocationEnabled = isEnabled },
+            { isMyLocationEnabled = isEnabled }
+        )
+    }
+
+    fun isMyLocationEnabled(): Boolean = googleOrHuawei({ isMyLocationEnabled }, { isMyLocationEnabled })
+
     fun clear() {
         googleOrHuawei({ clear() }, { clear() })
     }
@@ -116,6 +119,7 @@ class CommonMap(private val map: Any) {
                         override fun onFinish() {
                             callback?.onFinish()
                         }
+
                         override fun onCancel() {
                             callback?.onCancel()
                         }
@@ -128,6 +132,7 @@ class CommonMap(private val map: Any) {
                         override fun onFinish() {
                             callback?.onFinish()
                         }
+
                         override fun onCancel() {
                             callback?.onCancel()
                         }
@@ -146,6 +151,7 @@ class CommonMap(private val map: Any) {
                     override fun onFinish() {
                         callback?.onFinish()
                     }
+
                     override fun onCancel() {
                         callback?.onCancel()
                     }
@@ -158,6 +164,7 @@ class CommonMap(private val map: Any) {
                     override fun onFinish() {
                         callback?.onFinish()
                     }
+
                     override fun onCancel() {
                         callback?.onCancel()
                     }
@@ -219,6 +226,7 @@ class CommonMap(private val map: Any) {
                 setInfoWindowAdapter(object : GoogleMap.InfoWindowAdapter {
                     override fun getInfoContents(marker: com.google.android.gms.maps.model.Marker?): View? =
                         adapter.getInfoContents(Marker(marker, null))
+
                     override fun getInfoWindow(marker: com.google.android.gms.maps.model.Marker?): View? =
                         adapter.getInfoWindow(Marker(marker, null))
                 })
@@ -227,6 +235,7 @@ class CommonMap(private val map: Any) {
                 setInfoWindowAdapter(object : HuaweiMap.InfoWindowAdapter {
                     override fun getInfoContents(marker: com.huawei.hms.maps.model.Marker?): View? =
                         adapter.getInfoContents(Marker(null, marker))
+
                     override fun getInfoWindow(marker: com.huawei.hms.maps.model.Marker?): View? =
                         adapter.getInfoWindow(Marker(null, marker))
                 })
@@ -235,7 +244,9 @@ class CommonMap(private val map: Any) {
     }
 
     fun setContentDescription(description: String) {
-        googleOrHuawei({ setContentDescription(description) }, { setContentDescription(description) })
+        googleOrHuawei(
+            { setContentDescription(description) },
+            { setContentDescription(description) })
     }
 
     fun setOnMapClickListener(listener: OnMapClickListener) {
@@ -255,8 +266,26 @@ class CommonMap(private val map: Any) {
 
     fun setOnMapLongClickListener(listener: OnMapLongClickListener) {
         googleOrHuawei(
-            { setOnMapLongClickListener { listener.onMapLongClick(LatLng(it.latitude, it.longitude)) } },
-            { setOnMapLongClickListener { listener.onMapLongClick(LatLng(it.latitude, it.longitude)) } }
+            {
+                setOnMapLongClickListener {
+                    listener.onMapLongClick(
+                        LatLng(
+                            it.latitude,
+                            it.longitude
+                        )
+                    )
+                }
+            },
+            {
+                setOnMapLongClickListener {
+                    listener.onMapLongClick(
+                        LatLng(
+                            it.latitude,
+                            it.longitude
+                        )
+                    )
+                }
+            }
         )
     }
 
@@ -311,9 +340,11 @@ class CommonMap(private val map: Any) {
                     override fun onMarkerDragEnd(marker: com.google.android.gms.maps.model.Marker?) {
                         listener.onMarkerDragEnd(Marker(marker, null))
                     }
+
                     override fun onMarkerDragStart(marker: com.google.android.gms.maps.model.Marker?) {
                         listener.onMarkerDragStart(Marker(marker, null))
                     }
+
                     override fun onMarkerDrag(marker: com.google.android.gms.maps.model.Marker?) {
                         listener.onMarkerDragStart(Marker(marker, null))
                     }
@@ -324,9 +355,11 @@ class CommonMap(private val map: Any) {
                     override fun onMarkerDragEnd(marker: com.huawei.hms.maps.model.Marker?) {
                         listener.onMarkerDragEnd(Marker(null, marker))
                     }
+
                     override fun onMarkerDragStart(marker: com.huawei.hms.maps.model.Marker?) {
                         listener.onMarkerDragStart(Marker(null, marker))
                     }
+
                     override fun onMarkerDrag(marker: com.huawei.hms.maps.model.Marker?) {
                         listener.onMarkerDragStart(Marker(null, marker))
                     }
@@ -456,8 +489,26 @@ class CommonMap(private val map: Any) {
 
     fun setOnGroundOverlayClickListener(listener: OnGroundOverlayClickListener) {
         googleOrHuawei(
-            { setOnGroundOverlayClickListener { listener.onGroundOverlayClick(GroundOverlay(it, null)) } },
-            { setOnGroundOverlayClickListener { listener.onGroundOverlayClick(GroundOverlay(null, it)) } }
+            {
+                setOnGroundOverlayClickListener {
+                    listener.onGroundOverlayClick(
+                        GroundOverlay(
+                            it,
+                            null
+                        )
+                    )
+                }
+            },
+            {
+                setOnGroundOverlayClickListener {
+                    listener.onGroundOverlayClick(
+                        GroundOverlay(
+                            null,
+                            it
+                        )
+                    )
+                }
+            }
         )
     }
 

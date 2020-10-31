@@ -1,1 +1,4 @@
-<manifest package="org.m0skit0.android.mapswrapper" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.m0skit0.android.mapswrapper" >
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+</manifest>

@@ -1,6 +1,7 @@
 package org.m0skit0.android.mapswrapper
 
 import android.graphics.Bitmap
+import org.m0skit0.android.mapswrapper.model.BitmapDescriptor
 
 object BitmapDescriptorFactory {
 

@@ -1,4 +1,4 @@
-package org.m0skit0.android.mapswrapper
+package org.m0skit0.android.mapswrapper.model
 
 class Gap(length: Float) : PatternItem(
     com.google.android.gms.maps.model.Gap(length),

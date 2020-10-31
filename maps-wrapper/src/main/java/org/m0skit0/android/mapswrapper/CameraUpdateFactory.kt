@@ -1,5 +1,9 @@
 package org.m0skit0.android.mapswrapper
 
+import org.m0skit0.android.mapswrapper.model.CameraPosition
+import org.m0skit0.android.mapswrapper.model.LatLng
+import org.m0skit0.android.mapswrapper.model.LatLngBounds
+
 object CameraUpdateFactory {
 
     fun zoomIn(): CameraUpdate {

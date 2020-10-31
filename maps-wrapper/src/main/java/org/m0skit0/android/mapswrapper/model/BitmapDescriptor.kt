@@ -1,4 +1,4 @@
-package org.m0skit0.android.mapswrapper
+package org.m0skit0.android.mapswrapper.model
 
 class BitmapDescriptor(
     internal val google: com.google.android.gms.maps.model.BitmapDescriptor?,

@@ -1,4 +1,4 @@
-package org.m0skit0.android.mapswrapper
+package org.m0skit0.android.mapswrapper.model
 
 data class LatLng(val latitude: Double, val longitude: Double) {
     internal val google by lazy { com.google.android.gms.maps.model.LatLng(latitude, longitude) }

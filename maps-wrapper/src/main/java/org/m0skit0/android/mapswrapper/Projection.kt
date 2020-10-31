@@ -1,6 +1,7 @@
 package org.m0skit0.android.mapswrapper
 
 import android.graphics.Point
+import org.m0skit0.android.mapswrapper.model.LatLng
 
 class Projection(
     internal val google: com.google.android.gms.maps.Projection?,
