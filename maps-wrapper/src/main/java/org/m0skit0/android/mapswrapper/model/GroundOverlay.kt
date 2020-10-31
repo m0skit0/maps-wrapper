@@ -5,6 +5,9 @@ class GroundOverlay(
     internal val huawei: com.huawei.hms.maps.model.GroundOverlay?
 ) {
 
+    internal constructor(google: com.google.android.gms.maps.model.GroundOverlay?) : this(google, null)
+    internal constructor(huawei: com.huawei.hms.maps.model.GroundOverlay?) : this(null, huawei)
+
     var tag: Any?
         get() = google?.tag ?: huawei?.tag
         set(value) {

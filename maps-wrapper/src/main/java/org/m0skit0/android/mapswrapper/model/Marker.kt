@@ -7,6 +7,9 @@ class Marker internal constructor(
     internal val huawei: com.huawei.hms.maps.model.Marker?
 ) {
 
+    internal constructor(google: com.google.android.gms.maps.model.Marker?) : this(google, null)
+    internal constructor(huawei: com.huawei.hms.maps.model.Marker?) : this(null, huawei)
+
     var position: LatLng
         get() = google?.position?.let { LatLng(it.latitude, it.longitude) }
             ?: huawei?.position?.let { LatLng(it.latitude, it.longitude) }

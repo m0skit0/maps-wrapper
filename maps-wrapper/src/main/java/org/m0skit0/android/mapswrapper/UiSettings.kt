@@ -5,6 +5,9 @@ class UiSettings(
     internal var huawei: com.huawei.hms.maps.UiSettings?
 ) {
 
+    internal constructor(google: com.google.android.gms.maps.UiSettings?) : this(google, null)
+    internal constructor(huawei: com.huawei.hms.maps.UiSettings?) : this(null, huawei)
+
     var isZoomControlsEnabled: Boolean
         get() = google?.isZoomControlsEnabled ?: huawei?.isZoomControlsEnabled ?: throwUnableToResolveGoogleOrHuawei()
         set(value) {

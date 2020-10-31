@@ -7,6 +7,9 @@ class Polygon(
     internal val huawei: com.huawei.hms.maps.model.Polygon?
 ) {
 
+    internal constructor(google: com.google.android.gms.maps.model.Polygon?) : this(google, null)
+    internal constructor(huawei: com.huawei.hms.maps.model.Polygon?) : this(null, huawei)
+
     var strokeColor: Int
         get() = google?.strokeColor ?: huawei?.strokeColor ?: throwUnableToResolveGoogleOrHuawei()
         set(value) {

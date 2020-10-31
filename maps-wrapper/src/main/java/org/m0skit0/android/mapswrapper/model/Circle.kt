@@ -7,6 +7,9 @@ class Circle internal constructor(
     internal val huawei: com.huawei.hms.maps.model.Circle?
 ) {
 
+    internal constructor(google: com.google.android.gms.maps.model.Circle?) : this(google, null)
+    internal constructor(huawei: com.huawei.hms.maps.model.Circle?) : this(null, huawei)
+
     var tag: Any?
         get() = google?.tag ?: huawei?.tag
         set(value) {

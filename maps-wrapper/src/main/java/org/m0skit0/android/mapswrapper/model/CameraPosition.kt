@@ -7,6 +7,9 @@ class CameraPosition internal constructor(
     internal val huawei: com.huawei.hms.maps.model.CameraPosition?
 ) {
 
+    internal constructor(google: com.google.android.gms.maps.model.CameraPosition?) : this(google, null)
+    internal constructor(huawei: com.huawei.hms.maps.model.CameraPosition?) : this(null, huawei)
+
     val target: LatLng
         get() = google?.target?.let { LatLng(it.latitude, it.longitude) }
             ?: huawei?.target?.let { LatLng(it.latitude, it.longitude) }

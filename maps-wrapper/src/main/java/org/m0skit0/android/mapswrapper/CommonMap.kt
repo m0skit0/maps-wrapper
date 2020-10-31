@@ -26,22 +26,22 @@ class CommonMap(private val map: Any) {
     val cameraPosition: CameraPosition
         get() =
             googleOrHuawei(
-                { cameraPosition.let { CameraPosition(it, null) } },
-                { cameraPosition.let { CameraPosition(null, it) } }
+                { cameraPosition.let { CameraPosition(it) } },
+                { cameraPosition.let { CameraPosition(it) } }
             )
 
     val uiSettings: UiSettings
         get() =
             googleOrHuawei(
-                { uiSettings.let { UiSettings(it, null) } },
-                { uiSettings.let { UiSettings(null, it) } }
+                { uiSettings.let { UiSettings(it) } },
+                { uiSettings.let { UiSettings(it) } }
             )
 
     val projection: Projection
         get() =
             googleOrHuawei(
-                { projection.let { Projection(it, null) } },
-                { projection.let { Projection(null, it) } }
+                { projection.let { Projection(it) } },
+                { projection.let { Projection(it) } }
             )
 
     var isTrafficEnabled: Boolean
@@ -181,36 +181,33 @@ class CommonMap(private val map: Any) {
     }
 
     fun addCircle(circleOptions: CircleOptions): Circle =
-        when {
-            isGoogle() -> google.addCircle(circleOptions.google).let { Circle(it, null) }
-            isHuawei() -> huawei.addCircle(circleOptions.huawei).let { Circle(null, it) }
-            else -> throwUnableToResolveGoogleOrHuawei()
-        }
+        googleOrHuawei(
+            { addCircle(circleOptions.google).let { Circle(it) } },
+            { addCircle(circleOptions.huawei).let { Circle(it) } }
+        )
 
     fun addMarker(markerOptions: MarkerOptions): Marker =
-        when {
-            isGoogle() -> google.addMarker(markerOptions.google).let { Marker(it, null) }
-            isHuawei() -> huawei.addMarker(markerOptions.huawei).let { Marker(null, it) }
-            else -> throwUnableToResolveGoogleOrHuawei()
-        }
+        googleOrHuawei(
+            { addMarker(markerOptions.google).let { Marker(it) } },
+            { addMarker(markerOptions.huawei).let { Marker(it) } }
+        )
 
-    fun addPolyline(polylineOptions: PolylineOptions): Polyline =
-        when {
-            isGoogle() -> google.addPolyline(polylineOptions.google).let { Polyline(it, null) }
-            isHuawei() -> huawei.addPolyline(polylineOptions.huawei).let { Polyline(null, it) }
-            else -> throwUnableToResolveGoogleOrHuawei()
-        }
+    fun addPolyline(polylineOptions: PolylineOptions?): Polyline =
+        googleOrHuawei(
+            { addPolyline(polylineOptions?.google).let { Polyline(it) } },
+            { addPolyline(polylineOptions?.huawei).let { Polyline(it) } }
+        )
 
     fun addPolygon(polygonOptions: PolygonOptions): Polygon =
         googleOrHuawei(
-            { google.addPolygon(polygonOptions.google).let { Polygon(it, null) } },
-            { huawei.addPolygon(polygonOptions.huawei).let { Polygon(null, it) } }
+            { google.addPolygon(polygonOptions.google).let { Polygon(it) } },
+            { huawei.addPolygon(polygonOptions.huawei).let { Polygon(it) } }
         )
 
     fun addGroundOverlay(groundOverlayOptions: GroundOverlayOptions): GroundOverlay =
         googleOrHuawei(
-            { addGroundOverlay(groundOverlayOptions.google).let { GroundOverlay(it, null) } },
-            { addGroundOverlay(groundOverlayOptions.huawei).let { GroundOverlay(null, it) } }
+            { addGroundOverlay(groundOverlayOptions.google).let { GroundOverlay(it) } },
+            { addGroundOverlay(groundOverlayOptions.huawei).let { GroundOverlay(it) } }
         )
 
     fun setPadding(left: Int, right: Int, top: Int, bottom: Int) {
@@ -372,12 +369,12 @@ class CommonMap(private val map: Any) {
         googleOrHuawei(
             {
                 setOnCircleClickListener {
-                    listener.onCircleClick(Circle(it, null))
+                    listener.onCircleClick(Circle(it))
                 }
             },
             {
                 setOnCircleClickListener {
-                    listener.onCircleClick(Circle(null, it))
+                    listener.onCircleClick(Circle(it))
                 }
             }
         )
@@ -395,12 +392,12 @@ class CommonMap(private val map: Any) {
         googleOrHuawei(
             {
                 setOnMarkerClickListener {
-                    listener.onMarkerClick(Marker(it, null))
+                    listener.onMarkerClick(Marker(it))
                 }
             },
             {
                 setOnMarkerClickListener {
-                    listener.onMarkerClick(Marker(null, it))
+                    listener.onMarkerClick(Marker(it))
                 }
             }
         )
@@ -416,12 +413,12 @@ class CommonMap(private val map: Any) {
         googleOrHuawei(
             {
                 setOnInfoWindowCloseListener {
-                    listener.onInfoWindowClose(Marker(it, null))
+                    listener.onInfoWindowClose(Marker(it))
                 }
             },
             {
                 setOnInfoWindowCloseListener {
-                    listener.onInfoWindowClose(Marker(null, it))
+                    listener.onInfoWindowClose(Marker(it))
                 }
             }
         )
@@ -431,12 +428,12 @@ class CommonMap(private val map: Any) {
         googleOrHuawei(
             {
                 setOnInfoWindowLongClickListener {
-                    listener.onInfoWindowLongClick(Marker(it, null))
+                    listener.onInfoWindowLongClick(Marker(it))
                 }
             },
             {
                 setOnInfoWindowLongClickListener {
-                    listener.onInfoWindowLongClick(Marker(null, it))
+                    listener.onInfoWindowLongClick(Marker(it))
                 }
             }
         )
@@ -446,12 +443,12 @@ class CommonMap(private val map: Any) {
         googleOrHuawei(
             {
                 setOnInfoWindowClickListener {
-                    listener.onInfoWindowClick(Marker(it, null))
+                    listener.onInfoWindowClick(Marker(it))
                 }
             },
             {
                 setOnInfoWindowClickListener {
-                    listener.onInfoWindowClick(Marker(null, it))
+                    listener.onInfoWindowClick(Marker(it))
                 }
             }
         )
@@ -467,15 +464,15 @@ class CommonMap(private val map: Any) {
 
     fun setOnPolygonClickListener(listener: OnPolygonClickListener) {
         googleOrHuawei(
-            { setOnPolygonClickListener { listener.onPolygonClick(Polygon(it, null)) } },
-            { setOnPolygonClickListener { listener.onPolygonClick(Polygon(null, it)) } }
+            { setOnPolygonClickListener { listener.onPolygonClick(Polygon(it)) } },
+            { setOnPolygonClickListener { listener.onPolygonClick(Polygon(it)) } }
         )
     }
 
     fun setOnPolylineClickListener(listener: OnPolylineClickListener) {
         googleOrHuawei(
-            { setOnPolylineClickListener { listener.onPolylineClick(Polyline(it, null)) } },
-            { setOnPolylineClickListener { listener.onPolylineClick(Polyline(null, it)) } }
+            { setOnPolylineClickListener { listener.onPolylineClick(Polyline(it)) } },
+            { setOnPolylineClickListener { listener.onPolylineClick(Polyline(it)) } }
         )
     }
 

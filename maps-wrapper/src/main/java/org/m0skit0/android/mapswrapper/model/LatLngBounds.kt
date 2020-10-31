@@ -13,6 +13,9 @@ class LatLngBounds {
         this.huawei = huawei
     }
 
+    internal constructor(google: com.google.android.gms.maps.model.LatLngBounds?) : this(google, null)
+    internal constructor(huawei: com.huawei.hms.maps.model.LatLngBounds?) : this(null, huawei)
+
     constructor(latLng1: LatLng, latLng2: LatLng) {
         this.google = com.google.android.gms.maps.model.LatLngBounds(latLng1.google, latLng2.google)
         this.huawei = com.huawei.hms.maps.model.LatLngBounds(latLng1.huawei, latLng2.huawei)

@@ -7,6 +7,9 @@ class Polyline internal constructor(
     internal val huawei: com.huawei.hms.maps.model.Polyline?
 ) {
 
+    internal constructor(google: com.google.android.gms.maps.model.Polyline?) : this(google, null)
+    internal constructor(huawei: com.huawei.hms.maps.model.Polyline?) : this(null, huawei)
+
     var color: Int
         get() = google?.color ?: huawei?.color ?: throwUnableToResolveGoogleOrHuawei()
         set(value) {
