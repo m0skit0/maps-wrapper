@@ -5,6 +5,18 @@ class TileOverlayOptions {
     internal var google = com.google.android.gms.maps.model.TileOverlayOptions()
     internal var huawei = com.huawei.hms.maps.model.TileOverlayOptions()
 
+    val fadeIn: Boolean
+        get() = google.fadeIn
+
+    val transparency: Float
+        get() = google.transparency
+
+    val isVisible: Boolean
+        get() = google.isVisible
+
+    val zIndex: Float
+        get() = google.zIndex
+
     fun fadeIn(fadeIn: Boolean): TileOverlayOptions = apply {
         google.fadeIn(fadeIn)
         huawei.fadeIn(fadeIn)
