@@ -1,6 +1,18 @@
 package org.m0skit0.android.mapswrapper.model
 
-data class Tile(val width: Int, val height: Int, val data: ByteArray) {
-    internal val google by lazy { com.google.android.gms.maps.model.Tile(width, height, data) }
-    internal val huawei: Nothing by lazy { throw UnsupportedOperationException("No implementation of Tile API for Huawei Maps") }
+
+class Tile {
+
+    constructor(width: Int, height: Int, data: ByteArray) {
+        google = com.google.android.gms.maps.model.Tile(width, height, data)
+        huawei = com.huawei.hms.maps.model.Tile(width, height, data)
+    }
+
+    internal constructor(google: com.google.android.gms.maps.model.Tile?, huawei: com.huawei.hms.maps.model.Tile?) {
+        this.google = google
+        this.huawei = huawei
+    }
+
+    internal var google: com.google.android.gms.maps.model.Tile? = null
+    internal var huawei: com.huawei.hms.maps.model.Tile? = null
 }
