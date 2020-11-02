@@ -210,6 +210,12 @@ class CommonMap(private val map: Any) {
             { addGroundOverlay(groundOverlayOptions.huawei).let { GroundOverlay(it) } }
         )
 
+    fun addTileOverlay(options: TileOverlayOptions): TileOverlay =
+        googleOrHuawei(
+            { addTileOverlay(options.google).let { TileOverlay(it, null) } },
+            { addTileOverlay(options.huawei).let { TileOverlay(null, it) } }
+        )
+
     fun setPadding(left: Int, right: Int, top: Int, bottom: Int) {
         googleOrHuawei(
             { setPadding(left, right, top, bottom) },
