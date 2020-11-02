@@ -17,23 +17,32 @@ class TileOverlayOptions {
     val zIndex: Float
         get() = google.zIndex
 
+    var tileProvider: TileProvider? = null
+        private set
+
     fun fadeIn(fadeIn: Boolean): TileOverlayOptions = apply {
-        google.fadeIn(fadeIn)
+        google = google.fadeIn(fadeIn)
         huawei.fadeIn(fadeIn)
     }
 
     fun transparency(transparency: Float): TileOverlayOptions = apply {
-        google.transparency(transparency)
-        huawei.transparency(transparency)
+        google = google.transparency(transparency)
+        huawei = huawei.transparency(transparency)
     }
 
     fun visible(isVisible: Boolean): TileOverlayOptions = apply {
-        google.visible(isVisible)
-        huawei.visible(isVisible)
+        google = google.visible(isVisible)
+        huawei = huawei.visible(isVisible)
     }
 
     fun zIndex(index: Float): TileOverlayOptions = apply {
-        google.zIndex(index)
-        huawei.zIndex(index)
+        google = google.zIndex(index)
+        huawei = huawei.zIndex(index)
+    }
+
+    fun tileProvider(tileProvider: TileProvider): TileOverlayOptions = apply {
+        this.tileProvider = tileProvider
+        google = google.tileProvider { x, y, zoom -> tileProvider.getTile(x, y, zoom)?.google }
+        huawei = huawei.tileProvider { x, y, zoom -> tileProvider.getTile(x, y, zoom)?.huawei }
     }
 }
