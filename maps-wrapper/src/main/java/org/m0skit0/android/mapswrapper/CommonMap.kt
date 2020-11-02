@@ -300,6 +300,21 @@ class CommonMap(private val map: Any) {
         })
     }
 
+    fun setOnMapLoadedCallback(listener: OnMapLoadedCallback) {
+        googleOrHuawei(
+            { setOnMapLoadedCallback { listener.onMapLoaded() } },
+            { setOnMapLoadedCallback { listener.onMapLoaded() } }
+        )
+    }
+
+    fun setOnMapLongClickListener(listener: () -> Unit) {
+        setOnMapLoadedCallback(object : OnMapLoadedCallback {
+            override fun onMapLoaded() {
+                listener()
+            }
+        })
+    }
+
     fun setOnCameraMoveStartedListener(listener: OnCameraMoveStartedListener) {
         googleOrHuawei(
             { setOnCameraMoveStartedListener { listener.onCameraMoveStarted(it) } },
@@ -494,25 +509,30 @@ class CommonMap(private val map: Any) {
         googleOrHuawei(
             {
                 setOnGroundOverlayClickListener {
-                    listener.onGroundOverlayClick(
-                        GroundOverlay(
-                            it,
-                            null
-                        )
-                    )
+                    listener.onGroundOverlayClick(GroundOverlay(it))
                 }
             },
             {
                 setOnGroundOverlayClickListener {
-                    listener.onGroundOverlayClick(
-                        GroundOverlay(
-                            null,
-                            it
-                        )
-                    )
+                    listener.onGroundOverlayClick(GroundOverlay(it))
                 }
             }
         )
+    }
+
+    fun setOnMyLocationButtonClickListener(listener: OnMyLocationButtonClickListener) {
+        googleOrHuawei(
+            { setOnMapLongClickListener { listener.onMyLocationButtonClick() } },
+            { setOnMapLongClickListener { listener.onMyLocationButtonClick() } }
+        )
+    }
+
+    fun setOnMyLocationButtonClickListener(listener: () -> Unit) {
+        setOnMyLocationButtonClickListener(object : OnMyLocationButtonClickListener {
+            override fun onMyLocationButtonClick() {
+                listener()
+            }
+        })
     }
 
     companion object {
@@ -600,5 +620,13 @@ class CommonMap(private val map: Any) {
 
     interface OnGroundOverlayClickListener {
         fun onGroundOverlayClick(groundOverlay: GroundOverlay)
+    }
+
+    interface OnMapLoadedCallback {
+        fun onMapLoaded()
+    }
+
+    interface OnMyLocationButtonClickListener {
+        fun onMyLocationButtonClick()
     }
 }
