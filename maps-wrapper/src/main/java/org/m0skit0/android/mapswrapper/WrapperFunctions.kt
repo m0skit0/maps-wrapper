@@ -69,3 +69,7 @@ internal fun com.huawei.hms.maps.UiSettings.asWrapper(): UiSettings = UiSettings
 internal fun com.google.android.gms.maps.model.CameraPosition.asWrapper(): CameraPosition = CameraPosition(this)
 
 internal fun com.huawei.hms.maps.model.CameraPosition.asWrapper(): CameraPosition = CameraPosition(this)
+
+internal fun com.google.android.gms.maps.model.BitmapDescriptor.asWrapper(): BitmapDescriptor = BitmapDescriptor(this)
+
+internal fun com.huawei.hms.maps.model.BitmapDescriptor.asWrapper(): BitmapDescriptor = BitmapDescriptor(this)
