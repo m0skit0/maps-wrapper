@@ -7,6 +7,9 @@ class TileOverlay(
     internal val huawei: com.huawei.hms.maps.model.TileOverlay?
 ) {
 
+    constructor(google: com.google.android.gms.maps.model.TileOverlay?): this(google, null)
+    constructor(huawei: com.huawei.hms.maps.model.TileOverlay?): this(null, huawei)
+
     var fadeIn: Boolean
         get() = google?.fadeIn ?: huawei?.fadeIn ?: throwUnableToResolveGoogleOrHuawei()
         set(value) {

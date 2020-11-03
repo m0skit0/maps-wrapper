@@ -26,22 +26,22 @@ class CommonMap(private val map: Any) {
     val cameraPosition: CameraPosition
         get() =
             googleOrHuawei(
-                { cameraPosition.let { CameraPosition(it) } },
-                { cameraPosition.let { CameraPosition(it) } }
+                { cameraPosition.asWrapper() },
+                { cameraPosition.asWrapper() }
             )
 
     val uiSettings: UiSettings
         get() =
             googleOrHuawei(
-                { uiSettings.let { UiSettings(it) } },
-                { uiSettings.let { UiSettings(it) } }
+                { uiSettings.asWrapper() },
+                { uiSettings.asWrapper() }
             )
 
     val projection: Projection
         get() =
             googleOrHuawei(
-                { projection.let { Projection(it) } },
-                { projection.let { Projection(it) } }
+                { projection.asWrapper() },
+                { projection.asWrapper() }
             )
 
     var isTrafficEnabled: Boolean
@@ -182,38 +182,38 @@ class CommonMap(private val map: Any) {
 
     fun addCircle(circleOptions: CircleOptions): Circle =
         googleOrHuawei(
-            { addCircle(circleOptions.google).let { Circle(it) } },
-            { addCircle(circleOptions.huawei).let { Circle(it) } }
+            { addCircle(circleOptions.google).asWrapper() },
+            { addCircle(circleOptions.huawei).asWrapper() }
         )
 
     fun addMarker(markerOptions: MarkerOptions): Marker =
         googleOrHuawei(
-            { addMarker(markerOptions.google).let { Marker(it) } },
-            { addMarker(markerOptions.huawei).let { Marker(it) } }
+            { addMarker(markerOptions.google).asWrapper() },
+            { addMarker(markerOptions.huawei).asWrapper() }
         )
 
     fun addPolyline(polylineOptions: PolylineOptions?): Polyline =
         googleOrHuawei(
-            { addPolyline(polylineOptions?.google).let { Polyline(it) } },
-            { addPolyline(polylineOptions?.huawei).let { Polyline(it) } }
+            { addPolyline(polylineOptions?.google).asWrapper() },
+            { addPolyline(polylineOptions?.huawei).asWrapper() }
         )
 
     fun addPolygon(polygonOptions: PolygonOptions): Polygon =
         googleOrHuawei(
-            { google.addPolygon(polygonOptions.google).let { Polygon(it) } },
-            { huawei.addPolygon(polygonOptions.huawei).let { Polygon(it) } }
+            { google.addPolygon(polygonOptions.google).asWrapper() },
+            { huawei.addPolygon(polygonOptions.huawei).asWrapper() }
         )
 
     fun addGroundOverlay(groundOverlayOptions: GroundOverlayOptions): GroundOverlay =
         googleOrHuawei(
-            { addGroundOverlay(groundOverlayOptions.google).let { GroundOverlay(it) } },
-            { addGroundOverlay(groundOverlayOptions.huawei).let { GroundOverlay(it) } }
+            { addGroundOverlay(groundOverlayOptions.google).asWrapper() },
+            { addGroundOverlay(groundOverlayOptions.huawei).asWrapper() }
         )
 
     fun addTileOverlay(options: TileOverlayOptions): TileOverlay =
         googleOrHuawei(
-            { addTileOverlay(options.google).let { TileOverlay(it, null) } },
-            { addTileOverlay(options.huawei).let { TileOverlay(null, it) } }
+            { addTileOverlay(options.google).asWrapper() },
+            { addTileOverlay(options.huawei).asWrapper() }
         )
 
     fun setPadding(left: Int, right: Int, top: Int, bottom: Int) {
@@ -228,19 +228,19 @@ class CommonMap(private val map: Any) {
             {
                 setInfoWindowAdapter(object : GoogleMap.InfoWindowAdapter {
                     override fun getInfoContents(marker: com.google.android.gms.maps.model.Marker?): View? =
-                        adapter.getInfoContents(Marker(marker, null))
+                        marker?.run { adapter.getInfoContents(asWrapper()) }
 
                     override fun getInfoWindow(marker: com.google.android.gms.maps.model.Marker?): View? =
-                        adapter.getInfoWindow(Marker(marker, null))
+                        marker?.run { adapter.getInfoWindow(asWrapper()) }
                 })
             },
             {
                 setInfoWindowAdapter(object : HuaweiMap.InfoWindowAdapter {
                     override fun getInfoContents(marker: com.huawei.hms.maps.model.Marker?): View? =
-                        adapter.getInfoContents(Marker(null, marker))
+                        marker?.run { adapter.getInfoContents(asWrapper()) }
 
                     override fun getInfoWindow(marker: com.huawei.hms.maps.model.Marker?): View? =
-                        adapter.getInfoWindow(Marker(null, marker))
+                        marker?.run { adapter.getInfoWindow(asWrapper()) }
                 })
             }
         )
@@ -254,8 +254,8 @@ class CommonMap(private val map: Any) {
 
     fun setOnMapClickListener(listener: OnMapClickListener) {
         googleOrHuawei(
-            { setOnMapClickListener { listener.onMapClick(LatLng(it.latitude, it.longitude)) } },
-            { setOnMapClickListener { listener.onMapClick(LatLng(it.latitude, it.longitude)) } }
+            { setOnMapClickListener { listener.onMapClick(it.asWrapper()) } },
+            { setOnMapClickListener { listener.onMapClick(it.asWrapper()) } }
         )
     }
 
@@ -271,22 +271,12 @@ class CommonMap(private val map: Any) {
         googleOrHuawei(
             {
                 setOnMapLongClickListener {
-                    listener.onMapLongClick(
-                        LatLng(
-                            it.latitude,
-                            it.longitude
-                        )
-                    )
+                    listener.onMapLongClick(it.asWrapper())
                 }
             },
             {
                 setOnMapLongClickListener {
-                    listener.onMapLongClick(
-                        LatLng(
-                            it.latitude,
-                            it.longitude
-                        )
-                    )
+                    listener.onMapLongClick(it.asWrapper())
                 }
             }
         )

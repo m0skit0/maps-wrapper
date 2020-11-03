@@ -1,5 +1,6 @@
 package org.m0skit0.android.mapswrapper.model
 
+import org.m0skit0.android.mapswrapper.asWrapper
 import org.m0skit0.android.mapswrapper.throwUnableToResolveGoogleOrHuawei
 
 class Polyline internal constructor(
