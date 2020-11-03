@@ -530,6 +530,21 @@ class CommonMap(private val map: Any) {
         })
     }
 
+    fun setOnMyLocationClickListener(listener: OnMyLocationClickListener) {
+        googleOrHuawei(
+            { setOnMyLocationClickListener { location -> listener.onMyLocationClick(location) } },
+            { setOnMyLocationClickListener { location -> listener.onMyLocationClick(location) } }
+        )
+    }
+
+    fun setOnMyLocationClickListener(listener: (Location) -> Unit) {
+        setOnMyLocationClickListener(object : OnMyLocationClickListener {
+            override fun onMyLocationClick(location: Location) {
+                listener(location)
+            }
+        })
+    }
+
     companion object {
         const val MAP_TYPE_NONE = GoogleMap.MAP_TYPE_NONE
         const val MAP_TYPE_NORMAL = GoogleMap.MAP_TYPE_NORMAL
@@ -623,5 +638,9 @@ class CommonMap(private val map: Any) {
 
     interface OnMyLocationButtonClickListener {
         fun onMyLocationButtonClick()
+    }
+
+    interface OnMyLocationClickListener {
+        fun onMyLocationClick(location: Location)
     }
 }
