@@ -1,5 +1,7 @@
 package org.m0skit0.android.mapswrapper.model
 
+import org.m0skit0.android.mapswrapper.throwUnableToResolveGoogleOrHuawei
+
 class LatLngBounds {
 
     internal val google: com.google.android.gms.maps.model.LatLngBounds?
@@ -20,6 +22,16 @@ class LatLngBounds {
         this.google = com.google.android.gms.maps.model.LatLngBounds(latLng1.google, latLng2.google)
         this.huawei = com.huawei.hms.maps.model.LatLngBounds(latLng1.huawei, latLng2.huawei)
     }
+
+    val northeast: LatLng
+        get() = google?.northeast?.let { LatLng(it.latitude, it.longitude) }
+            ?: huawei?.northeast?.let { LatLng(it.latitude, it.longitude) }
+            ?: throwUnableToResolveGoogleOrHuawei()
+
+    val southwest: LatLng
+        get() = google?.southwest?.let { LatLng(it.latitude, it.longitude) }
+            ?: huawei?.southwest?.let { LatLng(it.latitude, it.longitude) }
+            ?: throwUnableToResolveGoogleOrHuawei()
 
     class Builder {
 
