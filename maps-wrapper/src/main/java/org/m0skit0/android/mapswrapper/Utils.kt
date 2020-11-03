@@ -7,3 +7,5 @@ internal fun throwUnableToResolveGoogleOrHuawei(): Nothing =
 
 internal fun throwNoGoogleNoHuaweiServices(): Nothing =
     throw IllegalStateException("No Google or Huawei Services found!")
+
+internal fun throwNotSupported(): Nothing = throw UnsupportedOperationException("Not supported")

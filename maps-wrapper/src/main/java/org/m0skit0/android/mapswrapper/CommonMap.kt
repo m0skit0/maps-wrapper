@@ -1,5 +1,6 @@
 package org.m0skit0.android.mapswrapper
 
+import android.location.Location
 import android.view.View
 import androidx.annotation.RequiresPermission
 import com.google.android.gms.maps.GoogleMap
@@ -70,6 +71,10 @@ class CommonMap(private val map: Any) {
                 { isBuildingsEnabled = value }
             )
         }
+
+    @Deprecated("This method is deprecated. Use FusedLocationProviderApi instead")
+    val myLocation: Location
+        get() = googleOrHuawei({ myLocation }, { throwNotSupported() })
 
     private fun isGoogle(): Boolean = map is GoogleMap
 
