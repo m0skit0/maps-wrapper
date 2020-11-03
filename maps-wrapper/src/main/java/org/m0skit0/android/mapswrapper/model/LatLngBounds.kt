@@ -24,14 +24,22 @@ class LatLngBounds {
     }
 
     val northeast: LatLng
-        get() = google?.northeast?.let { LatLng(it.latitude, it.longitude) }
-            ?: huawei?.northeast?.let { LatLng(it.latitude, it.longitude) }
+        get() = google?.northeast?.asWrapper()
+            ?: huawei?.northeast?.asWrapper()
             ?: throwUnableToResolveGoogleOrHuawei()
 
     val southwest: LatLng
-        get() = google?.southwest?.let { LatLng(it.latitude, it.longitude) }
-            ?: huawei?.southwest?.let { LatLng(it.latitude, it.longitude) }
+        get() = google?.southwest?.asWrapper()
+            ?: huawei?.southwest?.asWrapper()
             ?: throwUnableToResolveGoogleOrHuawei()
+
+    val center: LatLng
+        get() = google?.center?.asWrapper()
+            ?: huawei?.center?.asWrapper()
+            ?: throwUnableToResolveGoogleOrHuawei()
+
+    fun contains(point: LatLng): Boolean =
+        google?.contains(point.google) ?: huawei?.contains(point.huawei) ?: throwUnableToResolveGoogleOrHuawei()
 
     class Builder {
 

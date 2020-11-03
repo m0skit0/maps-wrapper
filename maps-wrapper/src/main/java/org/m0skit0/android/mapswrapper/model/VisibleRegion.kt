@@ -1,6 +1,6 @@
 package org.m0skit0.android.mapswrapper.model
 
-class VisibleRegion(
+data class VisibleRegion(
     val nearLeft: LatLng,
     val nearRight: LatLng,
     val farLeft: LatLng,

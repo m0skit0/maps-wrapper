@@ -11,8 +11,8 @@ class CameraPosition internal constructor(
     internal constructor(huawei: com.huawei.hms.maps.model.CameraPosition?) : this(null, huawei)
 
     val target: LatLng
-        get() = google?.target?.let { LatLng(it.latitude, it.longitude) }
-            ?: huawei?.target?.let { LatLng(it.latitude, it.longitude) }
+        get() = google?.target?.asWrapper()
+            ?: huawei?.target?.asWrapper()
             ?: throwUnableToResolveGoogleOrHuawei()
 
     val zoom: Float

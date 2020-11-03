@@ -25,8 +25,8 @@ class Polygon(
         }
 
     var strokePattern: List<PatternItem>?
-        get() = google?.strokePattern?.map { PatternItem(it, null) }
-                ?: huawei?.strokePattern?.map { PatternItem(null, it) }
+        get() = google?.strokePattern?.map { it.asWrapper() }
+                ?: huawei?.strokePattern?.map { it.asWrapper() }
         set(value) {
             google?.strokePattern = value?.map { it.google }
             huawei?.strokePattern = value?.map { it.huawei }

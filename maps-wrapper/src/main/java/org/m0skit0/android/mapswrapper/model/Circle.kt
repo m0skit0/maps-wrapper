@@ -18,8 +18,8 @@ class Circle internal constructor(
         }
 
     var center: LatLng
-        get() = google?.center?.let { LatLng(it.latitude, it.longitude) }
-            ?: huawei?.center?.let { LatLng(it.latitude, it.longitude) }
+        get() = google?.center?.asWrapper()
+            ?: huawei?.center?.asWrapper()
             ?: throwUnableToResolveGoogleOrHuawei()
         set(value) {
             google?.center = value.google
@@ -55,8 +55,8 @@ class Circle internal constructor(
         }
 
     var strokePattern: List<PatternItem>?
-        get() = google?.strokePattern?.map { PatternItem(it, null) }
-            ?: huawei?.strokePattern?.map { PatternItem(null, it) }
+        get() = google?.strokePattern?.map { it.asWrapper() }
+            ?: huawei?.strokePattern?.map { it.asWrapper() }
         set(value) {
             google?.strokePattern = value?.map { it.google }
             huawei?.strokePattern = value?.map { it.huawei }

@@ -11,8 +11,8 @@ class Marker internal constructor(
     internal constructor(huawei: com.huawei.hms.maps.model.Marker?) : this(null, huawei)
 
     var position: LatLng
-        get() = google?.position?.let { LatLng(it.latitude, it.longitude) }
-            ?: huawei?.position?.let { LatLng(it.latitude, it.longitude) }
+        get() = google?.position?.asWrapper()
+            ?: huawei?.position?.asWrapper()
             ?: throwUnableToResolveGoogleOrHuawei()
         set(value) {
             google?.position = value.google

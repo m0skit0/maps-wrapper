@@ -18,8 +18,8 @@ class Polyline internal constructor(
         }
 
     var startCap: Cap
-        get() = google?.startCap?.let { Cap(it, null) }
-                ?: huawei?.startCap?.let { Cap(null, it) }
+        get() = google?.startCap?.asWrapper()
+                ?: huawei?.startCap?.asWrapper()
                 ?: throwUnableToResolveGoogleOrHuawei()
         set(value) {
             value.google?.run { google?.startCap = this }
@@ -27,8 +27,8 @@ class Polyline internal constructor(
         }
 
     var endCap: Cap
-        get() = google?.endCap?.let { Cap(it, null) }
-            ?: huawei?.endCap?.let { Cap(null, it) }
+        get() = google?.endCap?.asWrapper()
+            ?: huawei?.endCap?.asWrapper()
             ?: throwUnableToResolveGoogleOrHuawei()
         set(value) {
             value.google?.run { google?.endCap = this }

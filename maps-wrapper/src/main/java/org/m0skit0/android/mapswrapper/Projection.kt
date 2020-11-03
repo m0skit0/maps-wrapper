@@ -2,8 +2,8 @@ package org.m0skit0.android.mapswrapper
 
 import android.graphics.Point
 import org.m0skit0.android.mapswrapper.model.LatLng
-import org.m0skit0.android.mapswrapper.model.LatLngBounds
 import org.m0skit0.android.mapswrapper.model.VisibleRegion
+import org.m0skit0.android.mapswrapper.model.asWrapper
 
 class Projection(
     internal val google: com.google.android.gms.maps.Projection?,
@@ -14,27 +14,13 @@ class Projection(
     internal constructor(huawei: com.huawei.hms.maps.Projection?) : this(null, huawei)
 
     val visibleRegion: VisibleRegion
-        get() = google?.visibleRegion?.let {
-            VisibleRegion(
-                LatLng(it.nearLeft.latitude, it.nearLeft.longitude),
-                LatLng(it.nearRight.latitude, it.nearRight.longitude),
-                LatLng(it.farLeft.latitude, it.farLeft.longitude),
-                LatLng(it.farRight.latitude, it.farRight.longitude),
-                LatLngBounds(it.latLngBounds)
-            )
-        } ?: huawei?.visibleRegion?.let {
-            VisibleRegion(
-                LatLng(it.nearLeft.latitude, it.nearLeft.longitude),
-                LatLng(it.nearRight.latitude, it.nearRight.longitude),
-                LatLng(it.farLeft.latitude, it.farLeft.longitude),
-                LatLng(it.farRight.latitude, it.farRight.longitude),
-                LatLngBounds(it.latLngBounds)
-            )
-        } ?: throwUnableToResolveGoogleOrHuawei()
+        get() = google?.visibleRegion?.asWrapper()
+            ?: huawei?.visibleRegion?.asWrapper()
+            ?: throwUnableToResolveGoogleOrHuawei()
 
     fun fromScreenLocation(point: Point): LatLng =
-        google?.fromScreenLocation(point)?.let { LatLng(it.latitude, it.longitude) }
-            ?: huawei?.fromScreenLocation(point)?.let { LatLng(it.latitude, it.longitude) }
+        google?.fromScreenLocation(point)?.asWrapper()
+            ?: huawei?.fromScreenLocation(point)?.asWrapper()
             ?: throwUnableToResolveGoogleOrHuawei()
 
     fun toScreenLocation(location: LatLng): Point =
