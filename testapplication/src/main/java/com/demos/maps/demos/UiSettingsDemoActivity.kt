@@ -22,7 +22,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.CheckBox
 import androidx.appcompat.app.AppCompatActivity
-import com.demos.maps.R
 import org.m0skit0.android.mapswrapper.CommonMap
 import org.m0skit0.android.mapswrapper.OnMapReadyCallback
 import org.m0skit0.android.mapswrapper.SupportMapFragment

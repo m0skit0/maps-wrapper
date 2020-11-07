@@ -38,22 +38,21 @@ import androidx.core.graphics.drawable.DrawableCompat
 import com.demos.maps.R
 import org.m0skit0.android.mapswrapper.CameraUpdateFactory
 import org.m0skit0.android.mapswrapper.CommonMap
+import org.m0skit0.android.mapswrapper.CommonMap.*
 import org.m0skit0.android.mapswrapper.SupportMapFragment
 import org.m0skit0.android.mapswrapper.model.*
 import java.util.*
-import kotlin.math.cos
-import kotlin.math.sin
 
 /**
  * This shows how to place markers on a map.
  */
 class MarkerDemoActivity :
         AppCompatActivity(),
-        CommonMap.OnMarkerClickListener,
-        CommonMap.OnInfoWindowClickListener,
-        CommonMap.OnMarkerDragListener,
-        CommonMap.OnInfoWindowLongClickListener,
-        CommonMap.OnInfoWindowCloseListener,
+        OnMarkerClickListener,
+        OnInfoWindowClickListener,
+        OnMarkerDragListener,
+        OnInfoWindowLongClickListener,
+        OnInfoWindowCloseListener,
         OnMapAndViewReadyListener.OnGlobalLayoutAndMapReadyListener {
 
     private val TAG = MarkerDemoActivity::class.java.name
@@ -91,7 +90,7 @@ class MarkerDemoActivity :
     private val random = Random()
 
     /** Demonstrates customizing the info window and/or its contents.  */
-    internal inner class CustomInfoWindowAdapter : CommonMap.InfoWindowAdapter {
+    internal inner class CustomInfoWindowAdapter : InfoWindowAdapter {
 
         // These are both view groups containing an ImageView with id "badge" and two
         // TextViews with id "title" and "snippet".
@@ -200,12 +199,12 @@ class MarkerDemoActivity :
     }
 
     /**
-     * This is the callback that is triggered when the GoogleMap has loaded and is ready for use
+     * This is the callback that is triggered when the CommonMap has loaded and is ready for use
      */
-    override fun onMapReady(map: CommonMap?) {
+    override fun onMapReady(googleMap: CommonMap?) {
 
         // return early if the map was not initialised properly
-        this.map = map ?: return
+        map = googleMap ?: return
 
         // create bounds that encompass every location we reference
         val boundsBuilder = LatLngBounds.Builder()
@@ -213,7 +212,7 @@ class MarkerDemoActivity :
         places.keys.map { place -> boundsBuilder.include(places.getValue(place)) }
         val bounds = boundsBuilder.build()
 
-        with(this.map) {
+        with(map) {
             // Hide the zoom controls as the button panel will cover it.
             uiSettings.isZoomControlsEnabled = false
 
@@ -304,15 +303,14 @@ class MarkerDemoActivity :
                     title = "Darwin Marker ${it + 1}",
                     snippet = "z-index initially ${it + 1}",
                     zIndex = it.toFloat()
-            )
+                )
             )
         }
 
         // place markers for each of the defined locations
         placeDetailsMap.keys.map {
             with(placeDetailsMap.getValue(it)) {
-                map.addMarker(
-                    MarkerOptions()
+                map.addMarker(MarkerOptions()
                         .position(position)
                         .title(title)
                         .snippet(snippet)
@@ -320,6 +318,7 @@ class MarkerDemoActivity :
                         .infoWindowAnchor(infoWindowAnchorX, infoWindowAnchorY)
                         .draggable(draggable)
                         .zIndex(zIndex))
+
             }
         }
 
@@ -329,8 +328,8 @@ class MarkerDemoActivity :
         (0 until numMarkersInRainbow).mapTo(markerRainbow) {
             map.addMarker(MarkerOptions().apply{
                 position(LatLng(
-                        -30 + 10 * sin(it * Math.PI / (numMarkersInRainbow - 1)),
-                        135 - 10 * cos(it * Math.PI / (numMarkersInRainbow - 1))))
+                        -30 + 10 * Math.sin(it * Math.PI / (numMarkersInRainbow - 1)),
+                        135 - 10 * Math.cos(it * Math.PI / (numMarkersInRainbow - 1))))
                 title("Marker $it")
                 icon(BitmapDescriptorFactory.defaultMarker((it * 360 / numMarkersInRainbow)
                         .toFloat()))

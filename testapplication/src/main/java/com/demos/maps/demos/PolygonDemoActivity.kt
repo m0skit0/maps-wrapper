@@ -22,7 +22,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.demos.maps.R
 import org.m0skit0.android.mapswrapper.CameraUpdateFactory
 import org.m0skit0.android.mapswrapper.CommonMap
 import org.m0skit0.android.mapswrapper.OnMapReadyCallback
@@ -48,9 +47,9 @@ class PolygonDemoActivity :
     private val dot = Dot()
     private val dash = Dash(PATTERN_DASH_LENGTH_PX.toFloat())
     private val gap = Gap(PATTERN_GAP_LENGTH_PX.toFloat())
-    private val patternDotted = listOf(dot, gap)
-    private val patternDashed = listOf(dash, gap)
-    private val patternMixed = listOf(dot, gap, dot, dash, gap)
+    private val patternDotted = Arrays.asList(dot, gap)
+    private val patternDashed = Arrays.asList(dash, gap)
+    private val patternMixed = Arrays.asList(dot, gap, dot, dash, gap)
 
     private lateinit var mutablePolygon: Polygon
     private lateinit var fillHueBar: SeekBar
@@ -131,7 +130,7 @@ class PolygonDemoActivity :
         val strokeColorArgb = Color.HSVToColor(
                 strokeAlphaBar.progress, floatArrayOf(strokeHueBar.progress.toFloat(), 1f, 1f))
 
-        with(map) {
+        with(googleMap) {
             // Override the default content description on the view, for accessibility mode.
             setContentDescription(getString(R.string.polygon_demo_description))
             // Move the googleMap so that it is centered on the mutable polygon.

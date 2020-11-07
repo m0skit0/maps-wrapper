@@ -26,6 +26,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.demos.maps.R
 import org.m0skit0.android.mapswrapper.*
+import org.m0skit0.android.mapswrapper.CommonMap.*
 import org.m0skit0.android.mapswrapper.model.CameraPosition
 import org.m0skit0.android.mapswrapper.model.LatLng
 import org.m0skit0.android.mapswrapper.model.PolylineOptions
@@ -33,15 +34,15 @@ import org.m0skit0.android.mapswrapper.model.PolylineOptions
 /**
  * This shows how to change the camera position for the map.
  */
+// [START maps_camera_events]
 class CameraDemoActivity :
         AppCompatActivity(),
-        CommonMap.OnCameraMoveStartedListener,
-        CommonMap.OnCameraMoveListener,
-        CommonMap.OnCameraMoveCanceledListener,
-        CommonMap.OnCameraIdleListener,
-        OnMapReadyCallback
-{
-
+        OnCameraMoveStartedListener,
+        OnCameraMoveListener,
+        OnCameraMoveCanceledListener,
+        OnCameraIdleListener,
+        OnMapReadyCallback {
+    // [START_EXCLUDE silent]
     /**
      * The amount by which to scroll the camera. Note that this amount is in raw pixels, not dp
      * (density-independent pixels).
@@ -62,56 +63,61 @@ class CameraDemoActivity :
             .bearing(0f)
             .tilt(25f)
             .build()
-
+    // [END_EXCLUDE]
 
     private lateinit var map: CommonMap
-
+    // [START_EXCLUDE silent]
     private lateinit var animateToggle: CompoundButton
     private lateinit var customDurationToggle: CompoundButton
     private lateinit var customDurationBar: SeekBar
     private var currPolylineOptions: PolylineOptions? = null
     private var isCanceled = false
-
+    // [END_EXCLUDE]
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.camera_demo)
-
+        // [START_EXCLUDE silent]
         animateToggle = findViewById(R.id.animate)
         customDurationToggle = findViewById(R.id.duration_toggle)
         customDurationBar = findViewById(R.id.duration_bar)
 
         updateEnabledState()
+        // [END_EXCLUDE]
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
     }
 
+    // [START_EXCLUDE silent]
     override fun onResume() {
         super.onResume()
         updateEnabledState()
     }
+    // [END_EXCLUDE]
 
     override fun onMapReady(map: CommonMap?) {
 
         // return early if the map was not initialised properly
         this.map = map ?: return
 
-        with(map) {
+        with(googleMap) {
             setOnCameraIdleListener(this@CameraDemoActivity)
             setOnCameraMoveStartedListener(this@CameraDemoActivity)
             setOnCameraMoveListener(this@CameraDemoActivity)
             setOnCameraMoveCanceledListener(this@CameraDemoActivity)
-
+            // [START_EXCLUDE silent]
             // We will provide our own zoom controls.
             uiSettings.isZoomControlsEnabled = false
             uiSettings.isMyLocationButtonEnabled = true
+            // [END_EXCLUDE]
 
             // Show Sydney
             moveCamera(CameraUpdateFactory.newLatLngZoom(sydneyLatLng, 10f))
         }
     }
 
+    // [START_EXCLUDE silent]
     /**
      * When the map is not ready the CameraUpdateFactory cannot be used. This should be used to wrap
      * all entry points that call methods on the Google Maps API.
@@ -143,7 +149,7 @@ class CameraDemoActivity :
     fun onGoToSydney(view: View) {
         checkReadyThen {
             changeCamera(CameraUpdateFactory.newCameraPosition(sydneyLocation),
-                    object : CommonMap.CancelableCallback {
+                    object : CancelableCallback {
                         override fun onFinish() {
                             Toast.makeText(baseContext, "Animation to Sydney complete",
                                     Toast.LENGTH_SHORT).show()
@@ -267,7 +273,7 @@ class CameraDemoActivity :
      * Change the camera position by moving or animating the camera depending on the state of the
      * animate toggle button.
      */
-    private fun changeCamera(update: CameraUpdate, callback: CommonMap.CancelableCallback? = null) {
+    private fun changeCamera(update: CameraUpdate, callback: CancelableCallback? = null) {
         if (animateToggle.isChecked) {
             if (customDurationToggle.isChecked) {
                 // The duration must be strictly positive so we make it at least 1.
@@ -279,62 +285,92 @@ class CameraDemoActivity :
             map.moveCamera(update)
         }
     }
+    // [END_EXCLUDE]
 
     override fun onCameraMoveStarted(reason: Int) {
+        // [START_EXCLUDE silent]
         if (!isCanceled) map.clear()
-
+        // [END_EXCLUDE]
 
         var reasonText = "UNKNOWN_REASON"
+        // [START_EXCLUDE silent]
         currPolylineOptions = PolylineOptions().width(5f)
+        // [END_EXCLUDE]
         when (reason) {
-            CommonMap.OnCameraMoveStartedListener.REASON_GESTURE -> {
+            OnCameraMoveStartedListener.REASON_GESTURE -> {
+                // [START_EXCLUDE silent]
                 currPolylineOptions?.color(Color.BLUE)
+                // [END_EXCLUDE]
                 reasonText = "GESTURE"
             }
-            CommonMap.OnCameraMoveStartedListener.REASON_API_ANIMATION -> {
+            OnCameraMoveStartedListener.REASON_API_ANIMATION -> {
+                // [START_EXCLUDE silent]
                 currPolylineOptions?.color(Color.RED)
+                // [END_EXCLUDE]
                 reasonText = "API_ANIMATION"
             }
-            CommonMap.OnCameraMoveStartedListener.REASON_DEVELOPER_ANIMATION -> {
+            OnCameraMoveStartedListener.REASON_DEVELOPER_ANIMATION -> {
+                // [START_EXCLUDE silent]
                 currPolylineOptions?.color(Color.GREEN)
+                // [END_EXCLUDE]
                 reasonText = "DEVELOPER_ANIMATION"
             }
         }
-        Log.i(TAG, "onCameraMoveStarted($reasonText)")
+        Log.d(TAG, "onCameraMoveStarted($reasonText)")
+        // [START_EXCLUDE silent]
         addCameraTargetToPath()
+        // [END_EXCLUDE]
     }
 
+    // [START_EXCLUDE silent]
+    /**
+     * Ensures that currPolyLine options is not null before accessing it
+     *
+     * @param stuffToDo the code to be executed if currPolylineOptions is not null
+     */
+    private fun checkPolylineThen(stuffToDo: () -> Unit) {
+        if (currPolylineOptions != null) stuffToDo()
+    }
+    // [END_EXCLUDE]
 
     override fun onCameraMove() {
-        Log.i(TAG, "onCameraMove")
+        Log.d(TAG, "onCameraMove")
+        // [START_EXCLUDE silent]
         // When the camera is moving, add its target to the current path we'll draw on the map.
-        addCameraTargetToPath()
+        checkPolylineThen { addCameraTargetToPath() }
+        // [END_EXCLUDE]
     }
 
     override fun onCameraMoveCanceled() {
+        // [START_EXCLUDE silent]
         // When the camera stops moving, add its target to the current path, and draw it on the map.
-        currPolylineOptions?.run {
+        checkPolylineThen {
             addCameraTargetToPath()
-            map.addPolyline(this)
+            map.addPolyline(currPolylineOptions)
         }
 
         isCanceled = true  // Set to clear the map when dragging starts again.
         currPolylineOptions = null
-        Log.i(TAG, "onCameraMoveCancelled")
+        // [END_EXCLUDE]
+        Log.d(TAG, "onCameraMoveCancelled")
     }
 
     override fun onCameraIdle() {
-        currPolylineOptions?.run {
+        // [START_EXCLUDE silent]
+        checkPolylineThen {
             addCameraTargetToPath()
-            map.addPolyline(this)
+            map.addPolyline(currPolylineOptions)
         }
 
         currPolylineOptions = null
         isCanceled = false  // Set to *not* clear the map when dragging starts again.
-        Log.i(TAG, "onCameraIdle")
+        // [END_EXCLUDE]
+        Log.d(TAG, "onCameraIdle")
     }
-
+    // [START_EXCLUDE silent]
     private fun addCameraTargetToPath() {
         currPolylineOptions?.add(map.cameraPosition.target)
     }
+    // [END_EXCLUDE]
 }
+// [END maps_camera_events]

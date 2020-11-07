@@ -77,14 +77,15 @@ class TagsDemoActivity : AppCompatActivity(),
         OnMapAndViewReadyListener(mapFragment, this)
     }
 
-    override fun onMapReady(map: CommonMap?) {
+    override fun onMapReady(googleMap: CommonMap?) {
 
-        this.map = map ?: return
+        // return early if the map was not initialised properly
+        map = googleMap ?: return
 
         // Add a circle, a ground overlay, a marker, a polygon and a polyline to the googleMap.
         addObjectsToMap()
 
-        with(this.map.uiSettings) {
+        with(map.uiSettings) {
             // Turn off the map toolbar.
             isMapToolbarEnabled = false
 
@@ -96,7 +97,7 @@ class TagsDemoActivity : AppCompatActivity(),
             isRotateGesturesEnabled = false
         }
 
-        with(this.map) {
+        with(map) {
             // Set listeners for click events.  See the bottom of this class for their behavior.
             setOnCircleClickListener(this@TagsDemoActivity)
             setOnGroundOverlayClickListener(this@TagsDemoActivity)
@@ -113,6 +114,7 @@ class TagsDemoActivity : AppCompatActivity(),
             places.keys.map { boundsBuilder.include(places.getValue(it)) }
             // Move the camera to view all listed locations
             moveCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(), 100))
+
         }
     }
 
@@ -187,13 +189,11 @@ class TagsDemoActivity : AppCompatActivity(),
     }
 
     override fun onCircleClick(circle: Circle) {
-        onClick(circle.tag as? CustomTag
-                ?: return)
+        onClick(circle.tag as? CustomTag ?: return)
     }
 
     override fun onGroundOverlayClick(groundOverlay: GroundOverlay) {
-        onClick(groundOverlay.tag as? CustomTag
-                ?: return)
+        onClick(groundOverlay.tag as? CustomTag ?: return)
     }
 
     override fun onMarkerClick(marker: Marker?): Boolean {
@@ -205,13 +205,11 @@ class TagsDemoActivity : AppCompatActivity(),
     }
 
     override fun onPolygonClick(polygon: Polygon) {
-        onClick(polygon.tag as? CustomTag
-                ?: return)
+        onClick(polygon.tag as? CustomTag ?: return)
     }
 
     override fun onPolylineClick(polyline: Polyline) {
-        onClick(polyline.tag as? CustomTag
-                ?: return)
+        onClick(polyline.tag as? CustomTag ?: return)
     }
 
 }

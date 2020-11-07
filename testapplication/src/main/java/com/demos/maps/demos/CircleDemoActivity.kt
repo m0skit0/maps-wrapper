@@ -1,4 +1,4 @@
-    /*
+/*
  * Copyright 2018 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,11 +24,14 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.demos.maps.R
-import org.m0skit0.android.mapswrapper.*
+import org.m0skit0.android.mapswrapper.CameraUpdateFactory
+import org.m0skit0.android.mapswrapper.CommonMap
+import org.m0skit0.android.mapswrapper.OnMapReadyCallback
+import org.m0skit0.android.mapswrapper.SupportMapFragment
 import org.m0skit0.android.mapswrapper.model.*
 import java.util.*
 
-    /**
+/**
  * This shows how to draw circles on a map.
  */
 class CircleDemoActivity :
@@ -51,9 +54,9 @@ class CircleDemoActivity :
     private val dot = Dot()
     private val dash = Dash(PATTERN_DASH_LENGTH.toFloat())
     private val gap = Gap(PATTERN_GAP_LENGTH.toFloat())
-    private val patternDotted = listOf(dot, gap)
-    private val patternDashed = listOf(dash, gap)
-    private val patternMixed = listOf(dot, gap, dot, dash, gap)
+    private val patternDotted = Arrays.asList(dot, gap)
+    private val patternDashed = Arrays.asList(dash, gap)
+    private val patternMixed = Arrays.asList(dot, gap, dot, dash, gap)
 
     // These are the options for stroke patterns
     private val patterns: List<Pair<Int, List<PatternItem>?>> = listOf(
@@ -186,14 +189,14 @@ class CircleDemoActivity :
     override fun onMapReady(map: CommonMap?) {
         this.map = map ?: return
         // we need to initialise map before creating a circle
-        with(this.map) {
+        with(map) {
             moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 4.0f))
             setContentDescription(getString(R.string.circle_demo_details))
             setOnMapLongClickListener { point ->
                 // We know the center, let's place the outline at a point 3/4 along the view.
                 val view: View = supportFragmentManager.findFragmentById(R.id.map)?.view
                         ?: return@setOnMapLongClickListener
-                val radiusLatLng = this@CircleDemoActivity.map.projection.fromScreenLocation(
+                val radiusLatLng = map.projection.fromScreenLocation(
                         Point(view.height * 3 / 4, view.width * 3 / 4))
                 // Create the circle.
                 val newCircle = DraggableCircle(point, point.distanceFrom(radiusLatLng))

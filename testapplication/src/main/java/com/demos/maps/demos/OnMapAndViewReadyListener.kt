@@ -17,6 +17,7 @@
 package com.demos.maps.demos
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import org.m0skit0.android.mapswrapper.CommonMap
@@ -24,16 +25,16 @@ import org.m0skit0.android.mapswrapper.OnMapReadyCallback
 import org.m0skit0.android.mapswrapper.SupportMapFragment
 
 /**
- * Helper class that will delay triggering the OnMapReady callback until both the GoogleMap and the
+ * Helper class that will delay triggering the OnMapReady callback until both the CommonMap and the
  * View having completed initialization. This is only necessary if a developer wishes to immediately
- * invoke any method on the GoogleMap that also requires the View to have finished layout
+ * invoke any method on the CommonMap that also requires the View to have finished layout
  * (ie. anything that needs to know the View's true size like snapshotting).
  */
 class OnMapAndViewReadyListener(
-    private val mapFragment: SupportMapFragment,
-    private val toBeNotified: OnGlobalLayoutAndMapReadyListener
+        private val mapFragment: SupportMapFragment,
+        private val toBeNotified: OnGlobalLayoutAndMapReadyListener
 ) : OnGlobalLayoutListener,
-    OnMapReadyCallback {
+        OnMapReadyCallback {
 
     private val mapView: View? = mapFragment.view
 
@@ -41,9 +42,9 @@ class OnMapAndViewReadyListener(
     private var isMapReady = false
     private var map: CommonMap? = null
 
-    /** A listener that needs to wait for both the GoogleMap and the View to be initialized.  */
+    /** A listener that needs to wait for both the CommonMap and the View to be initialized.  */
     interface OnGlobalLayoutAndMapReadyListener {
-        fun onMapReady(map: CommonMap?)
+        fun onMapReady(googleMap: CommonMap?)
     }
 
     init {
@@ -60,7 +61,7 @@ class OnMapAndViewReadyListener(
             mapView.viewTreeObserver.addOnGlobalLayoutListener(this)
         }
 
-        // GoogleMap. Note if the GoogleMap is already ready it will still fire the callback later.
+        // CommonMap. Note if the CommonMap is already ready it will still fire the callback later.
         mapFragment.getMapAsync(this)
     }
 
@@ -76,7 +77,11 @@ class OnMapAndViewReadyListener(
     @SuppressLint("NewApi")  // We check which build version we are using.
     override fun onGlobalLayout() {
         // Remove our listener.
-        mapView?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+            mapView?.viewTreeObserver?.removeGlobalOnLayoutListener(this)
+        } else {
+            mapView?.viewTreeObserver?.removeOnGlobalLayoutListener(this)
+        }
         isViewReady = true
         fireCallbackIfReady()
     }
