@@ -87,15 +87,16 @@ class CommonMap(private val map: Any) {
             else -> throwUnableToResolveGoogleOrHuawei()
         }
 
-    @RequiresPermission(anyOf = ["android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION"])
-    fun setMyLocationEnabled(isEnabled: Boolean) {
-        googleOrHuawei(
-            { isMyLocationEnabled = isEnabled },
-            { isMyLocationEnabled = isEnabled }
-        )
-    }
 
-    fun isMyLocationEnabled(): Boolean = googleOrHuawei({ isMyLocationEnabled }, { isMyLocationEnabled })
+    var isMyLocationEnabled: Boolean = false
+        @RequiresPermission(anyOf = ["android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION"])
+        set(value) {
+            field = value
+            googleOrHuawei(
+                { isMyLocationEnabled = value },
+                { isMyLocationEnabled = value }
+            )
+        }
 
     fun clear() {
         googleOrHuawei({ clear() }, { clear() })
