@@ -24,16 +24,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.demos.maps.R
-import org.m0skit0.android.mapswrapper.*
-import org.m0skit0.android.mapswrapper.CommonMap.Companion.MAP_TYPE_NORMAL
+import org.m0skit0.android.mapswrapper.CameraUpdateFactory
+import org.m0skit0.android.mapswrapper.CommonMap
+import org.m0skit0.android.mapswrapper.MapView
+import org.m0skit0.android.mapswrapper.MapsInitializer
+import org.m0skit0.android.mapswrapper.OnMapReadyCallback
 import org.m0skit0.android.mapswrapper.model.LatLng
 import org.m0skit0.android.mapswrapper.model.MarkerOptions
 
 /**
  * This shows to include a map in lite mode in a RecyclerView.
  * Note the use of the view holder pattern with the
- * [com.google.android.gms.maps.OnMapReadyCallback].
+ * [org.m0skit0.android.mapswrapper.OnMapReadyCallback].
  */
 class LiteListDemoActivity : AppCompatActivity() {
 
@@ -49,9 +51,9 @@ class LiteListDemoActivity : AppCompatActivity() {
     private lateinit var mapAdapter: RecyclerView.Adapter<MapAdapter.ViewHolder>
 
     /**
-     * RecycleListener that completely clears the [com.google.android.gms.maps.GoogleMap]
+     * RecycleListener that completely clears the [org.m0skit0.android.mapswrapper.CommonMap]
      * attached to a row in the RecyclerView.
-     * Sets the map type to [com.google.android.gms.maps.GoogleMap.MAP_TYPE_NONE] and clears
+     * Sets the map type to [org.m0skit0.android.mapswrapper.CommonMap.MAP_TYPE_NONE] and clears
      * the map.
      */
     private val recycleListener = RecyclerView.RecyclerListener { holder ->
@@ -90,7 +92,7 @@ class LiteListDemoActivity : AppCompatActivity() {
     }
 
     /**
-     * Adapter that displays a title and [com.google.android.gms.maps.MapView] for each item.
+     * Adapter that displays a title and [org.m0skit0.android.mapswrapper.MapView] for each item.
      * The layout is defined in `lite_list_demo_row.xml`. It contains a MapView
      * that is programatically initialised when onCreateViewHolder is called.
      */
@@ -124,7 +126,7 @@ class LiteListDemoActivity : AppCompatActivity() {
                 with(mapView) {
                     // Initialise the MapView
                     onCreate(null)
-                    // Set the map ready callback to receive the GoogleMap object
+                    // Set the map ready callback to receive the CommonMap object
                     getMapAsync(this@ViewHolder)
                 }
             }
@@ -134,7 +136,7 @@ class LiteListDemoActivity : AppCompatActivity() {
                 with(map) {
                     moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13f))
                     addMarker(MarkerOptions().position(latLng))
-                    mapType = MAP_TYPE_NORMAL
+                    mapType = CommonMap.MAP_TYPE_NORMAL
                     setOnMapClickListener {
                         Toast.makeText(this@LiteListDemoActivity, "Clicked on ${title.text}",
                                 Toast.LENGTH_SHORT).show()

@@ -27,13 +27,12 @@ import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
-import com.demos.maps.R
 import org.m0skit0.android.mapswrapper.CommonMap
-import org.m0skit0.android.mapswrapper.CommonMap.Companion.MAP_TYPE_HYBRID
-import org.m0skit0.android.mapswrapper.CommonMap.Companion.MAP_TYPE_NONE
-import org.m0skit0.android.mapswrapper.CommonMap.Companion.MAP_TYPE_NORMAL
-import org.m0skit0.android.mapswrapper.CommonMap.Companion.MAP_TYPE_SATELLITE
-import org.m0skit0.android.mapswrapper.CommonMap.Companion.MAP_TYPE_TERRAIN
+import org.m0skit0.android.mapswrapper.CommonMap.MAP_TYPE_HYBRID
+import org.m0skit0.android.mapswrapper.CommonMap.MAP_TYPE_NONE
+import org.m0skit0.android.mapswrapper.CommonMap.MAP_TYPE_NORMAL
+import org.m0skit0.android.mapswrapper.CommonMap.MAP_TYPE_SATELLITE
+import org.m0skit0.android.mapswrapper.CommonMap.MAP_TYPE_TERRAIN
 import org.m0skit0.android.mapswrapper.OnMapReadyCallback
 import org.m0skit0.android.mapswrapper.SupportMapFragment
 import pub.devrel.easypermissions.AfterPermissionGranted
@@ -112,7 +111,7 @@ class LayersDemoActivity :
         updateMapType()
 
         // check the state of all checkboxes and update the map accordingly
-        with(this.map) {
+        with(map) {
             isTrafficEnabled = trafficCheckbox.isChecked
             isBuildingsEnabled = buildingsCheckbox.isChecked
             isIndoorEnabled = indoorCheckbox.isChecked
@@ -125,15 +124,15 @@ class LayersDemoActivity :
 
         // attach a listener to each checkbox
         trafficCheckbox.setOnClickListener {
-            this.map.isTrafficEnabled = trafficCheckbox.isChecked
+            map.isTrafficEnabled = trafficCheckbox.isChecked
         }
 
         buildingsCheckbox.setOnClickListener {
-            this.map.isBuildingsEnabled = buildingsCheckbox.isChecked
+            map.isBuildingsEnabled = buildingsCheckbox.isChecked
         }
 
         indoorCheckbox.setOnClickListener {
-            this.map.isIndoorEnabled = indoorCheckbox.isChecked
+            map.isIndoorEnabled = indoorCheckbox.isChecked
         }
 
         // if this box is checked, must check for permission before enabling the My Location layer

@@ -19,7 +19,6 @@ package com.demos.maps.demos
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.demos.maps.R
-import com.demos.maps.demos.OnMapAndViewReadyListener.OnGlobalLayoutAndMapReadyListener
 import org.m0skit0.android.mapswrapper.CameraUpdateFactory
 import org.m0skit0.android.mapswrapper.CommonMap
 import org.m0skit0.android.mapswrapper.SupportMapFragment
@@ -28,12 +27,13 @@ import org.m0skit0.android.mapswrapper.model.LatLngBounds
 import org.m0skit0.android.mapswrapper.model.Marker
 import org.m0skit0.android.mapswrapper.model.MarkerOptions
 
+
 /**
  * This shows how to close the info window when the currently selected marker is re-tapped.
  */
 class CloseInfoWindowDemoActivity :
         AppCompatActivity(),
-        OnGlobalLayoutAndMapReadyListener {
+    OnMapAndViewReadyListener.OnGlobalLayoutAndMapReadyListener {
 
     private lateinit var map: CommonMap
 
@@ -70,11 +70,11 @@ class CloseInfoWindowDemoActivity :
         OnMapAndViewReadyListener(mapFragment, this)
     }
 
-    override fun onMapReady(map: CommonMap?) {
+    override fun onMapReady(googleMap: CommonMap?) {
         // Return if googleMap was null
-        this.map = map ?: return
+        map = googleMap ?: return
 
-        with(this.map) {
+        with(map) {
             uiSettings.isZoomControlsEnabled = false
 
             setOnMarkerClickListener(markerClickListener)

@@ -29,7 +29,9 @@ import org.m0skit0.android.mapswrapper.model.MarkerOptions
 /**
  * This shows how to create a simple activity with a map and a marker on the map.
  */
-class BasicMapDemoActivity : AppCompatActivity(), OnMapReadyCallback {
+class BasicMapDemoActivity :
+        AppCompatActivity(),
+    OnMapReadyCallback {
 
     val SYDNEY = LatLng(-33.862, 151.21)
     val ZOOM_LEVEL = 13f

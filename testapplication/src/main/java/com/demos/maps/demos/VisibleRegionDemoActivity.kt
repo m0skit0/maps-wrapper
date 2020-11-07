@@ -24,7 +24,7 @@ import android.view.animation.OvershootInterpolator
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.demos.maps.R
+
 import org.m0skit0.android.mapswrapper.CameraUpdateFactory
 import org.m0skit0.android.mapswrapper.CommonMap
 import org.m0skit0.android.mapswrapper.SupportMapFragment
@@ -76,12 +76,12 @@ class VisibleRegionDemoActivity :
 
     }
 
-    override fun onMapReady(map: CommonMap?) {
+    override fun onMapReady(googleMap: CommonMap?) {
 
         // exit early if the map was not initialised properly
-        this.map = map ?: return
+        map = googleMap ?: return
 
-        this.map.apply {
+        map.apply{
             // Set padding for the current camera view
             setPadding(currentLeft, currentTop, currentRight, currentBottom)
             // Move to a place with indoor (sfoLatLng airport).
@@ -109,15 +109,15 @@ class VisibleRegionDemoActivity :
         }
 
         operaHouseButton.setOnClickListener {
-            this.map.moveCamera(CameraUpdateFactory.newLatLngZoom(operaHouseLatLng, 16f))
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(operaHouseLatLng, 16f))
         }
 
         sfoButton.setOnClickListener {
-            this.map.moveCamera(CameraUpdateFactory.newLatLngZoom(sfoLatLng, 18f))
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(sfoLatLng, 18f))
         }
 
         australiaButton.setOnClickListener {
-            this.map.moveCamera(CameraUpdateFactory.newLatLngBounds(australiaBounds, 0))
+            map.moveCamera(CameraUpdateFactory.newLatLngBounds(australiaBounds, 0))
         }
     }
 
