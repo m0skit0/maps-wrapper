@@ -7,7 +7,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class LatLng(val latitude: Double, val longitude: Double) : Parcelable {
     @IgnoredOnParcel
-    internal val google by lazy { com.google.android.gms.maps.model.LatLng(latitude, longitude) }
+    internal val google = com.google.android.gms.maps.model.LatLng(latitude, longitude)
     @IgnoredOnParcel
-    internal val huawei by lazy { com.huawei.hms.maps.model.LatLng(latitude, longitude) }
+    internal val huawei = com.huawei.hms.maps.model.LatLng(latitude, longitude)
 }
