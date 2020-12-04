@@ -1,6 +1,6 @@
 package org.m0skit0.android.mapswrapper.model
 
-interface TileProvider {
+fun interface TileProvider {
 
     companion object {
         val NO_TILE: Tile = com.google.android.gms.maps.model.TileProvider.NO_TILE.run {

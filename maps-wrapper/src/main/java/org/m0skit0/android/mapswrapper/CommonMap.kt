@@ -265,14 +265,6 @@ class CommonMap(private val map: Any) {
         )
     }
 
-    fun setOnMapClickListener(listener: (LatLng) -> Unit) {
-        setOnMapClickListener(object : OnMapClickListener {
-            override fun onMapClick(position: LatLng) {
-                listener(position)
-            }
-        })
-    }
-
     fun setOnMapLongClickListener(listener: OnMapLongClickListener) {
         googleOrHuawei(
             {
@@ -288,14 +280,6 @@ class CommonMap(private val map: Any) {
         )
     }
 
-    fun setOnMapLongClickListener(listener: (LatLng) -> Unit) {
-        setOnMapLongClickListener(object : OnMapLongClickListener {
-            override fun onMapLongClick(position: LatLng) {
-                listener(position)
-            }
-        })
-    }
-
     fun setOnMapLoadedCallback(listener: OnMapLoadedCallback) {
         googleOrHuawei(
             { setOnMapLoadedCallback { listener.onMapLoaded() } },
@@ -303,12 +287,11 @@ class CommonMap(private val map: Any) {
         )
     }
 
-    fun setOnMapLongClickListener(listener: () -> Unit) {
-        setOnMapLoadedCallback(object : OnMapLoadedCallback {
-            override fun onMapLoaded() {
-                listener()
-            }
-        })
+    fun setOnMapLoadedCallback(listener: () -> Unit) {
+        googleOrHuawei(
+            { setOnMapLoadedCallback { listener() } },
+            { setOnMapLoadedCallback { listener() } }
+        )
     }
 
     fun setOnCameraMoveStartedListener(listener: OnCameraMoveStartedListener) {
@@ -337,14 +320,6 @@ class CommonMap(private val map: Any) {
             { setOnCameraIdleListener { listener.onCameraIdle() } },
             { setOnCameraIdleListener { listener.onCameraIdle() } }
         )
-    }
-
-    fun setOnCameraIdleListener(listener: () -> Unit) {
-        setOnCameraIdleListener(object : OnCameraIdleListener {
-            override fun onCameraIdle() {
-                listener()
-            }
-        })
     }
 
     fun setOnMarkerDragListener(listener: OnMarkerDragListener) {
@@ -397,14 +372,6 @@ class CommonMap(private val map: Any) {
         )
     }
 
-    fun setOnCircleClickListener(listener: (Circle) -> Unit) {
-        setOnCircleClickListener(object : OnCircleClickListener {
-            override fun onCircleClick(circle: Circle) {
-                listener(circle)
-            }
-        })
-    }
-
     fun setOnMarkerClickListener(listener: OnMarkerClickListener) {
         googleOrHuawei(
             {
@@ -418,12 +385,6 @@ class CommonMap(private val map: Any) {
                 }
             }
         )
-    }
-
-    fun setOnMarkerClickListener(listener: (Marker?) -> Boolean) {
-        setOnMarkerClickListener(object : OnMarkerClickListener {
-            override fun onMarkerClick(marker: Marker?): Boolean = listener(marker)
-        })
     }
 
     fun setOnInfoWindowCloseListener(listener: OnInfoWindowCloseListener) {
@@ -471,14 +432,6 @@ class CommonMap(private val map: Any) {
         )
     }
 
-    fun setOnPolygonClickListener(listener: (Polygon) -> Unit) {
-        setOnPolygonClickListener(object : OnPolygonClickListener {
-            override fun onPolygonClick(polygon: Polygon) {
-                listener(polygon)
-            }
-        })
-    }
-
     fun setOnPolygonClickListener(listener: OnPolygonClickListener) {
         googleOrHuawei(
             { setOnPolygonClickListener { listener.onPolygonClick(Polygon(it)) } },
@@ -491,14 +444,6 @@ class CommonMap(private val map: Any) {
             { setOnPolylineClickListener { listener.onPolylineClick(Polyline(it)) } },
             { setOnPolylineClickListener { listener.onPolylineClick(Polyline(it)) } }
         )
-    }
-
-    fun setOnPolylineClickListener(listener: (Polyline) -> Unit) {
-        setOnPolylineClickListener(object : OnPolylineClickListener {
-            override fun onPolylineClick(polyline: Polyline) {
-                listener(polyline)
-            }
-        })
     }
 
     fun setOnGroundOverlayClickListener(listener: OnGroundOverlayClickListener) {
@@ -523,27 +468,11 @@ class CommonMap(private val map: Any) {
         )
     }
 
-    fun setOnMyLocationButtonClickListener(listener: () -> Unit) {
-        setOnMyLocationButtonClickListener(object : OnMyLocationButtonClickListener {
-            override fun onMyLocationButtonClick() {
-                listener()
-            }
-        })
-    }
-
     fun setOnMyLocationClickListener(listener: OnMyLocationClickListener) {
         googleOrHuawei(
             { setOnMyLocationClickListener { location -> listener.onMyLocationClick(location) } },
             { setOnMyLocationClickListener { location -> listener.onMyLocationClick(location) } }
         )
-    }
-
-    fun setOnMyLocationClickListener(listener: (Location) -> Unit) {
-        setOnMyLocationClickListener(object : OnMyLocationClickListener {
-            override fun onMyLocationClick(location: Location) {
-                listener(location)
-            }
-        })
     }
 
     companion object {
@@ -554,15 +483,15 @@ class CommonMap(private val map: Any) {
         const val MAP_TYPE_HYBRID = GoogleMap.MAP_TYPE_HYBRID
     }
 
-    interface OnMapClickListener {
+    fun interface OnMapClickListener {
         fun onMapClick(position: LatLng)
     }
 
-    interface OnMapLongClickListener {
+    fun interface OnMapLongClickListener {
         fun onMapLongClick(position: LatLng)
     }
 
-    interface OnCameraMoveStartedListener {
+    fun interface OnCameraMoveStartedListener {
 
         fun onCameraMoveStarted(reason: Int)
 
@@ -573,15 +502,15 @@ class CommonMap(private val map: Any) {
         }
     }
 
-    interface OnCameraMoveListener {
+    fun interface OnCameraMoveListener {
         fun onCameraMove()
     }
 
-    interface OnCameraMoveCanceledListener {
+    fun interface OnCameraMoveCanceledListener {
         fun onCameraMoveCanceled()
     }
 
-    interface OnCameraIdleListener {
+    fun interface OnCameraIdleListener {
         fun onCameraIdle()
     }
 
@@ -596,23 +525,23 @@ class CommonMap(private val map: Any) {
         fun onMarkerDragEnd(marker: Marker)
     }
 
-    interface OnCircleClickListener {
+    fun interface OnCircleClickListener {
         fun onCircleClick(circle: Circle)
     }
 
-    interface OnMarkerClickListener {
+    fun interface OnMarkerClickListener {
         fun onMarkerClick(marker: Marker?): Boolean
     }
 
-    interface OnInfoWindowCloseListener {
+    fun interface OnInfoWindowCloseListener {
         fun onInfoWindowClose(marker: Marker)
     }
 
-    interface OnInfoWindowLongClickListener {
+    fun interface OnInfoWindowLongClickListener {
         fun onInfoWindowLongClick(marker: Marker)
     }
 
-    interface OnInfoWindowClickListener {
+    fun interface OnInfoWindowClickListener {
         fun onInfoWindowClick(marker: Marker)
     }
 
@@ -621,27 +550,27 @@ class CommonMap(private val map: Any) {
         fun getInfoContents(marker: Marker): View?
     }
 
-    interface OnPolygonClickListener {
+    fun interface OnPolygonClickListener {
         fun onPolygonClick(polygon: Polygon)
     }
 
-    interface OnPolylineClickListener {
+    fun interface OnPolylineClickListener {
         fun onPolylineClick(polyline: Polyline)
     }
 
-    interface OnGroundOverlayClickListener {
+    fun interface OnGroundOverlayClickListener {
         fun onGroundOverlayClick(groundOverlay: GroundOverlay)
     }
 
-    interface OnMapLoadedCallback {
+    fun interface OnMapLoadedCallback {
         fun onMapLoaded()
     }
 
-    interface OnMyLocationButtonClickListener {
+    fun interface OnMyLocationButtonClickListener {
         fun onMyLocationButtonClick()
     }
 
-    interface OnMyLocationClickListener {
+    fun interface OnMyLocationClickListener {
         fun onMyLocationClick(location: Location)
     }
 }
