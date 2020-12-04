@@ -1,9 +1,41 @@
 package org.m0skit0.android.mapswrapper.model
 
+import org.m0skit0.android.mapswrapper.asWrapper
+
 class MarkerOptions {
 
     internal var google = com.google.android.gms.maps.model.MarkerOptions()
     internal var huawei = com.huawei.hms.maps.model.MarkerOptions()
+
+    val position: LatLng
+        get() = google.position.asWrapper()
+
+    val zIndex: Float
+        get() = google.zIndex
+
+    val title: String
+        get() = google.title
+
+    val snippet: String
+        get() = google.snippet
+
+    val isDraggable: Boolean
+        get() = google.isDraggable
+
+    val isVisible: Boolean
+        get() = google.isVisible
+
+    val isFlat: Boolean
+        get() = google.isFlat
+
+    val rotation: Float
+        get() = google.rotation
+
+    val alpha: Float
+        get() = google.alpha
+
+    val icon: BitmapDescriptor
+        get() = google.icon.asWrapper()
 
     fun position(position: LatLng): MarkerOptions = apply {
         google = google.position(position.google)
