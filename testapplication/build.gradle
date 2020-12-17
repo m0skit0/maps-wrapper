@@ -5,6 +5,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'com.huawei.agconnect'
 
+apply from: 'signing.gradle'
+
 android {
     compileSdkVersion 29
     defaultConfig {
@@ -16,7 +18,9 @@ android {
     }
     buildTypes {
         debug {}
-        release {}
+        release {
+            signingConfig signingConfigs.config
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -29,8 +33,6 @@ android {
         remote {}
     }
 }
-
-apply from: 'signing.gradle'
 
 dependencies {
     // Kotlin
