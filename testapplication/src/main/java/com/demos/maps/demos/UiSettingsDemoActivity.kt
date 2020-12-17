@@ -35,7 +35,7 @@ class UiSettingsDemoActivity :
         AppCompatActivity(),
         OnMapReadyCallback {
 
-    private lateinit var map: CommonMap
+    private var map: CommonMap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,11 +45,11 @@ class UiSettingsDemoActivity :
         mapFragment.getMapAsync(this)
     }
 
-    override fun onMapReady(map: CommonMap) {
+    override fun onMapReady(map: CommonMap?) {
         this.map = map
         enableMyLocation()
         // Set all the settings of the map to match the current state of the checkboxes
-        with(this.map.uiSettings) {
+        map?.uiSettings?.run {
             isZoomControlsEnabled = isChecked(R.id.zoom_button)
             isCompassEnabled = isChecked(R.id.compass_button)
             isMyLocationButtonEnabled = isChecked(R.id.myloc_button)
@@ -68,7 +68,7 @@ class UiSettingsDemoActivity :
             return
         }
         val isChecked: Boolean = view.isChecked
-        with(map.uiSettings) {
+        map?.uiSettings?.run {
             when (view.id) {
                 R.id.zoom_button -> isZoomControlsEnabled = isChecked
                 R.id.compass_button -> isCompassEnabled = isChecked
@@ -107,7 +107,7 @@ class UiSettingsDemoActivity :
     @AfterPermissionGranted(REQUEST_CODE_LOCATION)
     private fun enableMyLocation() {
         if (hasLocationPermission()) {
-            map.setMyLocationEnabled(true)
+            map?.isMyLocationEnabled = true
         } else {
             EasyPermissions.requestPermissions(this, getString(R.string.location),
                     REQUEST_CODE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION

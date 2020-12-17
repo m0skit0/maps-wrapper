@@ -142,10 +142,10 @@ class LiteListDemoActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onMapReady(map: CommonMap) {
+            override fun onMapReady(map: CommonMap?) {
                 MapsInitializer.initialize(applicationContext)
                 // If map is not initialised properly
-                this.map = map
+                this.map = map ?: return
                 setMapLocation()
             }
 

@@ -122,7 +122,9 @@ class PolygonDemoActivity :
         return resourceIds.map { getString(it) }
     }
 
-    override fun onMapReady(map: CommonMap) {
+    override fun onMapReady(map: CommonMap?) {
+
+        map ?: return
 
         val fillColorArgb = Color.HSVToColor(
                 fillAlphaBar.progress, floatArrayOf(fillHueBar.progress.toFloat(), 1f, 1f))

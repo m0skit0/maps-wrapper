@@ -136,7 +136,9 @@ class PolylineDemoActivity :
         return resourceIds.map { getString(it) }
     }
 
-    override fun onMapReady(map: CommonMap) {
+    override fun onMapReady(map: CommonMap?) {
+
+        map ?: return
 
         with(map) {
             // Override the default content description on the view, for accessibility mode.

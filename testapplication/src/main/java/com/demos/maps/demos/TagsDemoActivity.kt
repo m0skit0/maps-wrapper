@@ -21,7 +21,6 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.demos.maps.R
-import org.m0skit0.android.mapswrapper.BitmapDescriptorFactory
 import org.m0skit0.android.mapswrapper.CameraUpdateFactory
 import org.m0skit0.android.mapswrapper.CommonMap
 import org.m0skit0.android.mapswrapper.SupportMapFragment
@@ -197,9 +196,8 @@ class TagsDemoActivity : AppCompatActivity(),
                 ?: return)
     }
 
-    override fun onMarkerClick(marker: Marker): Boolean {
-        onClick(marker.tag as? CustomTag
-                ?: return false)
+    override fun onMarkerClick(marker: Marker?): Boolean {
+        onClick(marker?.tag as? CustomTag ?: return false)
         // We return true to indicate that we have consumed the event and that we do not wish
         // for the default behavior to occur (which is for the camera to move such that the
         // marker is centered and for the marker's info window to open, if it has one).

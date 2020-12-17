@@ -36,7 +36,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import com.demos.maps.R
-import org.m0skit0.android.mapswrapper.BitmapDescriptorFactory
 import org.m0skit0.android.mapswrapper.CameraUpdateFactory
 import org.m0skit0.android.mapswrapper.CommonMap
 import org.m0skit0.android.mapswrapper.SupportMapFragment
@@ -384,7 +383,9 @@ class MarkerDemoActivity :
     //
     // Marker related listeners.
     //
-    override fun onMarkerClick(marker : Marker): Boolean {
+    override fun onMarkerClick(marker : Marker?): Boolean {
+
+        marker ?: return false
 
         // Markers have a z-index that is settable and gettable.
         marker.zIndex += 1.0f

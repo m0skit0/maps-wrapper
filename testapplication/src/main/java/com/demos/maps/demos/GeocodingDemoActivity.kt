@@ -18,7 +18,7 @@ import java.io.IOException
 
 class GeocodingDemoActivity : AppCompatActivity() {
 
-    private lateinit var map: CommonMap
+    private var map: CommonMap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +31,7 @@ class GeocodingDemoActivity : AppCompatActivity() {
         findViewById<EditText>(R.id.query)?.let { editText ->
             editText.setOnKeyListener { _, keyCode, event ->
                 if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
-                    map.clear()
+                    map?.clear()
                     moveToAddress(editText.text.toString())
                     editText.text.clear()
                     return@setOnKeyListener true
@@ -62,13 +62,13 @@ class GeocodingDemoActivity : AppCompatActivity() {
     private fun Address.setMarker(): Address = apply {
         val position = LatLng(latitude, longitude)
         val marker = MarkerOptions().position(position)
-        map.addMarker(marker)
+        map?.addMarker(marker)
     }
 
     private fun Address.centerCamera(): Address = apply {
         val position = LatLng(latitude, longitude)
         val cameraPosition = CameraUpdateFactory.newLatLng(position)
-        map.moveCamera(cameraPosition)
+        map?.moveCamera(cameraPosition)
     }
 
     private fun toast(@StringRes id: Int) {

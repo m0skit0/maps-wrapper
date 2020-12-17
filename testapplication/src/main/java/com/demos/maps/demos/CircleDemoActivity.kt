@@ -183,8 +183,8 @@ class CircleDemoActivity :
      * When the map is ready, move the camera to put the Circle in the middle of the screen,
      * create a circle in Sydney, and set the listeners for the map, circles, and SeekBars.
      */
-    override fun onMapReady(map: CommonMap) {
-        this.map = map
+    override fun onMapReady(map: CommonMap?) {
+        this.map = map ?: return
         // we need to initialise map before creating a circle
         with(this.map) {
             moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 4.0f))

@@ -92,10 +92,10 @@ class CameraDemoActivity :
         updateEnabledState()
     }
 
-    override fun onMapReady(map: CommonMap) {
+    override fun onMapReady(map: CommonMap?) {
 
         // return early if the map was not initialised properly
-        this.map = map
+        this.map = map ?: return
 
         with(map) {
             setOnCameraIdleListener(this@CameraDemoActivity)

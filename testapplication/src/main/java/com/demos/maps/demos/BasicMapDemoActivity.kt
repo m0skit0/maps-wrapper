@@ -46,8 +46,8 @@ class BasicMapDemoActivity : AppCompatActivity(), OnMapReadyCallback {
      * This is where we can add markers or lines, add listeners or move the camera. In this case,
      * we just move the camera to Sydney and add a marker in Sydney.
      */
-    override fun onMapReady(map: CommonMap) {
-        with(map) {
+    override fun onMapReady(map: CommonMap?) {
+        map?.run {
             moveCamera(CameraUpdateFactory.newLatLngZoom(SYDNEY, ZOOM_LEVEL))
             addMarker(MarkerOptions().position(SYDNEY))
         }
