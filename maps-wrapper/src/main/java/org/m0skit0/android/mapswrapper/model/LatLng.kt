@@ -1,8 +1,8 @@
 package org.m0skit0.android.mapswrapper.model
 
 import android.os.Parcelable
-import kotlinx.android.parcel.IgnoredOnParcel
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.IgnoredOnParcel
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class LatLng(val latitude: Double, val longitude: Double) : Parcelable {
