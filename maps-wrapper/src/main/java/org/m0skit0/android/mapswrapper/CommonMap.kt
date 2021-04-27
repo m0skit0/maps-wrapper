@@ -76,17 +76,14 @@ class CommonMap(private val map: Any) {
     val myLocation: Location
         get() = googleOrHuawei({ myLocation }, { throwNotSupported() })
 
-    private fun isGoogle(): Boolean = map is GoogleMap
-
-    private fun isHuawei(): Boolean = map is HuaweiMap
-
-    private inline fun <T> googleOrHuawei(google: GoogleMap.() -> T, huawei: HuaweiMap.() -> T): T =
-        when {
-            isGoogle() -> this.google.google()
-            isHuawei() -> this.huawei.huawei()
-            else -> throwUnableToResolveGoogleOrHuawei()
+    var isMarkerClustering: Boolean
+        get() = googleOrHuawei({ isMarkerClustering }, { isMarkerClustering })
+        set(value) {
+            googleOrHuawei(
+                { isMarkerClustering = value },
+                { isMarkerClustering = value }
+            )
         }
-
 
     var isMyLocationEnabled: Boolean = false
         @RequiresPermission(anyOf = ["android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION"])
@@ -96,6 +93,17 @@ class CommonMap(private val map: Any) {
                 { isMyLocationEnabled = value },
                 { isMyLocationEnabled = value }
             )
+        }
+
+    private fun isGoogle(): Boolean = map is GoogleMap
+
+    private fun isHuawei(): Boolean = map is HuaweiMap
+
+    private inline fun <T> googleOrHuawei(google: GoogleMap.() -> T, huawei: HuaweiMap.() -> T): T =
+        when {
+            isGoogle() -> this.google.google()
+            isHuawei() -> this.huawei.huawei()
+            else -> throwUnableToResolveGoogleOrHuawei()
         }
 
     fun clear() {
