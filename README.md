@@ -104,7 +104,7 @@ Then add the dependency on your app build.gradle
 
 ```gradle
 dependencies {
-    implementation 'com.github.m0skit0:maps-wrapper:1.0-beta-3'
+    implementation 'com.github.m0skit0:maps-wrapper:1.0-beta12'
 }
 ```
 
