@@ -1,10 +1,13 @@
 package org.m0skit0.android.mapswrapper
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+
 internal fun <T> executeOrNull(block: () -> T): T? =
     try {
         block()
     } catch (e: Exception) {
         e.printStackTrace()
+        FirebaseCrashlytics.getInstance().recordException(e)
         null
     }
 
