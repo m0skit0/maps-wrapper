@@ -110,63 +110,77 @@ class CommonMap(private val map: Any) {
     }
 
     fun animateCamera(cameraUpdate: CameraUpdate) {
-        executeOrNull {
-            googleOrHuawei(
-                { animateCamera(cameraUpdate.google) },
-                { animateCamera(cameraUpdate.huawei) }
-            )
-        }
+        googleOrHuawei(
+            { animateCamera(cameraUpdate.google) },
+            { animateCamera(cameraUpdate.huawei) }
+        )
     }
 
     fun animateCamera(cameraUpdate: CameraUpdate, callback: CancelableCallback?) {
-        executeOrNull {
-            googleOrHuawei(
-                {
-                    animateCamera(
-                        cameraUpdate.google,
-                        object : GoogleMap.CancelableCallback {
-                            override fun onFinish() { callback?.onFinish() }
-                            override fun onCancel() { callback?.onCancel() }
+        googleOrHuawei(
+            {
+                animateCamera(
+                    cameraUpdate.google,
+                    object : GoogleMap.CancelableCallback {
+                        override fun onFinish() {
+                            callback?.onFinish()
                         }
-                    )
-                }, {
-                    animateCamera(
-                        cameraUpdate.huawei,
-                        object : HuaweiMap.CancelableCallback {
-                            override fun onFinish() { callback?.onFinish() }
-                            override fun onCancel() { callback?.onCancel() }
+
+                        override fun onCancel() {
+                            callback?.onCancel()
                         }
-                    )
-                }
-            )
-        }
+                    }
+                )
+            }, {
+                animateCamera(
+                    cameraUpdate.huawei,
+                    object : HuaweiMap.CancelableCallback {
+                        override fun onFinish() {
+                            callback?.onFinish()
+                        }
+
+                        override fun onCancel() {
+                            callback?.onCancel()
+                        }
+                    }
+                )
+            }
+        )
     }
 
     fun animateCamera(cameraUpdate: CameraUpdate, value: Int, callback: CancelableCallback?) {
-        executeOrNull {
-            googleOrHuawei(
-                {
-                    google.animateCamera(
-                        cameraUpdate.google,
-                        value,
-                        object : GoogleMap.CancelableCallback {
-                            override fun onFinish() { callback?.onFinish() }
-                            override fun onCancel() { callback?.onCancel() }
+        googleOrHuawei(
+            {
+                google.animateCamera(
+                    cameraUpdate.google,
+                    value,
+                    object : GoogleMap.CancelableCallback {
+                        override fun onFinish() {
+                            callback?.onFinish()
                         }
-                    )
-                },
-                {
-                    huawei.animateCamera(
-                        cameraUpdate.huawei,
-                        value,
-                        object : HuaweiMap.CancelableCallback {
-                            override fun onFinish() { callback?.onFinish() }
-                            override fun onCancel() { callback?.onCancel() }
+
+                        override fun onCancel() {
+                            callback?.onCancel()
                         }
-                    )
-                }
-            )
-        }
+                    }
+                )
+            },
+            {
+                huawei.animateCamera(
+                    cameraUpdate.huawei,
+                    value,
+                    object : HuaweiMap.CancelableCallback {
+                        override fun onFinish() {
+                            callback?.onFinish()
+                        }
+
+                        override fun onCancel() {
+                            callback?.onCancel()
+                        }
+                    }
+                )
+            }
+        )
     }
 
     fun stopAnimation() {
