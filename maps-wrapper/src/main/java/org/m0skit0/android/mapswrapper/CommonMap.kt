@@ -157,34 +157,38 @@ class CommonMap(private val map: Any) {
     }
 
     fun animateCamera(cameraUpdate: CameraUpdate, value: Int, callback: CancelableCallback?) {
-        when {
-            isGoogle() -> google.animateCamera(
-                cameraUpdate.google,
-                value,
-                object : GoogleMap.CancelableCallback {
-                    override fun onFinish() {
-                        callback?.onFinish()
-                    }
+        googleOrHuawei(
+            {
+                google.animateCamera(
+                    cameraUpdate.google,
+                    value,
+                    object : GoogleMap.CancelableCallback {
+                        override fun onFinish() {
+                            callback?.onFinish()
+                        }
 
-                    override fun onCancel() {
-                        callback?.onCancel()
+                        override fun onCancel() {
+                            callback?.onCancel()
+                        }
                     }
-                }
-            )
-            isHuawei() -> huawei.animateCamera(
-                cameraUpdate.huawei,
-                value,
-                object : HuaweiMap.CancelableCallback {
-                    override fun onFinish() {
-                        callback?.onFinish()
-                    }
+                )
+            },
+            {
+                huawei.animateCamera(
+                    cameraUpdate.huawei,
+                    value,
+                    object : HuaweiMap.CancelableCallback {
+                        override fun onFinish() {
+                            callback?.onFinish()
+                        }
 
-                    override fun onCancel() {
-                        callback?.onCancel()
+                        override fun onCancel() {
+                            callback?.onCancel()
+                        }
                     }
-                }
-            )
-        }
+                )
+            }
+        )
     }
 
     fun stopAnimation() {

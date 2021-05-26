@@ -1,6 +1,14 @@
 package org.m0skit0.android.mapswrapper
 
-internal fun <T> executeOrNull(block: () -> T): T? = try { block() } catch (e: Exception) { null }
+import org.m0skit0.android.mapswrapper.exception.ExceptionHandlerFactory
+
+internal fun <T> executeOrNull(block: () -> T): T? =
+    try {
+        block()
+    } catch (e: Exception) {
+        ExceptionHandlerFactory.handler.handle(e)
+        null
+    }
 
 internal fun throwUnableToResolveGoogleOrHuawei(): Nothing =
     throw IllegalStateException("Could not resolve if Google or Huawei")

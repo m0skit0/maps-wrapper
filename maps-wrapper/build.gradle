@@ -20,5 +20,7 @@ dependencies {
     implementation 'com.google.maps.android:android-maps-utils-v3:2.2.2'
     implementation 'com.huawei.hms:maps:5.0.3.301'
 
+    implementation 'com.google.firebase:firebase-crashlytics:17.2.1'
+
     testImplementation 'junit:junit:4.13.1'
 }
