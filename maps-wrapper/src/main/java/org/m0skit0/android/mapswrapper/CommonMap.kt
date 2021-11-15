@@ -339,30 +339,30 @@ class CommonMap(private val map: Any) {
             {
                 setOnMarkerDragListener(object : GoogleMap.OnMarkerDragListener {
                     override fun onMarkerDragEnd(marker: com.google.android.gms.maps.model.Marker?) {
-                        listener.onMarkerDragEnd(Marker(marker, null))
+                        listener.onMarkerDragEnd(marker.asWrapper())
                     }
 
                     override fun onMarkerDragStart(marker: com.google.android.gms.maps.model.Marker?) {
-                        listener.onMarkerDragStart(Marker(marker, null))
+                        listener.onMarkerDragStart(marker.asWrapper())
                     }
 
                     override fun onMarkerDrag(marker: com.google.android.gms.maps.model.Marker?) {
-                        listener.onMarkerDragStart(Marker(marker, null))
+                        listener.onMarkerDragStart(marker.asWrapper())
                     }
                 })
             },
             {
                 setOnMarkerDragListener(object : HuaweiMap.OnMarkerDragListener {
                     override fun onMarkerDragEnd(marker: com.huawei.hms.maps.model.Marker?) {
-                        listener.onMarkerDragEnd(Marker(null, marker))
+                        listener.onMarkerDragEnd(marker.asWrapper())
                     }
 
                     override fun onMarkerDragStart(marker: com.huawei.hms.maps.model.Marker?) {
-                        listener.onMarkerDragStart(Marker(null, marker))
+                        listener.onMarkerDragStart(marker.asWrapper())
                     }
 
                     override fun onMarkerDrag(marker: com.huawei.hms.maps.model.Marker?) {
-                        listener.onMarkerDragStart(Marker(null, marker))
+                        listener.onMarkerDragStart(marker.asWrapper())
                     }
                 })
             }
@@ -373,12 +373,12 @@ class CommonMap(private val map: Any) {
         googleOrHuawei(
             {
                 setOnCircleClickListener {
-                    listener.onCircleClick(Circle(it))
+                    listener.onCircleClick(it.asWrapper())
                 }
             },
             {
                 setOnCircleClickListener {
-                    listener.onCircleClick(Circle(it))
+                    listener.onCircleClick(it.asWrapper())
                 }
             }
         )
@@ -388,12 +388,12 @@ class CommonMap(private val map: Any) {
         googleOrHuawei(
             {
                 setOnMarkerClickListener {
-                    listener.onMarkerClick(Marker(it))
+                    listener.onMarkerClick(it.asWrapper())
                 }
             },
             {
                 setOnMarkerClickListener {
-                    listener.onMarkerClick(Marker(it))
+                    listener.onMarkerClick(it.asWrapper())
                 }
             }
         )
@@ -403,12 +403,12 @@ class CommonMap(private val map: Any) {
         googleOrHuawei(
             {
                 setOnInfoWindowCloseListener {
-                    listener.onInfoWindowClose(Marker(it))
+                    listener.onInfoWindowClose(it.asWrapper())
                 }
             },
             {
                 setOnInfoWindowCloseListener {
-                    listener.onInfoWindowClose(Marker(it))
+                    listener.onInfoWindowClose(it.asWrapper())
                 }
             }
         )
@@ -418,12 +418,12 @@ class CommonMap(private val map: Any) {
         googleOrHuawei(
             {
                 setOnInfoWindowLongClickListener {
-                    listener.onInfoWindowLongClick(Marker(it))
+                    listener.onInfoWindowLongClick(it.asWrapper())
                 }
             },
             {
                 setOnInfoWindowLongClickListener {
-                    listener.onInfoWindowLongClick(Marker(it))
+                    listener.onInfoWindowLongClick(it.asWrapper())
                 }
             }
         )
@@ -433,12 +433,12 @@ class CommonMap(private val map: Any) {
         googleOrHuawei(
             {
                 setOnInfoWindowClickListener {
-                    listener.onInfoWindowClick(Marker(it))
+                    listener.onInfoWindowClick(it.asWrapper())
                 }
             },
             {
                 setOnInfoWindowClickListener {
-                    listener.onInfoWindowClick(Marker(it))
+                    listener.onInfoWindowClick(it.asWrapper())
                 }
             }
         )
@@ -446,15 +446,15 @@ class CommonMap(private val map: Any) {
 
     fun setOnPolygonClickListener(listener: OnPolygonClickListener) {
         googleOrHuawei(
-            { setOnPolygonClickListener { listener.onPolygonClick(Polygon(it)) } },
-            { setOnPolygonClickListener { listener.onPolygonClick(Polygon(it)) } }
+            { setOnPolygonClickListener { listener.onPolygonClick(it.asWrapper()) } },
+            { setOnPolygonClickListener { listener.onPolygonClick(it.asWrapper()) } }
         )
     }
 
     fun setOnPolylineClickListener(listener: OnPolylineClickListener) {
         googleOrHuawei(
-            { setOnPolylineClickListener { listener.onPolylineClick(Polyline(it)) } },
-            { setOnPolylineClickListener { listener.onPolylineClick(Polyline(it)) } }
+            { setOnPolylineClickListener { listener.onPolylineClick(it.asWrapper()) } },
+            { setOnPolylineClickListener { listener.onPolylineClick(it.asWrapper()) } }
         )
     }
 
@@ -462,12 +462,12 @@ class CommonMap(private val map: Any) {
         googleOrHuawei(
             {
                 setOnGroundOverlayClickListener {
-                    listener.onGroundOverlayClick(GroundOverlay(it))
+                    listener.onGroundOverlayClick(it.asWrapper())
                 }
             },
             {
                 setOnGroundOverlayClickListener {
-                    listener.onGroundOverlayClick(GroundOverlay(it))
+                    listener.onGroundOverlayClick(it.asWrapper())
                 }
             }
         )
@@ -487,6 +487,13 @@ class CommonMap(private val map: Any) {
         )
     }
 
+    fun setOnCameraChangeListener(listener: OnCameraChangeListener) {
+        googleOrHuawei(
+            { setOnCameraChangeListener { listener.onCameraChange(it.asWrapper()) } },
+            { setOnCameraIdleListener { listener.onCameraChange(cameraPosition.asWrapper()) } },
+        )
+    }
+
     companion object {
         const val MAP_TYPE_NONE = GoogleMap.MAP_TYPE_NONE
         const val MAP_TYPE_NORMAL = GoogleMap.MAP_TYPE_NORMAL
@@ -501,6 +508,10 @@ class CommonMap(private val map: Any) {
 
     fun interface OnMapLongClickListener {
         fun onMapLongClick(position: LatLng)
+    }
+
+    fun interface OnCameraChangeListener {
+        fun onCameraChange(position: CameraPosition)
     }
 
     fun interface OnCameraMoveStartedListener {
