@@ -72,6 +72,13 @@ class Marker internal constructor(
             huawei?.tag = value
         }
 
+    var isVisible: Boolean
+        get() = google?.isVisible ?: huawei?.isVisible ?: throwUnableToResolveGoogleOrHuawei()
+        set(value) {
+            google?.isVisible = value
+            huawei?.isVisible = value
+        }
+
     fun setAnchor(x: Float, y: Float) {
         google?.setAnchor(x, y)
         huawei?.setMarkerAnchor(x, y)

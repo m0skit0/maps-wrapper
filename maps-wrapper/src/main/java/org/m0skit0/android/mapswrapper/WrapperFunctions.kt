@@ -34,9 +34,9 @@ internal fun com.google.android.gms.maps.model.PatternItem.asWrapper(): PatternI
 
 internal fun com.huawei.hms.maps.model.PatternItem.asWrapper(): PatternItem = PatternItem(this)
 
-internal fun com.google.android.gms.maps.model.Marker.asWrapper(): Marker = Marker(this)
+internal fun com.google.android.gms.maps.model.Marker?.asWrapper(): Marker = Marker(this)
 
-internal fun com.huawei.hms.maps.model.Marker.asWrapper(): Marker = Marker(this)
+internal fun com.huawei.hms.maps.model.Marker?.asWrapper(): Marker = Marker(this)
 
 internal fun com.google.android.gms.maps.model.TileOverlay.asWrapper(): TileOverlay = TileOverlay(this)
 
