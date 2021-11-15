@@ -13,10 +13,10 @@ class MarkerOptions {
     val zIndex: Float
         get() = google.zIndex
 
-    val title: String
+    val title: String?
         get() = google.title
 
-    val snippet: String
+    val snippet: String?
         get() = google.snippet
 
     val isDraggable: Boolean
@@ -34,8 +34,8 @@ class MarkerOptions {
     val alpha: Float
         get() = google.alpha
 
-    val icon: BitmapDescriptor
-        get() = google.icon.asWrapper()
+    val icon: BitmapDescriptor?
+        get() = google.icon?.asWrapper()
 
     fun position(position: LatLng): MarkerOptions = apply {
         google = google.position(position.google)

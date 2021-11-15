@@ -22,8 +22,8 @@ class GroundOverlayOptions {
     val zIndex: Float
         get() = google.zIndex
 
-    val location: LatLng
-        get() = google.location.asWrapper()
+    val location: LatLng?
+        get() = google.location?.asWrapper()
 
     val width: Float
         get() = google.width
@@ -37,8 +37,8 @@ class GroundOverlayOptions {
     val anchorV: Float
         get() = google.anchorV
 
-    val bounds: LatLngBounds
-        get() = google.bounds.asWrapper()
+    val bounds: LatLngBounds?
+        get() = google.bounds?.asWrapper()
 
     val image: BitmapDescriptor
         get() = google.image.asWrapper()
@@ -89,7 +89,7 @@ class GroundOverlayOptions {
     }
 
     fun  positionFromBounds(bounds: LatLngBounds): GroundOverlayOptions = apply {
-        google = google.positionFromBounds(bounds.google)
+        google = bounds.google?.let { google.positionFromBounds(it) } ?: google
         huawei = huawei.positionFromBounds(bounds.huawei)
     }
 }

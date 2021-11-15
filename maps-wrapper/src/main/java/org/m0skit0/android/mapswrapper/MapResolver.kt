@@ -37,7 +37,10 @@ internal fun mapViewFromResolverType(context: Context, attr: AttributeSet?, @Att
     }
 
 private fun Context.googleMapView(attr: AttributeSet?, @AttrRes defStyleAttr: Int): com.google.android.gms.maps.MapView =
-    com.google.android.gms.maps.MapView(this, attr, defStyleAttr)
+    attr
+        ?.let { com.google.android.gms.maps.MapView(this, it, defStyleAttr) }
+        ?: com.google.android.gms.maps.MapView(this)
+
 
 private fun Context.huaweiMapView(attr: AttributeSet?, @AttrRes defStyleAttr: Int): com.huawei.hms.maps.MapView =
     com.huawei.hms.maps.MapView(this, attr, defStyleAttr)
