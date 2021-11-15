@@ -344,15 +344,15 @@ class CommonMap(private val map: Any) {
         googleOrHuawei(
             {
                 setOnMarkerDragListener(object : GoogleMap.OnMarkerDragListener {
-                    override fun onMarkerDragEnd(marker: com.google.android.gms.maps.model.Marker?) {
+                    override fun onMarkerDragEnd(marker: com.google.android.gms.maps.model.Marker) {
                         listener.onMarkerDragEnd(marker.asWrapper())
                     }
 
-                    override fun onMarkerDragStart(marker: com.google.android.gms.maps.model.Marker?) {
+                    override fun onMarkerDragStart(marker: com.google.android.gms.maps.model.Marker) {
                         listener.onMarkerDragStart(marker.asWrapper())
                     }
 
-                    override fun onMarkerDrag(marker: com.google.android.gms.maps.model.Marker?) {
+                    override fun onMarkerDrag(marker: com.google.android.gms.maps.model.Marker) {
                         listener.onMarkerDragStart(marker.asWrapper())
                     }
                 })
@@ -493,6 +493,7 @@ class CommonMap(private val map: Any) {
         )
     }
 
+    @Deprecated("Use OnCameraMoveStartedListener, OnCameraMoveListener and OnCameraIdleListener")
     fun setOnCameraChangeListener(listener: OnCameraChangeListener) {
         googleOrHuawei(
             { setOnCameraChangeListener { listener.onCameraChange(it.asWrapper()) } },
