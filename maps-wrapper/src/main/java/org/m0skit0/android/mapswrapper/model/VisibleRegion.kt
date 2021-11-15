@@ -9,13 +9,16 @@ data class VisibleRegion(
 ) {
 
     internal val google by lazy {
-        com.google.android.gms.maps.model.VisibleRegion(
-            nearLeft.google,
-            nearRight.google,
-            farLeft.google,
-            farRight.google,
-            latLngBounds.google
-        )
+        latLngBounds.google?.let {
+            com.google.android.gms.maps.model.VisibleRegion(
+                nearLeft.google,
+                nearRight.google,
+                farLeft.google,
+                farRight.google,
+                it
+            )
+
+        }
     }
 
     internal val huawei by lazy {

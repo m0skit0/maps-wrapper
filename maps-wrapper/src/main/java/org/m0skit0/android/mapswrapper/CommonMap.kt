@@ -112,14 +112,14 @@ class CommonMap(private val map: Any) {
 
     fun moveCamera(cameraUpdate: CameraUpdate) {
         googleOrHuawei(
-            { moveCamera(cameraUpdate.google) },
+            { cameraUpdate.google?.let { moveCamera(it) } },
             { moveCamera(cameraUpdate.huawei) }
         )
     }
 
     fun animateCamera(cameraUpdate: CameraUpdate) {
         googleOrHuawei(
-            { animateCamera(cameraUpdate.google) },
+            { cameraUpdate.google?.let { animateCamera(it) } },
             { animateCamera(cameraUpdate.huawei) }
         )
     }
@@ -127,18 +127,21 @@ class CommonMap(private val map: Any) {
     fun animateCamera(cameraUpdate: CameraUpdate, callback: CancelableCallback?) {
         googleOrHuawei(
             {
-                animateCamera(
-                    cameraUpdate.google,
-                    object : GoogleMap.CancelableCallback {
-                        override fun onFinish() {
-                            callback?.onFinish()
-                        }
+                cameraUpdate.google?.let {
+                    animateCamera(
+                        it,
+                        object : GoogleMap.CancelableCallback {
+                            override fun onFinish() {
+                                callback?.onFinish()
+                            }
 
-                        override fun onCancel() {
-                            callback?.onCancel()
+                            override fun onCancel() {
+                                callback?.onCancel()
+                            }
                         }
-                    }
-                )
+                    )
+
+                }
             }, {
                 animateCamera(
                     cameraUpdate.huawei,
@@ -159,22 +162,25 @@ class CommonMap(private val map: Any) {
     fun animateCamera(cameraUpdate: CameraUpdate, value: Int, callback: CancelableCallback?) {
         googleOrHuawei(
             {
-                google.animateCamera(
-                    cameraUpdate.google,
-                    value,
-                    object : GoogleMap.CancelableCallback {
-                        override fun onFinish() {
-                            callback?.onFinish()
-                        }
+                cameraUpdate.google?.let {
+                    animateCamera(
+                        it,
+                        value,
+                        object : GoogleMap.CancelableCallback {
+                            override fun onFinish() {
+                                callback?.onFinish()
+                            }
 
-                        override fun onCancel() {
-                            callback?.onCancel()
+                            override fun onCancel() {
+                                callback?.onCancel()
+                            }
                         }
-                    }
-                )
+                    )
+
+                }
             },
             {
-                huawei.animateCamera(
+                animateCamera(
                     cameraUpdate.huawei,
                     value,
                     object : HuaweiMap.CancelableCallback {
@@ -193,8 +199,8 @@ class CommonMap(private val map: Any) {
 
     fun stopAnimation() {
         googleOrHuawei(
-            { google.stopAnimation() },
-            { huawei.stopAnimation() }
+            { stopAnimation() },
+            { stopAnimation() }
         )
     }
 
@@ -204,15 +210,15 @@ class CommonMap(private val map: Any) {
             { addCircle(circleOptions.huawei).asWrapper() }
         )
 
-    fun addMarker(markerOptions: MarkerOptions): Marker =
+    fun addMarker(markerOptions: MarkerOptions): Marker? =
         googleOrHuawei(
-            { addMarker(markerOptions.google).asWrapper() },
+            { addMarker(markerOptions.google)?.asWrapper() },
             { addMarker(markerOptions.huawei).asWrapper() }
         )
 
-    fun addPolyline(polylineOptions: PolylineOptions?): Polyline =
+    fun addPolyline(polylineOptions: PolylineOptions?): Polyline? =
         googleOrHuawei(
-            { addPolyline(polylineOptions?.google).asWrapper() },
+            { polylineOptions?.google?.let { addPolyline(it).asWrapper() } },
             { addPolyline(polylineOptions?.huawei).asWrapper() }
         )
 
@@ -222,15 +228,15 @@ class CommonMap(private val map: Any) {
             { huawei.addPolygon(polygonOptions.huawei).asWrapper() }
         )
 
-    fun addGroundOverlay(groundOverlayOptions: GroundOverlayOptions): GroundOverlay =
+    fun addGroundOverlay(groundOverlayOptions: GroundOverlayOptions): GroundOverlay? =
         googleOrHuawei(
-            { addGroundOverlay(groundOverlayOptions.google).asWrapper() },
+            { addGroundOverlay(groundOverlayOptions.google)?.asWrapper() },
             { addGroundOverlay(groundOverlayOptions.huawei).asWrapper() }
         )
 
-    fun addTileOverlay(options: TileOverlayOptions): TileOverlay =
+    fun addTileOverlay(options: TileOverlayOptions): TileOverlay? =
         googleOrHuawei(
-            { addTileOverlay(options.google).asWrapper() },
+            { addTileOverlay(options.google)?.asWrapper() },
             { addTileOverlay(options.huawei).asWrapper() }
         )
 
@@ -245,11 +251,11 @@ class CommonMap(private val map: Any) {
         googleOrHuawei(
             {
                 setInfoWindowAdapter(object : GoogleMap.InfoWindowAdapter {
-                    override fun getInfoContents(marker: com.google.android.gms.maps.model.Marker?): View? =
-                        marker?.run { adapter.getInfoContents(asWrapper()) }
+                    override fun getInfoContents(marker: com.google.android.gms.maps.model.Marker): View? =
+                        marker.run { adapter.getInfoContents(asWrapper()) }
 
-                    override fun getInfoWindow(marker: com.google.android.gms.maps.model.Marker?): View? =
-                        marker?.run { adapter.getInfoWindow(asWrapper()) }
+                    override fun getInfoWindow(marker: com.google.android.gms.maps.model.Marker): View? =
+                        marker.run { adapter.getInfoWindow(asWrapper()) }
                 })
             },
             {
@@ -338,15 +344,15 @@ class CommonMap(private val map: Any) {
         googleOrHuawei(
             {
                 setOnMarkerDragListener(object : GoogleMap.OnMarkerDragListener {
-                    override fun onMarkerDragEnd(marker: com.google.android.gms.maps.model.Marker?) {
+                    override fun onMarkerDragEnd(marker: com.google.android.gms.maps.model.Marker) {
                         listener.onMarkerDragEnd(marker.asWrapper())
                     }
 
-                    override fun onMarkerDragStart(marker: com.google.android.gms.maps.model.Marker?) {
+                    override fun onMarkerDragStart(marker: com.google.android.gms.maps.model.Marker) {
                         listener.onMarkerDragStart(marker.asWrapper())
                     }
 
-                    override fun onMarkerDrag(marker: com.google.android.gms.maps.model.Marker?) {
+                    override fun onMarkerDrag(marker: com.google.android.gms.maps.model.Marker) {
                         listener.onMarkerDragStart(marker.asWrapper())
                     }
                 })
@@ -487,6 +493,7 @@ class CommonMap(private val map: Any) {
         )
     }
 
+    @Deprecated("Use OnCameraMoveStartedListener, OnCameraMoveListener and OnCameraIdleListener")
     fun setOnCameraChangeListener(listener: OnCameraChangeListener) {
         googleOrHuawei(
             { setOnCameraChangeListener { listener.onCameraChange(it.asWrapper()) } },
