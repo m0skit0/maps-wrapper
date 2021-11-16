@@ -247,7 +247,7 @@ class CommonMap(private val map: Any) {
         )
     }
 
-    fun setInfoWindowAdapter(adapter: InfoWindowAdapter) {
+    fun setInfoWindowAdapter(adapter: InfoWindowAdapter?) {
         googleOrHuawei(
             {
                 setInfoWindowAdapter(object : GoogleMap.InfoWindowAdapter {
@@ -261,10 +261,10 @@ class CommonMap(private val map: Any) {
             {
                 setInfoWindowAdapter(object : HuaweiMap.InfoWindowAdapter {
                     override fun getInfoContents(marker: com.huawei.hms.maps.model.Marker?): View? =
-                        marker?.run { adapter.getInfoContents(asWrapper()) }
+                        marker?.run { adapter?.getInfoContents(asWrapper()) }
 
                     override fun getInfoWindow(marker: com.huawei.hms.maps.model.Marker?): View? =
-                        marker?.run { adapter.getInfoWindow(asWrapper()) }
+                        marker?.run { adapter?.getInfoWindow(asWrapper()) }
                 })
             }
         )
