@@ -252,10 +252,10 @@ class CommonMap(private val map: Any) {
             {
                 setInfoWindowAdapter(object : GoogleMap.InfoWindowAdapter {
                     override fun getInfoContents(marker: com.google.android.gms.maps.model.Marker): View? =
-                        marker.run { adapter.getInfoContents(asWrapper()) }
+                        marker.run { adapter?.getInfoContents(asWrapper()) }
 
                     override fun getInfoWindow(marker: com.google.android.gms.maps.model.Marker): View? =
-                        marker.run { adapter.getInfoWindow(asWrapper()) }
+                        marker.run { adapter?.getInfoWindow(asWrapper()) }
                 })
             },
             {
