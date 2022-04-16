@@ -247,24 +247,24 @@ class CommonMap(private val map: Any) {
         )
     }
 
-    fun setInfoWindowAdapter(adapter: InfoWindowAdapter) {
+    fun setInfoWindowAdapter(adapter: InfoWindowAdapter?) {
         googleOrHuawei(
             {
                 setInfoWindowAdapter(object : GoogleMap.InfoWindowAdapter {
                     override fun getInfoContents(marker: com.google.android.gms.maps.model.Marker): View? =
-                        marker.run { adapter.getInfoContents(asWrapper()) }
+                        marker.run { adapter?.getInfoContents(asWrapper()) }
 
                     override fun getInfoWindow(marker: com.google.android.gms.maps.model.Marker): View? =
-                        marker.run { adapter.getInfoWindow(asWrapper()) }
+                        marker.run { adapter?.getInfoWindow(asWrapper()) }
                 })
             },
             {
                 setInfoWindowAdapter(object : HuaweiMap.InfoWindowAdapter {
                     override fun getInfoContents(marker: com.huawei.hms.maps.model.Marker?): View? =
-                        marker?.run { adapter.getInfoContents(asWrapper()) }
+                        marker?.run { adapter?.getInfoContents(asWrapper()) }
 
                     override fun getInfoWindow(marker: com.huawei.hms.maps.model.Marker?): View? =
-                        marker?.run { adapter.getInfoWindow(asWrapper()) }
+                        marker?.run { adapter?.getInfoWindow(asWrapper()) }
                 })
             }
         )
@@ -498,6 +498,13 @@ class CommonMap(private val map: Any) {
         googleOrHuawei(
             { setOnCameraChangeListener { listener.onCameraChange(it.asWrapper()) } },
             { setOnCameraIdleListener { listener.onCameraChange(cameraPosition.asWrapper()) } },
+        )
+    }
+
+    fun setMapStyle(style: MapStyleOptions?) {
+        googleOrHuawei(
+            { setMapStyle(style?.google) },
+            { setMapStyle(style?.huawei) }
         )
     }
 
