@@ -501,6 +501,13 @@ class CommonMap(private val map: Any) {
         )
     }
 
+    fun setMapStyle(style: MapStyleOptions?) {
+        googleOrHuawei(
+            { setMapStyle(style?.google) },
+            { setMapStyle(style?.huawei) }
+        )
+    }
+
     companion object {
         const val MAP_TYPE_NONE = GoogleMap.MAP_TYPE_NONE
         const val MAP_TYPE_NORMAL = GoogleMap.MAP_TYPE_NORMAL
